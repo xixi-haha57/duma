@@ -1,0 +1,2778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>马背上的共同体——茶马古道五维解读</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: #FDF8F2;
+            color: #3E2C1F;
+        }
+
+        /* 字体定义 */
+        h1, h2, h3, .nav-btn, .punchline {
+            font-family: "Source Han Serif SC", "STZhongsong", "SimSun", serif;
+        }
+
+        /* 页面主布局 */
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 左侧内容区 */
+        .content-area {
+            flex: 7.5;
+            background-color: #FDF8F2;
+            position: relative;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: background-color 0.5s ease;
+        }
+
+        /* 右侧导航区 */
+        .nav-area {
+            flex: 2.5;
+            background-color: #3E2C1F;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        /* 导航背景纹理效果 */
+        .nav-area::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(#4A3525 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        /* 导航按钮样式 */
+        .nav-btn {
+            width: 75%;
+            height: 12%;
+            margin: 1rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(184, 134, 11, 0.3);
+            color: #E0C097;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-size: 1.25rem;
+            letter-spacing: 0.2rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .nav-btn:hover {
+            background: rgba(184, 134, 11, 0.15);
+            border-color: #B8860B;
+            color: #fff;
+            transform: translateX(-5px);
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn.active {
+            background: #8B0000;
+            color: #fff;
+            border-color: #B8860B;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+
+        /* 内容切换动画 */
+        .content-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            max-width: 100%;
+            width: 100%;
+            height: 100%;
+        }
+
+        .content-section.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* 文本样式 */
+        .title {
+            font-size: 2.8rem;
+            color: #3E2C1F;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: #8B0000;
+            margin-bottom: 2.5rem;
+            font-weight: normal;
+            letter-spacing: 0.1rem;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #5D4037;
+            margin-bottom: 2.5rem;
+            text-align: justify;
+        }
+
+        .punchline {
+            font-size: 1.2rem;
+            color: #3E2C1F;
+            border-left: 4px solid #B8860B;
+            padding-left: 1.5rem;
+            font-style: italic;
+            margin-top: 2rem;
+            background: rgba(184, 134, 11, 0.05);
+            padding: 1.5rem;
+        }
+
+        /* SVG 插图样式 */
+        .map-placeholder {
+            width: 100%;
+            height: 300px;
+            margin: 2rem 0;
+            border: 1px dashed #A1887F;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        .mountain-path {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 维度内容特有样式 */
+        /* 马政纽带：可点击展开的交互式时间线样式 */
+        .timeline-section {
+            height: 100%;
+            overflow-y: auto;
+            padding: 2rem 5%;
+            background: linear-gradient(180deg, #FDF8F2 0%, #F5E6D3 100%);
+            position: relative;
+            scrollbar-width: thin;
+            scrollbar-color: #2E7D32 transparent;
+        }
+
+        /* 噪点纹理背景 */
+        .timeline-section::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .timeline-header {
+            margin-bottom: 3rem;
+            position: relative;
+            border-bottom: 1px solid #D4AF37;
+            padding-bottom: 1.5rem;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .timeline-header .title-group {
+            flex: 1;
+        }
+
+        .timeline-header .title {
+            font-family: 'Noto Serif SC', 'STZhongsong', 'SimSun', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #2E241B;
+            text-shadow: 2px 2px 4px rgba(212, 175, 55, 0.3);
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+        }
+
+        .timeline-header .subtitle {
+            font-size: 1.1rem;
+            color: #8E8E8E;
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+
+        .legend-badges {
+            display: flex;
+            gap: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #333;
+        }
+
+        .dot { width: 14px; height: 14px; border-radius: 50%; }
+        .dot.red { background: #8B0000; }
+        .dot.blue { background: #1A3B5C; }
+        .dot.green { background: #2E7D32; }
+        .dot.black { background: #333; }
+
+        .timeline-container {
+            position: relative;
+            padding-left: 15%;
+            z-index: 1;
+        }
+
+        .timeline-v-line {
+            position: absolute;
+            left: 15%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            border-left: 1px dashed #2E7D32;
+            z-index: 0;
+        }
+
+        /* 卡片样式 */
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-node {
+            position: absolute;
+            left: -7.5px;
+            top: 30px;
+            width: 15px;
+            height: 15px;
+            background: #2E7D32;
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 0 0 rgba(46, 125, 50, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-node {
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(46, 125, 50, 0.6);
+            animation: timeline-node-pulse 1.5s infinite;
+        }
+
+        @keyframes timeline-node-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(46, 125, 50, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+        }
+
+        .timeline-card {
+            width: 95%;
+            margin-left: 2.5%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(139, 0, 0, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.4s ease;
+            display: flex;
+        }
+
+        .timeline-card:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: scale(1.01);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .card-side-bar {
+            width: 8px;
+            flex-shrink: 0;
+            transition: width 0.4s ease;
+        }
+
+        .card-main {
+            flex-grow: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .header-labels {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .card-label {
+            font-size: 0.9rem;
+            font-weight: bold;
+            padding: 0.2rem 0.8rem;
+            border-radius: 4px;
+            color: #fff;
+        }
+
+        .card-label.red { background: #8B0000; }
+        .card-label.blue { background: #1A3B5C; }
+
+        .card-significance {
+            font-size: 0.85rem;
+            color: #2E7D32;
+            font-weight: 500;
+        }
+
+        .card-overview {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .overview-tags {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .tag-pill {
+            background: #F0F0F0;
+            color: #666;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .expand-arrow {
+            color: #2E7D32;
+            font-size: 1.2rem;
+            transition: transform 0.4s ease;
+        }
+
+        /* 展开态样式 */
+        .timeline-item.expanded .card-side-bar {
+            width: 12px;
+        }
+
+        .timeline-item.expanded .timeline-card {
+            background: #FFF9F2;
+        }
+
+        .timeline-item.expanded .expand-arrow {
+            transform: rotate(180deg);
+        }
+
+        .card-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeline-item.expanded .card-details {
+            max-height: 800px;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(139, 0, 0, 0.1);
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .detail-row:hover {
+            background: #FBF4E8;
+        }
+
+        .year-badge {
+            background: #E8DCCB;
+            color: #5D4037;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            text-align: center;
+            align-self: start;
+            font-weight: bold;
+        }
+
+        .event-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .event-desc {
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .event-source {
+            font-size: 0.8rem;
+            color: #999;
+            font-style: italic;
+        }
+
+        /* 底部总结区 */
+        .summary-footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            background: #F0E5D8;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .summary-logic {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .logic-step {
+            padding: 0.6rem 1.2rem;
+            background: #fff;
+            border-radius: 6px;
+            font-weight: bold;
+            color: #3E2C1F;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            font-size: 0.95rem;
+        }
+
+        .logic-arrow {
+            color: #B8860B;
+            font-weight: bold;
+        }
+
+        .final-conclusion {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #B8860B;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .source-tags-wrapper {
+            display: flex;
+            overflow-x: auto;
+            gap: 1rem;
+            padding: 0.5rem 0;
+            scrollbar-width: none;
+            justify-content: center;
+        }
+
+        .source-tags-wrapper::-webkit-scrollbar { display: none; }
+
+        .s-tag-pill {
+            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #777;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* 经济齿轮：地图与信息面板布局 */
+        .economic-gear-layout {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 1%;
+            height: 100%;
+            padding: 0;
+            background: #FDF8F2;
+        }
+
+        .map-area {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        /* 装饰背景剪影 */
+        .map-decoration-silhouettes {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            background: url("马图标.png") center center / 380px auto no-repeat;
+            opacity: 0.06;
+            z-index: 0;
+        }
+
+        .map-decoration-silhouettes svg {
+            display: none;
+        }
+
+        .info-panel {
+            background: rgba(255, 252, 245, 0.9);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow-y: auto;
+            scrollbar-gutter: stable;
+            border: 1px solid rgba(184, 134, 11, 0.15);
+        }
+
+        .info-panel:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .info-content {
+            opacity: 0;
+            display: none;
+            transition: opacity 0.4s ease;
+            flex-grow: 1;
+        }
+
+        .info-content.active {
+            opacity: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #2E241B;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .info-visual {
+            width: 100%;
+            height: 180px;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(184, 134, 11, 0.05);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(184, 134, 11, 0.1);
+        }
+
+        .info-visual.portrait {
+            height: 450px; /* 进一步增加高度以适应竖图 */
+            background: transparent; /* 移除背景色 */
+        }
+
+        .info-visual.portrait img {
+            object-fit: cover; /* 使用 cover 填充整个区域，消除黑边 */
+        }
+
+        .info-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .info-visual:hover img {
+            transform: scale(1.05);
+        }
+
+        .info-visual .placeholder-text {
+            color: #B8860B;
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .info-points {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 1.2rem;
+        }
+
+        .point-tag {
+            background: #F5E6D3;
+            color: #5D4037;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(184, 134, 11, 0.1);
+            white-space: nowrap;
+            font-family: sans-serif;
+        }
+
+        /* 民族角色要点展示 */
+        .role-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .role-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #5D4037;
+        }
+        .role-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #B8860B;
+            font-weight: bold;
+        }
+
+        .info-source {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: auto;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 10px;
+            cursor: pointer;
+        }
+
+        .back-to-overview {
+            align-self: flex-start;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            background: #F5E6D3;
+            color: #B8860B;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            border: 1px solid rgba(184, 134, 11, 0.2);
+            transition: all 0.3s;
+        }
+        .back-to-overview:hover {
+            background: #B8860B;
+            color: #fff;
+        }
+
+        .fixed-footer-text {
+            font-size: 0.8rem;
+            color: #5D4037;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #D4AF37;
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* 地图元素样式 */
+        .map-svg { width: 100%; height: 100%; position: relative; z-index: 1; }
+        
+        .route-path {
+            fill: none;
+            stroke: #2E7D32;
+            stroke-width: 5;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            cursor: pointer;
+            transition: stroke-width 0.3s, filter 0.3s;
+            stroke-linecap: round;
+        }
+
+        .route-path:hover, .route-path.selected {
+            stroke-width: 7;
+            filter: drop-shadow(0 0 5px rgba(46, 125, 50, 0.5));
+        }
+
+        .animate-route #main-route {
+            animation: draw-path 2s ease-out forwards;
+        }
+
+        @keyframes draw-path {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .horse-totem-trigger {
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .horse-totem-trigger img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .horse-totem-trigger:hover { transform: scale(1.1) rotate(5deg); }
+
+        .map-svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 1;
+        }
+
+        .map-node { cursor: pointer; }
+        .map-node circle, .map-node text {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+            transform-box: fill-box;
+        }
+        .map-node:hover circle, .map-node.selected circle {
+            filter: drop-shadow(0 0 10px rgba(184, 134, 11, 0.6));
+            transform: scale(1.4);
+        }
+        .map-node:hover text, .map-node.selected text {
+            fill: #8B0000;
+            font-weight: bold;
+            transform: scale(1.15);
+        }
+        
+        /* 动态物资微粒动画 */
+        .trade-particle {
+            fill: #D4AF37;
+            filter: drop-shadow(0 0 3px gold);
+            animation: flow-move 6s linear infinite;
+        }
+        @keyframes flow-move {
+            0% { offset-distance: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { offset-distance: 100%; opacity: 0; }
+        }
+
+        /* 齿轮旋转动画 - 优化为基于 0,0 坐标旋转 */
+        .rotating-gear-inner {
+            animation: gear-rotate 20s linear infinite;
+        }
+        @keyframes gear-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* 呼吸灯增强 */
+        .node-pulse-circle {
+            animation: map-marker-pulse 2.5s ease-in-out infinite;
+            transform-box: fill-box;
+            transform-origin: center;
+            pointer-events: none;
+        }
+        
+        @keyframes map-marker-pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
+        /* 资源点样式 */
+        .resource-node { cursor: pointer; }
+        .resource-node text { transition: all 0.3s; transform-box: fill-box; transform-origin: center; }
+        .resource-node:hover text { transform: scale(1.4); filter: drop-shadow(0 0 5px gold); }
+        
+        /* 交互优化：悬停效果 */
+        .interactive-el { cursor: pointer; }
+        .interactive-el circle, .interactive-el text { transition: all 0.3s; transform-box: fill-box; transform-origin: center; }
+        .interactive-el:hover circle, .interactive-el:hover text { filter: drop-shadow(0 0 12px rgba(184, 134, 11, 0.8)); transform: scale(1.1); }
+
+        .ripple-circle {
+            pointer-events: none;
+            fill: none;
+            stroke: #B8860B;
+            stroke-width: 2;
+            opacity: 0;
+        }
+
+        .ripple-active { animation: ripple-effect 0.8s ease-out; }
+        @keyframes ripple-effect {
+            0% { r: 5; opacity: 1; stroke-width: 4; }
+            100% { r: 40; opacity: 0; stroke-width: 1; }
+        }
+
+        /* 时间标记点样式 */
+        .time-labels-group text {
+            cursor: pointer;
+            font-family: 'Noto Serif SC', serif;
+            font-weight: bold;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+            transform-box: fill-box;
+        }
+        .time-labels-group text:hover, .time-labels-group text.selected {
+            fill: #8B0000;
+            filter: drop-shadow(0 0 2px rgba(139, 0, 0, 0.3));
+            transform: scale(1.1);
+        }
+
+        /* 朝代高亮样式 */
+        .dynasty-highlight circle {
+            filter: drop-shadow(0 0 15px #B8860B) !important;
+            stroke: #B8860B !important;
+            stroke-width: 2px !important;
+            transform: scale(1.4) !important;
+            transform-origin: center;
+            transform-box: fill-box;
+        }
+        .dynasty-highlight text {
+            fill: #8B0000 !important;
+            font-weight: bold !important;
+            transform: scale(1.1) !important;
+            transform-origin: center;
+            transform-box: fill-box;
+        }
+
+        /* 核心视觉动画：天平 */
+        .balance-box { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .balance-beam-wrap { transform-origin: 100px 40px; animation: balance-swing 4s ease-in-out infinite; }
+        @keyframes balance-swing { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+        .pan-left, .pan-right { transform-origin: center top; animation: pan-fix 4s ease-in-out infinite; }
+        @keyframes pan-fix { 0%, 100% { transform: rotate(5deg); } 50% { transform: rotate(-5deg); } }
+
+        /* 核心视觉动画：行走马 */
+        .horse-walk-container { width: 100%; height: 100%; position: relative; }
+        .mountain-line { fill: none; stroke: #8B4513; stroke-width: 2; }
+        .walking-horse-icon { font-size: 32px; offset-path: path("M50,120 L100,80 L150,110 L200,70 L250,100"); animation: horse-move 8s linear infinite; }
+        @keyframes horse-move { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+
+        /* 核心视觉动画：星光汇聚 */
+        .star-box { width: 100%; height: 100%; position: relative; background: #222; }
+        .star-item { position: absolute; color: #D4AF37; font-size: 10px; opacity: 0; }
+        .animate-stars .star-item { animation: star-converge 2s forwards; }
+        @keyframes star-converge {
+            0% { transform: translate(var(--sx), var(--sy)) scale(0); opacity: 0; }
+            100% { transform: translate(100px, 75px) scale(1.5); opacity: 1; }
+        }
+
+        /* 核心视觉动画：大分工环形图 */
+        .division-ring { width: 100%; height: 100%; position: relative; }
+        .role-block { position: absolute; width: 70px; padding: 5px; background: white; border: 1px dashed #666; font-size: 10px; text-align: center; border-radius: 4px; }
+        .conn-line { position: absolute; top: 50%; left: 50%; width: 100px; height: 1px; border-top: 1px dashed #999; transform-origin: left center; z-index: 0; }
+
+        /* 核心视觉动画：微型时间轴 */
+        .mini-t-wrap { display: flex; align-items: center; justify-content: space-between; width: 80%; position: relative; }
+        .mini-t-line { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: #ddd; z-index: 1; }
+        .mini-t-node { width: 12px; height: 12px; border-radius: 2px; z-index: 2; transition: transform 0.3s; }
+        .mini-t-node:hover { transform: scale(1.3); }
+
+        /* 适配通用样式 */
+        .content-section {
+            padding: 2rem 5%;
+        }
+
+        /* 维度容器布局 */
+        .dimension-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+
+        .dim-header { margin-bottom: 1.5rem; }
+
+        /* 天平动画样式 */
+        .balance-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(184, 134, 11, 0.03);
+            border-radius: 8px;
+        }
+
+        .balance-svg {
+            width: 200px;
+            height: 120px;
+        }
+
+        .balance-beam {
+            transform-origin: 100px 40px;
+            animation: balance-swing 4s ease-in-out infinite;
+        }
+
+        .balance-pan-left {
+            transform-origin: 40px 40px;
+            animation: pan-swing-left 4s ease-in-out infinite;
+        }
+
+        .balance-pan-right {
+            transform-origin: 160px 40px;
+            animation: pan-swing-right 4s ease-in-out infinite;
+        }
+
+        @keyframes balance-swing {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        @keyframes pan-swing-left {
+            0%, 100% { transform: rotate(2deg); }
+            50% { transform: rotate(-2deg); }
+        }
+
+        @keyframes pan-swing-right {
+            0%, 100% { transform: rotate(2deg); }
+            50% { transform: rotate(-2deg); }
+        }
+
+        .balance-label {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #8B0000;
+            font-weight: bold;
+        }
+
+        /* 精神图腾动画样式 */
+        .spirit-animation-box {
+            width: 100%;
+            height: 450px;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(184, 134, 11, 0.1) 0%, transparent 70%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spirit-center-text {
+            position: absolute;
+            font-size: 1.8rem;
+            color: #8B0000;
+            opacity: 0;
+            z-index: 5;
+            transition: opacity 1s ease;
+        }
+
+        .spirit-symbol {
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0;
+            transition: all 2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        /* 初始分布位置 */
+        .symbol-1 { top: 10%; left: 10%; } /* 藏：山神/风马旗 */
+        .symbol-2 { top: 10%; right: 10%; } /* 汉：马王庙 */
+        .symbol-3 { bottom: 10%; left: 10%; } /* 白：罗哥牌位 */
+        .symbol-4 { bottom: 10%; right: 10%; } /* 纳西：自然神 */
+
+        .spirit-horse-totem {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 2s ease;
+            filter: drop-shadow(0 0 20px #B8860B);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spirit-horse-totem img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .spirit-keyword {
+            position: absolute;
+            font-size: 1rem;
+            padding: 5px 15px;
+            background: rgba(139, 0, 0, 0.1);
+            border: 1px solid rgba(184, 134, 11, 0.3);
+            border-radius: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease;
+        }
+
+        /* 动画触发类 */
+        .animate-spirit .spirit-center-text { opacity: 1; animation: fade-out 2s forwards 2s; }
+        .animate-spirit .spirit-symbol { opacity: 1; transform: translate(var(--tx), var(--ty)) scale(1.2); animation: converge 2s forwards 3s; }
+        .animate-spirit .spirit-horse-totem { opacity: 1; transform: scale(1.2); animation: glow 3s infinite alternate 5s; }
+        .animate-spirit .spirit-keyword { opacity: 1; transform: translateY(0); }
+
+        @keyframes fade-out { to { opacity: 0; } }
+        @keyframes converge {
+            to {
+                top: 50%; left: 50%;
+                margin-top: -20px; margin-left: -20px;
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px #B8860B); }
+            to { filter: drop-shadow(0 0 30px #B8860B); transform: scale(1.3); }
+        }
+
+        /* 符号沉淀河流动画样式 */
+        .river-container {
+            width: 100%;
+            height: 450px;
+            position: relative;
+            background: linear-gradient(to bottom, rgba(74, 93, 35, 0.05), rgba(44, 62, 80, 0.05));
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .river-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .river-path {
+            fill: none;
+            stroke: rgba(44, 62, 80, 0.1);
+            stroke-width: 60;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .river-flow {
+            fill: none;
+            stroke: rgba(52, 152, 219, 0.2);
+            stroke-width: 40;
+            stroke-dasharray: 20, 10;
+            animation: river-move 10s linear infinite;
+        }
+
+        @keyframes river-move {
+            from { stroke-dashoffset: 300; }
+            to { stroke-dashoffset: 0; }
+        }
+
+        .river-symbol {
+            position: absolute;
+            font-size: 1.2rem;
+            color: #3E2C1F;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 4px 12px;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            opacity: 0;
+            offset-path: path("M-50,200 Q150,100 300,250 T600,150 T950,200");
+            animation: flow-along-river 15s linear infinite;
+        }
+
+        @keyframes flow-along-river {
+            0% { offset-distance: 0%; opacity: 0; transform: scale(0.8); }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { offset-distance: 100%; opacity: 0; transform: scale(1.1); }
+        }
+
+        .river-architecture {
+            position: absolute;
+            font-size: 2.5rem;
+            color: #5D4037;
+            opacity: 0.3;
+            transition: all 0.5s ease;
+        }
+
+        .arch-1 { top: 20%; left: 20%; } /* 藏族碉楼 */
+        .arch-2 { bottom: 20%; left: 45%; } /* 白族照壁 */
+        .arch-3 { top: 15%; left: 75%; } /* 彝族土掌房 */
+
+        .river-festival {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            display: flex;
+            gap: 15px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 1s ease 2s;
+        }
+
+        .animate-river .river-festival { opacity: 1; transform: translateX(0); }
+
+        .festival-tag {
+            background: #8B0000;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(139, 0, 0, 0.3);
+        }
+
+        .dimension-detail {
+            font-size: 1.2rem;
+            color: #4A3525;
+            background: white;
+            padding: 3rem;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #E0C097;
+        }
+
+        .dimension-title {
+            font-size: 2.2rem;
+            color: #8B0000;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .dimension-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #E0C097;
+            margin-left: 20px;
+        }
+
+        /* 装饰元素 */
+        .decoration {
+            position: absolute;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        .decoration-top-left {
+            top: 20px;
+            left: 20px;
+            width: 150px;
+        }
+        /* 简单的悬停提示 */
+        #map-tooltip {
+            position: fixed;
+            padding: 8px 12px;
+            background: rgba(62, 44, 31, 0.9);
+            color: #fff;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            pointer-events: none;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border: 1px solid #B8860B;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 左侧内容展示区 -->
+    <main class="content-area" id="main-content">
+        <!-- 装饰背景 -->
+        <svg class="decoration decoration-top-left" viewBox="0 0 100 100">
+            <path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="#3E2C1F" stroke-width="0.5"/>
+            <path d="M10,10 L90,10 L90,90 L10,90 Z" fill="none" stroke="#3E2C1F" stroke-width="0.2"/>
+        </svg>
+
+        <!-- 默认总览内容 -->
+        <section id="overview" class="content-section active">
+            <h1 class="title">茶马古道</h1>
+            <h2 class="subtitle">一条马的脊背上织就的共同体</h2>
+            <p class="description">
+                茶马古道，这不仅是一条连接川滇藏、跨越横断山脉的商贸之路，更是中华民族共同体形成过程中的重要脉络。它以茶叶与马匹的交换为纽带，串联起了高原与平原，农耕与游牧。在这漫长的古道上，成千上万的马帮铃声回荡在峡谷之间，每一次脚步的迈进都是不同民族、不同文化深度交融的见证。它不仅是物质的流通，更是精神的共振与命运的绑定。
+            </p>
+            
+            <div class="map-placeholder">
+                <svg class="mountain-path" viewBox="0 0 800 300">
+                    <!-- 简化的山脉背景 -->
+                    <path d="M0,250 Q100,100 200,220 T400,150 T600,230 T800,180 L800,300 L0,300 Z" fill="#EFE5D8" />
+                    <path d="M0,280 Q150,150 300,250 T500,180 T800,260 L800,300 L0,300 Z" fill="#E6DACE" />
+                    
+                    <!-- 蜿蜒的古道路径 -->
+                    <path d="M50,260 C150,240 200,180 350,200 S500,120 750,150" fill="none" stroke="#8B0000" stroke-width="2" stroke-dasharray="8,4" />
+                    
+                    <!-- 标注点 -->
+                    <circle cx="50" cy="260" r="4" fill="#3E2C1F" />
+                    <text x="40" y="285" font-size="12" fill="#3E2C1F">雅安/普洱</text>
+                    
+                    <circle cx="350" cy="200" r="4" fill="#3E2C1F" />
+                    <text x="340" y="225" font-size="12" fill="#3E2C1F">康定/大理</text>
+                    
+                    <circle cx="750" cy="150" r="4" fill="#3E2C1F" />
+                    <text x="730" y="175" font-size="12" fill="#3E2C1F">拉萨</text>
+
+                    <text x="400" y="50" font-size="16" text-anchor="middle" fill="#A1887F" style="letter-spacing: 5px;">[ 茶马古道路线示意图 ]</text>
+                </svg>
+            </div>
+
+            <p class="punchline">
+                马，不止是负重的牲口，更是穿针引线的政治推手、连通生命的经济血脉、整合社会的移动平台、慰藉心灵的精神图腾、共享传承的文化符号。
+            </p>
+        </section>
+
+        <!-- 维度内容占位区 -->
+        <section id="dim-1" class="content-section timeline-section">
+            <header class="timeline-header">
+                <div class="title-group">
+                    <h1 class="title">马政纽带</h1>
+                    <h2 class="subtitle">从汉代到清代 · 以马为媒的政治整合之路</h2>
+                </div>
+                
+                <div class="legend-badges">
+                    <div class="badge"><span class="dot red"></span>中原王朝</div>
+                    <div class="badge"><span class="dot blue"></span>边疆政权</div>
+                    <div class="badge"><span class="dot green"></span>互动通道</div>
+                    <div class="badge"><span class="dot black"></span>制度节点</div>
+                </div>
+            </header>
+
+            <div class="timeline-container">
+                <div class="timeline-v-line"></div>
+                
+                <!-- 汉代 -->
+                <div class="timeline-item" data-delay="0.1">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-card" onclick="toggleCard(this)">
+                        <div class="card-side-bar" style="background: #A52A2A;"></div>
+                        <div class="card-main">
+                            <div class="card-header">
+                                <div class="header-labels">
+                                    <span class="card-label red">汉</span>
+                                    <span class="card-label blue">西南夷</span>
+                                    <span class="card-significance">首次以国家力量统合西南马区</span>
+                                </div>
+                                <div class="expand-arrow">▼</div>
+                            </div>
+                            <div class="card-overview">
+                                <div class="overview-tags">
+                                    <span class="tag-pill">🏛️ 置四郡</span>
+                                    <span class="tag-pill">开夷道</span>
+                                    <span class="tag-pill">🐴 笮马入汉</span>
+                                </div>
+                            </div>
+                            <div class="card-details">
+                                <div class="detail-row">
+                                    <div class="year-badge">前109/105年</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">武帝用兵西南，置犍为、越巂等四郡</div>
+                                        <div class="event-source">《汉书·西南夷传》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">汉代</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">设邮驿 开西南夷道，打通交通命脉</div>
+                                        <div class="event-source">《史记·西南夷列传》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">汉代</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">笮马入汉 西南名马大规模进入中原视野</div>
+                                        <div class="event-source">《华阳国志》</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 魏晋南北朝 -->
+                <div class="timeline-item" data-delay="0.2">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-card" onclick="toggleCard(this)">
+                        <div class="card-side-bar" style="background: #CD5C5C;"></div>
+                        <div class="card-main">
+                            <div class="card-header">
+                                <div class="header-labels">
+                                    <span class="card-label red">魏晋/北朝</span>
+                                    <span class="card-label blue">吐谷浑·爨氏</span>
+                                    <span class="card-significance">以贡马确立臣属，马道维系</span>
+                                </div>
+                                <div class="expand-arrow">▼</div>
+                            </div>
+                            <div class="card-overview">
+                                <div class="overview-tags">
+                                    <span class="tag-pill">🐎 青海骢</span>
+                                    <span class="tag-pill">🛣️ 吐谷浑道</span>
+                                    <span class="tag-pill">🤝 贡赐纳马</span>
+                                </div>
+                            </div>
+                            <div class="card-details">
+                                <div class="detail-row">
+                                    <div class="year-badge">魏晋</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">吐谷浑培育“青海骢”，以朝贡纳入中原</div>
+                                        <div class="event-source">《晋书·吐谷浑传》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">南北朝</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">经营“吐谷浑道”，连接西域，维系丝路</div>
+                                        <div class="event-source">《魏书》记载</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">魏晋</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">爨氏统治南中四百年，维持马市网络</div>
+                                        <div class="event-source">《蛮书》溯源</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 唐代 -->
+                <div class="timeline-item" data-delay="0.3">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-card" onclick="toggleCard(this)">
+                        <div class="card-side-bar" style="background: #800000;"></div>
+                        <div class="card-main">
+                            <div class="card-header">
+                                <div class="header-labels">
+                                    <span class="card-label red">唐</span>
+                                    <span class="card-label blue">吐蕃</span>
+                                    <span class="card-label blue">南诏</span>
+                                    <span class="card-label blue">回纥</span>
+                                    <span class="card-significance">茶马互市制度化，马与政治深度绑定</span>
+                                </div>
+                                <div class="expand-arrow">▼</div>
+                            </div>
+                            <div class="card-overview">
+                                <div class="overview-tags">
+                                    <span class="tag-pill">👸 和亲</span>
+                                    <span class="tag-pill">⚖️ 赤岭互市</span>
+                                    <span class="tag-pill">🐎 䟃骏入贡</span>
+                                </div>
+                            </div>
+                            <div class="card-details">
+                                <div class="detail-row">
+                                    <div class="year-badge">641年</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">文成公主携茶入藏，开启跨文化物资交流</div>
+                                        <div class="event-source">《新唐书·吐蕃传》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">731年</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">赤岭互市，唐蕃划界易马，互市初成规模</div>
+                                        <div class="event-source">《资治通鉴》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">唐代</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">南诏贡越赕马，新唐书称其为“䟃睒骏”</div>
+                                        <div class="event-source">《新唐书·南蛮传》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">758年</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">回纥驱名马市茶，茶马互市制度正式定型</div>
+                                        <div class="event-source">《万历合约》追认“西域易茶始自唐”</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 宋代 -->
+                <div class="timeline-item" data-delay="0.4">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-card" onclick="toggleCard(this)">
+                        <div class="card-side-bar" style="background: #4682B4;"></div>
+                        <div class="card-main">
+                            <div class="card-header">
+                                <div class="header-labels">
+                                    <span class="card-label red">宋</span>
+                                    <span class="card-label blue">大理</span>
+                                    <span class="card-label blue">自杞</span>
+                                    <span class="card-label blue">吐蕃</span>
+                                    <span class="card-significance">西南马政等同南宋国运</span>
+                                </div>
+                                <div class="expand-arrow">▼</div>
+                            </div>
+                            <div class="card-overview">
+                                <div class="overview-tags">
+                                    <span class="tag-pill">🔒 北马南移</span>
+                                    <span class="tag-pill">🏢 邕州买马司</span>
+                                    <span class="tag-pill">🛒 贩马立国</span>
+                                </div>
+                            </div>
+                            <div class="card-details">
+                                <div class="detail-row">
+                                    <div class="year-badge">两宋</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">辽夏金封锁马源，重心南移。陆游诗：“国家一从失西陲，年年买马西南夷”</div>
+                                        <div class="event-source">陆游《老学庵笔记》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">宋代</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">邕州设买马司，年购大理马1500-3500匹</div>
+                                        <div class="event-source">《宋史·兵志》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">宋代</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">自杞国“贩马立国”，垄断大理马转手贸易</div>
+                                        <div class="event-source">谈修《滴露漫录》：“关国家之大经”</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">1253年</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">蒙古灭宋先断西南马政补给线，合围态势成</div>
+                                        <div class="event-source">《元史》战记</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 元代 -->
+                <div class="timeline-item" data-delay="0.5">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-card" onclick="toggleCard(this)">
+                        <div class="card-side-bar" style="background: #4B0082;"></div>
+                        <div class="card-main">
+                            <div class="card-header">
+                                <div class="header-labels">
+                                    <span class="card-label red">元</span>
+                                    <span class="card-label blue">萨迦派</span>
+                                    <span class="card-label blue">蒙古各部</span>
+                                    <span class="card-significance">以马匹网络整合多民族疆域</span>
+                                </div>
+                                <div class="expand-arrow">▼</div>
+                            </div>
+                            <div class="card-overview">
+                                <div class="overview-tags">
+                                    <span class="tag-pill">⚔️ 灭大理</span>
+                                    <span class="tag-pill">📫 站赤网</span>
+                                    <span class="tag-pill">🏛️ 宣政院</span>
+                                </div>
+                            </div>
+                            <div class="card-details">
+                                <div class="detail-row">
+                                    <div class="year-badge">1253年</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">忽必烈灭大理，将西南马区彻底纳入大一统版图</div>
+                                        <div class="event-source">《元史·世祖本纪》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">元代</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">设“站赤”1500余处，驿马4.5万匹，茶马路升格官道</div>
+                                        <div class="event-source">《马可·波罗游记》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">元代</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">设宣政院，帝师掌院，将藏区马政事务纳入中央管辖</div>
+                                        <div class="event-source">《元史·百官志》</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 明代 -->
+                <div class="timeline-item" data-delay="0.6">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-card" onclick="toggleCard(this)">
+                        <div class="card-side-bar" style="background: #B22222;"></div>
+                        <div class="card-main">
+                            <div class="card-header">
+                                <div class="header-labels">
+                                    <span class="card-label red">明</span>
+                                    <span class="card-label blue">藏区番族</span>
+                                    <span class="card-label blue">蒙古</span>
+                                    <span class="card-label blue">女真</span>
+                                    <span class="card-significance">纳马成为法定义务，金牌为臣属实证</span>
+                                </div>
+                                <div class="expand-arrow">▼</div>
+                            </div>
+                            <div class="card-overview">
+                                <div class="overview-tags">
+                                    <span class="tag-pill">🏅 金牌信符</span>
+                                    <span class="tag-pill">🏛️ 茶马司</span>
+                                    <span class="tag-pill">⚖️ 合符纳马</span>
+                                </div>
+                            </div>
+                            <div class="card-details">
+                                <div class="detail-row">
+                                    <div class="year-badge">明初</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">设茶马司于洮、秦、河、雅、碉门，颁金牌信符41面</div>
+                                        <div class="event-source">《明会典》：“不信者斩”</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">明代</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">杨一清督理马政，言“马政之利胜过数万甲兵”，强化边防</div>
+                                        <div class="event-source">《杨一清集》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">1617年</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">万历合约碑记载：开原、抚顺设女真马市；大同、宣府设蒙古马市</div>
+                                        <div class="event-source">《明实录》</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 清代 -->
+                <div class="timeline-item" data-delay="0.7">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-card" onclick="toggleCard(this)">
+                        <div class="card-side-bar" style="background: #DAA520;"></div>
+                        <div class="card-main">
+                            <div class="card-header">
+                                <div class="header-labels">
+                                    <span class="card-label red">清</span>
+                                    <span class="card-label blue">卫拉特蒙古</span>
+                                    <span class="card-label blue">西藏噶厦</span>
+                                    <span class="card-significance">以茶驭番终结，转向间接治理</span>
+                                </div>
+                                <div class="expand-arrow">▼</div>
+                            </div>
+                            <div class="card-overview">
+                                <div class="overview-tags">
+                                    <span class="tag-pill">🔄 沿明制</span>
+                                    <span class="tag-pill">🌍 疆域一统</span>
+                                    <span class="tag-pill">🔥 火器代马</span>
+                                </div>
+                            </div>
+                            <div class="card-details">
+                                <div class="detail-row">
+                                    <div class="year-badge">清初</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">清初沿明制与卫拉特蒙古贸易，维持边境稳定</div>
+                                        <div class="event-source">《清实录》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">乾隆后</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">疆域一统，官马场自给，官营茶马互市逐渐废止</div>
+                                        <div class="event-source">《清史稿·食货志》</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="year-badge">清末</div>
+                                    <div class="event-content">
+                                        <div class="event-desc">火器取代骑兵，马战略地位下降，转入民间边茶贸易</div>
+                                        <div class="event-source">历史转型见证</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 总结区 -->
+                <div class="summary-footer">
+                    <div class="summary-logic">
+                        <div class="logic-step">汉唐：贡赐臣属</div>
+                        <div class="logic-arrow">→</div>
+                        <div class="logic-step">宋：马政捆绑西南</div>
+                        <div class="logic-arrow">→</div>
+                        <div class="logic-step">元明：制度大一统</div>
+                        <div class="logic-arrow">→</div>
+                        <div class="logic-step">清：转型终结</div>
+                    </div>
+                    <div class="final-conclusion">
+                        马政——中原与边疆的政治整合纽带，茶马古道——多民族政治共同体的历史见证。
+                    </div>
+                    <div class="source-tags-wrapper">
+                        <span class="s-tag-pill">《明会典》</span>
+                        <span class="s-tag-pill">《万历合约》</span>
+                        <span class="s-tag-pill">杨一清奏议</span>
+                        <span class="s-tag-pill">陆游诗</span>
+                        <span class="s-tag-pill">《新唐书》</span>
+                        <span class="s-tag-pill">《岭外代答》</span>
+                        <span class="s-tag-pill">《华阳国志》</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dim-2" class="content-section">
+            <div class="economic-gear-layout">
+                <!-- 左侧地图区 -->
+                <div class="map-area" id="map-container">
+                    <!-- 装饰背景剪影 -->
+                    <div class="map-decoration-silhouettes">
+                        <svg viewBox="0 0 800 600" opacity="0.1">
+                            <text x="50" y="100" font-size="40">🏔️</text>
+                            <text x="700" y="500" font-size="50">⛺</text>
+                            <text x="100" y="550" font-size="30">🐴</text>
+                            <text x="600" y="100" font-size="30">🏔️</text>
+                        </svg>
+                    </div>
+
+                    <!-- 特别金色马图腾（左上角） -->
+                    <div class="horse-totem-trigger" onclick="switchLayer('layer6', this)" title="点击升华精神">
+                        <img src="马图标.png" alt="马图腾">
+                    </div>
+
+                    <svg class="map-svg" viewBox="-50 -50 900 700" id="map-svg-element">
+                        <!-- 背景矩形用于点击空白处 -->
+                        <rect x="-50" y="-50" width="900" height="700" fill="transparent" onclick="handleMapBlankClick(event)" />
+
+                        <!-- 绘制主线路 (普洱-拉萨) -->
+                        <path id="main-route" class="route-path" d="M120,530 L180,480 L250,420 L300,360 L340,300 L380,260 L450,220 L650,150" onclick="switchLayer('layer1', this)" />
+                        
+                        <!-- 动态物资微粒 (主线) -->
+                        <circle r="4" class="trade-particle" style="offset-path: path('M120,530 L180,480 L250,420 L300,360 L340,300 L380,260 L450,220 L650,150'); animation-delay: 0s;" />
+                        <circle r="3" class="trade-particle" style="offset-path: path('M120,530 L180,480 L250,420 L300,360 L340,300 L380,260 L450,220 L650,150'); animation-delay: 2s;" />
+                        <circle r="4" class="trade-particle" style="offset-path: path('M120,530 L180,480 L250,420 L300,360 L340,300 L380,260 L450,220 L650,150'); animation-delay: 4s;" />
+
+                        <!-- 支线 (雅安-芒康) -->
+                        <path id="branch-route" class="route-path" d="M450,450 L400,400 L380,260" stroke-dasharray="5,5" />
+                        
+                        <!-- 动态物资微粒 (支线) -->
+                        <circle r="3" class="trade-particle" style="offset-path: path('M450,450 L400,400 L380,260'); animation-delay: 1s; animation-duration: 4s;" />
+                        <circle r="3" class="trade-particle" style="offset-path: path('M450,450 L400,400 L380,260'); animation-delay: 3s; animation-duration: 4s;" />
+
+                        <!-- 12个地点节点 -->
+                        <g class="map-node" transform="translate(120, 530)" onclick="switchLayer('loc-puer', this)">
+                            <text y="-30" text-anchor="middle" font-size="30">🍃</text>
+                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
+                            <circle r="12" fill="#2E7D32" />
+                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">普洱</text>
+                        </g>
+                        <g class="map-node" transform="translate(180, 480)" onclick="switchLayer('loc-dali', this)">
+                            <text y="-30" text-anchor="middle" font-size="30">🐴</text>
+                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
+                            <circle r="12" fill="#2E7D32" />
+                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">大理</text>
+                        </g>
+                        <g class="map-node" transform="translate(250, 420)" onclick="switchLayer('loc-lijiang', this)">
+                            <text y="-30" text-anchor="middle" font-size="30">🏯</text>
+                            <circle r="12" fill="#B8860B" class="node-pulse-circle" />
+                            <circle r="12" fill="#B8860B" />
+                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">丽江</text>
+                        </g>
+                        <g class="map-node" transform="translate(300, 360)" onclick="switchLayer('loc-zhongdian', this)">
+                            <text y="-30" text-anchor="middle" font-size="30">⛰️</text>
+                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
+                            <circle r="12" fill="#2E7D32" />
+                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">中甸</text>
+                        </g>
+                        <g class="map-node" transform="translate(340, 300)" onclick="switchLayer('loc-deqin', this)">
+                            <text y="-30" text-anchor="middle" font-size="30">🏔️</text>
+                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
+                            <circle r="12" fill="#2E7D32" />
+                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">德钦</text>
+                        </g>
+                        <g class="map-node" transform="translate(380, 260)" onclick="switchLayer('loc-mangkang', this)">
+                            <text y="-30" text-anchor="middle" font-size="30">↔️</text>
+                            <circle r="12" fill="#8B0000" class="node-pulse-circle" />
+                            <circle r="12" fill="#8B0000" />
+                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">芒康</text>
+                        </g>
+                        <g class="map-node" transform="translate(450, 220)" onclick="switchLayer('loc-changdu', this)">
+                            <text y="-30" text-anchor="middle" font-size="30">🏰</text>
+                            <circle r="12" fill="#B8860B" class="node-pulse-circle" />
+                            <circle r="12" fill="#B8860B" />
+                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">昌都</text>
+                        </g>
+                        <g class="map-node" transform="translate(650, 150)" onclick="switchLayer('loc-lasa', this)">
+                            <text y="-30" text-anchor="middle" font-size="30">📍</text>
+                            <circle r="12" fill="#8B0000" class="node-pulse-circle" />
+                            <circle r="12" fill="#8B0000" />
+                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">拉萨</text>
+                        </g>
+                        <g class="map-node" transform="translate(450, 450)" onclick="switchLayer('loc-yaan', this)">
+                            <text y="-30" text-anchor="middle" font-size="30">🍃</text>
+                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
+                            <circle r="12" fill="#2E7D32" />
+                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">雅安</text>
+                        </g>
+                        <g class="map-node" transform="translate(400, 400)" onclick="switchLayer('loc-kangding', this)">
+                            <text y="-30" text-anchor="middle" font-size="30">🤝</text>
+                            <circle r="12" fill="#B8860B" class="node-pulse-circle" />
+                            <circle r="12" fill="#B8860B" />
+                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">康定</text>
+                        </g>
+                        <g class="map-node" transform="translate(420, 340)" onclick="switchLayer('loc-ganzi', this)">
+                            <text y="-30" text-anchor="middle" font-size="30">🐂</text>
+                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
+                            <circle r="12" fill="#2E7D32" />
+                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">甘孜</text>
+                        </g>
+                        <g class="map-node" transform="translate(350, 450)" onclick="switchLayer('loc-bingzhongluo', this)">
+                            <text y="-30" text-anchor="middle" font-size="30">〰️</text>
+                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
+                            <circle r="12" fill="#2E7D32" />
+                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">丙中洛</text>
+                        </g>
+
+                        <!-- 特殊资源点 -->
+                        <g class="map-node resource-node" transform="translate(395, 275)" onclick="switchLayer('res-salt', this)">
+                            <text text-anchor="middle" font-size="40">🧂</text>
+                            <text y="40" text-anchor="middle" font-size="18" fill="#8B4513" font-weight="bold">盐井</text>
+                        </g>
+                        <g class="map-node resource-node" transform="translate(550, 100)" onclick="switchLayer('res-farm-qh', this)">
+                            <text text-anchor="middle" font-size="40">🐎</text>
+                            <text y="40" text-anchor="middle" font-size="18" fill="#8B4513" font-weight="bold">大马场</text>
+                        </g>
+                        <g class="map-node resource-node" transform="translate(190, 500)" onclick="switchLayer('res-farm-dl', this)">
+                            <text text-anchor="middle" font-size="40">🐎</text>
+                        </g>
+                        <g class="map-node resource-node" transform="translate(110, 540)" onclick="switchLayer('res-tea-pe', this)">
+                            <text text-anchor="middle" font-size="40">🌱</text>
+                        </g>
+                        <g class="map-node resource-node" transform="translate(465, 465)" onclick="switchLayer('res-tea-ya', this)">
+                            <text text-anchor="middle" font-size="40">🌱</text>
+                        </g>
+
+                        <!-- 互动民族标签 (使用嵌套结构修复旋转位置) -->
+                        <g transform="translate(700, 500)" class="interactive-el" onclick="switchLayer('ethnic-group', this)">
+                            <g class="rotating-gear-inner">
+                                <circle r="70" fill="none" stroke="#B8860B" stroke-width="2" stroke-dasharray="8,4" />
+                                <circle cx="70" cy="0" r="7" fill="#8B0000" onclick="event.stopPropagation(); switchLayer('eth-zang', this.parentNode.parentNode)" />
+                                <circle cx="49" cy="49" r="7" fill="#2E7D32" onclick="event.stopPropagation(); switchLayer('eth-bai', this.parentNode.parentNode)" />
+                                <circle cx="0" cy="70" r="7" fill="#1A3B5C" onclick="event.stopPropagation(); switchLayer('eth-naxi', this.parentNode.parentNode)" />
+                                <circle cx="-49" cy="49" r="7" fill="#B8860B" onclick="event.stopPropagation(); switchLayer('eth-yi', this.parentNode.parentNode)" />
+                                <circle cx="-70" cy="0" r="7" fill="#333" onclick="event.stopPropagation(); switchLayer('eth-hui', this.parentNode.parentNode)" />
+                            </g>
+                        </g>
+
+                        <!-- 协作网中心文字 (独立出来，不旋转，保持可读性) -->
+                        <g transform="translate(700, 500)" style="pointer-events: none;">
+                            <text text-anchor="middle" font-size="15" font-weight="bold" fill="#5D4037">
+                                <tspan x="0" dy="-5">多元民族</tspan>
+                                <tspan x="0" dy="20">协作网</tspan>
+                            </text>
+                        </g>
+
+                        <!-- 时间标记点 -->
+                        <g class="time-labels-group" transform="translate(50, 50)">
+                            <rect x="-10" y="-20" width="220" height="50" fill="rgba(245, 230, 211, 0.6)" rx="10" />
+                            <text x="10" y="15" font-size="22" onclick="switchTime('tang', this)">唐</text>
+                            <text x="65" y="15" font-size="22" onclick="switchTime('song', this)">宋</text>
+                            <text x="120" y="15" font-size="22" onclick="switchTime('ming', this)">明</text>
+                            <text x="175" y="15" font-size="22" onclick="switchTime('qing', this)">清</text>
+                        </g>
+                        
+                        <!-- 沿线移动的马 -->
+                        <g class="moving-horse-group" onclick="switchLayer('layer2', this)">
+                            <text class="moving-horse" id="horse-anim">🐴</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- 右侧信息面板 -->
+                <div class="info-panel" id="info-panel">
+                    <div class="back-to-overview" onclick="resetEconomicGear()">← 返回总览</div>
+                    
+                    <!-- 默认提示 -->
+                    <div id="default-hint">
+                        <div style="text-align:center; color:#999; margin-bottom: 20px;">
+                            <p style="font-size: 1.1rem; color: #5D4037; font-weight: bold;">探索茶马古道经济齿轮</p>
+                            <p>点击地图上的地点、资源、民族或时间点</p>
+                        </div>
+                        
+                        <!-- 经济流动桑基图 -->
+                        <div style="flex: 1; display: flex; flex-direction: column;">
+                            <p style="font-size: 0.9rem; color: #8B0000; font-weight: bold; margin-bottom: 10px; text-align: center;">物资流动示意</p>
+                            <div id="economic-gear-sankey" style="width: 100%; height: 200px;"></div>
+                        </div>
+
+                        <div style="margin-top: 20px; opacity: 0.6; text-align: center;">
+                            <span style="margin: 0 10px;">📍 地点</span>
+                            <span style="margin: 0 10px;">🧂 资源</span>
+                            <span style="margin: 0 10px;">🤝 民族</span>
+                        </div>
+                    </div>
+
+                    <!-- 地点信息 (12个) -->
+                    <div class="info-content" id="loc-puer">
+                        <div class="info-title">🍃 普洱</div>
+                        <div class="info-visual">
+                            <div class="placeholder-text">建议放置：普洱茶山或古茶园景观图</div>
+                        </div>
+                        <div class="info-points">
+                            <p><strong>茶之源：</strong>普洱茶的主产区，是马帮驮茶的起点。这里的茶叶经过压制成饼，便于在马背上长途跋涉。</p>
+                        </div>
+                    </div>
+                    <div class="info-content" id="loc-dali">
+                        <div class="info-title">🐴 大理</div>
+                        <div class="info-visual">
+                            <div class="placeholder-text">建议放置：大理三月街马市或大理马图片</div>
+                        </div>
+                        <div class="info-points">
+                            <p><strong>马之源：</strong>大理马是宋代重要的军马来源。大理作为南诏、大理国的都城，是滇藏古道的关键转运点。</p>
+                        </div>
+                    </div>
+                    <div class="info-content" id="loc-lijiang">
+                        <div class="info-title">🏯 丽江</div>
+                        <div class="info-visual">
+                            <div class="placeholder-text">建议放置：丽江古城四方街或马帮宿营地图片</div>
+                        </div>
+                        <div class="info-points">
+                            <p><strong>中转枢纽：</strong>丽江古城是茶马古道上最重要的中转站。木氏土司经营的马帮曾规模宏大，连接了康藏与内地。</p>
+                        </div>
+                    </div>
+                    <div class="info-content" id="loc-zhongdian">
+                        <div class="info-title">⛰️ 中甸（香格里拉）</div>
+                        <div class="info-points">
+                            <p><strong>藏区门户：</strong>进入藏区的咽喉，多民族商队在此集结，进行物资补给和人员调整。</p>
+                        </div>
+                    </div>
+                    <div class="info-content" id="loc-deqin">
+                        <div class="info-title">🏔️ 德钦</div>
+                        <div class="info-visual">
+                            <img src="德钦.png" alt="德钦">
+                        </div>
+                        <div class="info-points">
+                            <p><strong>滇藏咽喉：</strong>梅里雪山脚下，马帮进入西藏前的最后一站，地理环境极其险峻。</p>
+                        </div>
+                    </div>
+                    <div class="info-content" id="loc-mangkang">
+                        <div class="info-title">↔️ 芒康</div>
+                        <div class="info-visual">
+                            <img src="芒康.png" alt="芒康">
+                        </div>
+                        <div class="info-points">
+                            <p><strong>交汇之地：</strong>川滇藏三省交汇点，川藏线与滇藏线在此合流，是多民族文化的深度交融区。</p>
+                        </div>
+                    </div>
+                    <div class="info-content" id="loc-changdu">
+                        <div class="info-title">🏰 昌都</div>
+                        <div class="info-visual">
+                            <img src="昌都.png" alt="昌都">
+                        </div>
+                        <div class="info-points">
+                            <p><strong>藏东重镇：</strong>历史上重要的茶马互市中心，也是藏东政治、经济、文化的中心。</p>
+                        </div>
+                    </div>
+                    <div class="info-content" id="loc-lasa">
+                        <div class="info-title">📍 拉萨</div>
+                        <div class="info-visual">
+                            <img src="藏民饮茶.png" alt="藏民饮茶">
+                        </div>
+                        <div class="info-points">
+                            <p><strong>终点与归宿：</strong>茶叶最终抵达圣城拉萨，成为藏民日常生活的“生命之饮”。在这里，茶叶完成了从商品到文化符号的升华。</p>
+                        </div>
+                    </div>
+                    <div class="info-content" id="loc-yaan">
+                        <div class="info-title">🍃 雅安</div>
+                        <div class="info-points">
+                            <p>川茶主产区，雅安藏茶由此出发</p>
+                        </div>
+                    </div>
+                    <div class="info-content" id="loc-kangding">
+                        <div class="info-title">🤝 康定/打箭炉</div>
+                        <div class="info-points">
+                            <p>历史上最大的茶马互市场所，汉藏贸易枢纽</p>
+                        </div>
+                    </div>
+                    <div class="info-content" id="loc-ganzi">
+                        <div class="info-title">🐂 甘孜</div>
+                        <div class="info-visual">
+                            <img src="高原马匹.png" alt="甘孜高原马匹">
+                        </div>
+                        <div class="info-points">
+                            <p>高原牧区马匹输出地</p>
+                        </div>
+                    </div>
+                    <div class="info-content" id="loc-bingzhongluo">
+                        <div class="info-title">〰️ 察隅/丙中洛</div>
+                        <div class="info-visual portrait">
+                            <img src="丙察察.png" alt="丙察察">
+                        </div>
+                        <div class="info-points">
+                            <p>丙察察线——多民族共生的险峻商道</p>
+                        </div>
+                    </div>
+
+                    <!-- 资源点信息 -->
+                    <div class="info-content" id="res-salt">
+                        <div class="info-title">🧂 盐井</div>
+                        <div class="info-visual">
+                            <img src="盐田.png" alt="盐井">
+                        </div>
+                        <div class="info-points">
+                            <p><strong>大地的馈赠：</strong>盐井是茶马古道上极其珍贵的盐源。多民族共享这一资源，盐与茶的交换构成了古道贸易的重要一环。</p>
+                        </div>
+                    </div>
+                    <div class="info-content" id="res-farm">
+                        <div class="info-title">🐎 马场</div>
+                        <div class="info-visual">
+                            <img src="骏马奔跑图.png" alt="大马场">
+                        </div>
+                        <div class="info-points">
+                            <span class="point-tag">良种培育：大理马、河曲马</span>
+                            <span class="point-tag">军事战略：战马的重要来源</span>
+                            <span class="point-tag">民间动力：马帮的生命线</span>
+                        </div>
+                    </div>
+                    <div class="info-content" id="res-tea">
+                        <div class="info-title">🌱 茶山</div>
+                        <div class="info-visual">
+                            <img src="茶.png" alt="茶山">
+                        </div>
+                        <div class="info-points">
+                            <span class="point-tag">生态多样性：高海拔种植</span>
+                            <span class="point-tag">传统工艺：杀青、揉捻、压制</span>
+                            <span class="point-tag">贸易核心：藏地生活的刚需</span>
+                        </div>
+                    </div>
+
+                    <!-- 民族角色信息 -->
+                    <div class="info-content" id="eth-zang">
+                        <div class="info-title">藏族：古道主力</div>
+                        <ul class="role-list">
+                            <li>提供高原骡马、高原向导</li>
+                            <li>运输主力，熟悉高海拔路线</li>
+                            <li>茶叶的最终消费者与分销者</li>
+                        </ul>
+                    </div>
+                    <div class="info-content" id="eth-bai">
+                        <div class="info-title">白族：大理商帮</div>
+                        <ul class="role-list">
+                            <li>喜洲商帮，提供贸易资金</li>
+                            <li>马锅头（领队），精通经营</li>
+                            <li>连接东南亚与西藏的桥梁</li>
+                        </ul>
+                    </div>
+                    <div class="info-content" id="eth-naxi">
+                        <div class="info-title">纳西族：中转纽带</div>
+                        <ul class="role-list">
+                            <li>丽江中转，提供马脚子、后勤</li>
+                            <li>丽江古城的经营者</li>
+                            <li>多元文化的翻译与调解者</li>
+                        </ul>
+                    </div>
+                    <div class="info-content" id="eth-yi">
+                        <div class="info-title">彝族：山路护卫</div>
+                        <ul class="role-list">
+                            <li>险段护卫，提供驮马</li>
+                            <li>横断山脉深处的向导</li>
+                            <li>马帮经过大凉山区的保障</li>
+                        </ul>
+                    </div>
+                    <div class="info-content" id="eth-hui">
+                        <div class="info-title">回族：驿站网络</div>
+                        <ul class="role-list">
+                            <li>沿途驿站与生意网络</li>
+                            <li>提供清真饮食与住宿</li>
+                            <li>善于长途贩运与畜牧管理</li>
+                        </ul>
+                    </div>
+
+                    <!-- 朝代政策信息 -->
+                    <div class="info-content" id="time-policy">
+                        <div id="policy-title" class="info-title">📜 朝代政策</div>
+                        <div class="info-visual" id="policy-visual">
+                            <!-- 动态显示时间轴 -->
+                        </div>
+                        <div id="policy-points" class="info-points">
+                            <!-- 动态填充 -->
+                        </div>
+                    </div>
+
+                    <!-- 原有层次内容保留 (改为通过 ID 触发) -->
+                    <div class="info-content" id="layer1">
+                        <div class="info-title">🌍 生态互补——为什么需要茶马互市？</div>
+                        <div class="info-points">
+                            <span class="point-tag">农耕区缺马 → 军事运输亟需</span>
+                            <span class="point-tag">游牧区缺茶 → 饮食消食必需</span>
+                            <span class="point-tag">生态差异 → 天然互补互市</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 其他层略 (JS逻辑中会处理) -->
+
+                    <!-- 固定底部总括条 -->
+                    <div class="fixed-footer-text">
+                        “茶马贸易构建了农耕与游牧相互依存的共生关系，为中华民族共同体的形成提供了物质基础。”
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dim-3" class="content-section">
+            <div class="dimension-container">
+                <div class="dim-header">
+                    <h1 class="title">社会熔炉</h1>
+                    <h2 class="subtitle">马帮组织内的多民族嵌合</h2>
+                </div>
+                <div class="dim-text">
+                    “一支典型的马帮本身就是移动的民族联合体。马锅头可能是白族，马脚子多为藏族或彝族，后勤补给依赖沿途的纳西族、回族村落。围绕马的照料和路途安危，各民族成员必须建立超越语言隔阂的技术共识与生死信任。马帮经年累月往返，促使赶马人在沿途村落安家，形成大量跨越族别的亲属网络。马背上的长途跋涉，催生了血统与文化的双重融合。”
+                </div>
+                <div class="dim-graph-container" id="social-furnace-graph">
+                    <!-- ECharts 关系图容器 -->
+                </div>
+                <div class="dim-footer">
+                    “移动的马帮，移动的家——在马的周围，族别边界在生存协作中逐渐消融。”
+                </div>
+            </div>
+        </section>
+
+        <section id="dim-4" class="content-section">
+            <div class="dimension-container">
+                <div class="dim-header">
+                    <h1 class="title">精神图腾</h1>
+                    <h2 class="subtitle">神马信仰中的多民族心理共鸣</h2>
+                </div>
+                <div class="dim-text">
+                    “茶马古道上的各族马帮共同信奉传说中的‘马王’或‘罗哥’。藏族马帮祭拜山神祈求骡马平安，汉族、白族马帮则设马王庙。虽然祭祀形式不同，但核心诉求高度一致：护佑马匹强健、路途平安。在极端险恶的自然环境中，马是赶马人唯一活命的依靠，各民族语言中关于马的敬语和禁忌高度趋同，形成了超越教派差异的生命伦理共同体。”
+                </div>
+                <div class="dim-graph-container">
+                    <div class="spirit-animation-box" id="spirit-animation-container">
+                        <div class="spirit-center-text">谁在护佑路上的马帮？</div>
+                        
+                        <!-- 文化符号 -->
+                        <div class="spirit-symbol symbol-1" title="藏族：风马旗/山神">🏔️</div>
+                        <div class="spirit-symbol symbol-2" title="汉族：马王庙">🏮</div>
+                        <div class="spirit-symbol symbol-3" title="白族：罗哥牌位">🏺</div>
+                        <div class="spirit-symbol symbol-4" title="纳西族：自然神">🌿</div>
+                        
+                        <!-- 融合后的抽象马王形象 -->
+                        <div class="spirit-horse-totem">
+                            <img src="马图标.png" alt="马图腾">
+                        </div>
+
+                        <!-- 扩散出的关键词 -->
+                        <div class="spirit-keyword" style="top: 20%; left: 15%; transition-delay: 6.5s;">忌食马肉</div>
+                        <div class="spirit-keyword" style="top: 25%; right: 15%; transition-delay: 6.8s;">忌打头马</div>
+                        <div class="spirit-keyword" style="bottom: 25%; left: 20%; transition-delay: 7.1s;">赞马词</div>
+                        <div class="spirit-keyword" style="bottom: 20%; right: 20%; transition-delay: 7.4s;">护佑生灵</div>
+                    </div>
+                </div>
+                <div class="dim-footer">
+                    “在极端险恶的自然环境中，马是赶马人唯一活命的依靠。”
+                </div>
+            </div>
+        </section>
+
+        <section id="dim-5" class="content-section">
+            <div class="dimension-container">
+                <div class="dim-header">
+                    <h1 class="title">符号沉淀</h1>
+                    <h2 class="subtitle">古道文化遗产中的多民族记忆共享</h2>
+                </div>
+                <div class="dim-text">
+                    “随着马帮的足迹，茶马古道的行话、曲调、习俗在各民族间双向渗透。《赶马调》在汉、白、彝、藏等族中均有变体传唱，核心意象却高度一致。今天的‘大理三月街赛马’‘香格里拉赛马节’不仅是某一民族的节日，更是周边多民族的狂欢。马术竞技与马匹交易作为活态遗产，延续着千年前古道上的多元一体盛况。在马的脊背上，多民族交往交流交融的宏大叙事得以具象落地。”
+                </div>
+                <div class="dim-graph-container">
+                    <div class="river-container" id="river-animation-container">
+                        <svg class="river-svg" viewBox="0 0 900 400">
+                            <!-- 蜿蜒的河流路径 -->
+                            <path id="flow-path" class="river-path" d="M-50,200 Q150,100 300,250 T600,150 T950,200" />
+                            <path class="river-flow" d="M-50,200 Q150,100 300,250 T600,150 T950,200" />
+                        </svg>
+
+                        <!-- 沿途建筑剪影 -->
+                        <div class="river-architecture arch-1" title="藏族碉楼">🏘️</div>
+                        <div class="river-architecture arch-2" title="白族照壁">🏠</div>
+                        <div class="river-architecture arch-3" title="彝族土掌房">🏚️</div>
+
+                        <!-- 流动的文化符号 -->
+                        <div class="river-symbol" style="animation-delay: 0s;">开稍 (打尖)</div>
+                        <div class="river-symbol" style="animation-delay: 3s;">藏文：茶 (Ja)</div>
+                        <div class="river-symbol" style="animation-delay: 6s;">🎶 赶马调</div>
+                        <div class="river-symbol" style="animation-delay: 9s;">🔥 赛马火把</div>
+                        <div class="river-symbol" style="animation-delay: 12s;">🐎 跨族通婚</div>
+
+                        <!-- 现代汇聚点 -->
+                        <div class="river-festival">
+                            <div class="festival-tag">大理三月街</div>
+                            <div class="festival-tag">香格里拉赛马节</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dim-footer">
+                    “正是在马的脊背上，多民族交往交流交融的宏大叙事得以具象落地。”
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 右侧导航区 -->
+    <nav class="nav-area">
+        <div class="nav-btn" onclick="switchContent('dim-1', this)">马政纽带</div>
+        <div class="nav-btn" onclick="switchContent('dim-2', this)">经济齿轮</div>
+        <div class="nav-btn" onclick="switchContent('dim-3', this)">社会熔炉</div>
+        <div class="nav-btn" onclick="switchContent('dim-4', this)">精神图腾</div>
+        <div class="nav-btn" onclick="switchContent('dim-5', this)">符号沉淀</div>
+        
+        <!-- 返回总览的小按钮 -->
+        <div style="position: absolute; bottom: 2rem; color: #B8860B; cursor: pointer; border-bottom: 1px solid #B8860B; font-size: 0.9rem;" onclick="showOverview()">
+            返回总览
+        </div>
+    </nav>
+</div>
+
+<div id="map-tooltip"></div>
+
+<script>
+    let economicGearChart = null;
+    let socialFurnaceChart = null;
+
+    /**
+     * 初始化社会熔炉关系图
+     */
+    function initSocialFurnaceGraph() {
+        const chartDom = document.getElementById('social-furnace-graph');
+        if (!chartDom) return;
+
+        if (socialFurnaceChart) {
+            socialFurnaceChart.dispose();
+        }
+        socialFurnaceChart = echarts.init(chartDom);
+
+        const nodes = [
+            { name: '头马', symbolSize: 100, itemStyle: { color: '#8B0000' }, label: { show: true, formatter: '🐎', fontSize: 40 } },
+            { name: '马锅头', category: 0, value: '白族领袖', symbolSize: 70, itemStyle: { color: '#B8860B' } },
+            { name: '马脚子', category: 1, value: '多藏/彝劳力', symbolSize: 60, itemStyle: { color: '#5D4037' } },
+            { name: '纳西村落', category: 2, value: '物资补给', symbolSize: 55, itemStyle: { color: '#4A5D23' } },
+            { name: '回族商站', category: 2, value: '后勤支持', symbolSize: 55, itemStyle: { color: '#2C3E50' } }
+        ];
+
+        const links = [
+            { source: '头马', target: '马锅头', label: { show: true, formatter: '统领' } },
+            { source: '头马', target: '马脚子', label: { show: true, formatter: '照料' } },
+            { source: '马锅头', target: '马脚子', label: { show: true, formatter: '生死信任' }, lineStyle: { type: 'dashed' } },
+            { source: '马脚子', target: '纳西村落', label: { show: true, formatter: '临时婚姻' }, lineStyle: { type: 'dashed' } },
+            { source: '马锅头', target: '回族商站', label: { show: true, formatter: '商贸契约' }, lineStyle: { type: 'dashed' } },
+            { source: '纳西村落', target: '回族商站', label: { show: true, formatter: '技术共识' }, lineStyle: { type: 'dashed' } }
+        ];
+
+        const option = {
+            tooltip: {
+                formatter: function (params) {
+                    if (params.dataType === 'node') {
+                        return `<b>${params.name}</b><br/>${params.data.value || '核心纽带'}`;
+                    }
+                    return params.data.label.formatter;
+                }
+            },
+            series: [
+                {
+                    type: 'graph',
+                    layout: 'force',
+                    force: {
+                        repulsion: 1000,
+                        edgeLength: 150,
+                        layoutAnimation: true
+                    },
+                    data: nodes,
+                    links: links,
+                    roam: true,
+                    label: {
+                        show: true,
+                        position: 'bottom',
+                        color: '#3E2C1F',
+                        fontSize: 12
+                    },
+                    lineStyle: {
+                        color: '#B8860B',
+                        width: 2,
+                        curveness: 0.1
+                    },
+                    emphasis: {
+                        focus: 'adjacency',
+                        lineStyle: { width: 4 }
+                    }
+                }
+            ]
+        };
+
+        socialFurnaceChart.setOption(option);
+    }
+
+    /**
+     * 初始化经济齿轮桑基图
+     */
+    function initEconomicGearSankey() {
+        const chartDom = document.getElementById('economic-gear-sankey');
+        if (!chartDom) return;
+
+        if (economicGearChart) {
+            economicGearChart.dispose();
+        }
+        economicGearChart = echarts.init(chartDom);
+
+        const option = {
+            tooltip: { trigger: 'item', triggerOn: 'mousemove' },
+            series: [
+                {
+                    type: 'sankey',
+                    layout: 'none',
+                    emphasis: { focus: 'adjacency' },
+                    data: [
+                        { name: '藏族高原牧场', itemStyle: { color: '#5D4037' } },
+                        { name: '汉地茶园', itemStyle: { color: '#4A5D23' } },
+                        { name: '茶马古道', itemStyle: { color: '#B8860B' } },
+                        { name: '藏地', itemStyle: { color: '#8B0000' } },
+                        { name: '内地', itemStyle: { color: '#3E2C1F' } }
+                    ],
+                    links: [
+                        { source: '藏族高原牧场', target: '茶马古道', value: 10, label: { show: true, formatter: '马匹/皮革' } },
+                        { source: '汉地茶园', target: '茶马古道', value: 15, label: { show: true, formatter: '茶叶/瓷器' } },
+                        { source: '茶马古道', target: '藏地', value: 12, label: { show: true, formatter: '茶叶/盐' } },
+                        { source: '茶马古道', target: '内地', value: 8, label: { show: true, formatter: '战马' } }
+                    ],
+                    lineStyle: {
+                        color: 'gradient',
+                        curveness: 0.5
+                    },
+                    label: {
+                        color: '#3E2C1F',
+                        fontFamily: 'serif',
+                        fontSize: 14
+                    }
+                }
+            ]
+        };
+
+        economicGearChart.setOption(option);
+    }
+
+    /**
+     * 马政纽带：切换卡片展开状态
+     */
+    function toggleCard(cardElement) {
+        const item = cardElement.closest('.timeline-item');
+        const isExpanded = item.classList.contains('expanded');
+        
+        // 如果点击已展开的，则收起
+        if (isExpanded) {
+            item.classList.remove('expanded');
+        } else {
+            // 先收起其他所有展开的卡片（可选，根据用户体验决定，这里选择允许同时展开多个，或者只允许一个）
+            // document.querySelectorAll('.timeline-item.expanded').forEach(el => el.classList.remove('expanded'));
+            item.classList.add('expanded');
+        }
+    }
+
+    /**
+     * 马政纽带：初始化卡片入场动画
+     */
+    function initTimelineAnimation() {
+        const items = document.querySelectorAll('.timeline-item');
+        
+        // 方案 A: 使用 IntersectionObserver
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const item = entry.target;
+                    const delay = item.getAttribute('data-delay') || 0;
+                    setTimeout(() => {
+                        item.classList.add('visible');
+                    }, delay * 1000);
+                    observer.unobserve(item);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        items.forEach(item => observer.observe(item));
+    }
+
+    /**
+     * 马政纽带：重置动画（用于切换回此页面时重新播放）
+     */
+    function resetTimelineAnimation() {
+        const items = document.querySelectorAll('.timeline-item');
+        items.forEach(item => {
+            item.classList.remove('visible');
+        });
+        // 重新触发动画
+        setTimeout(initTimelineAnimation, 100);
+    }
+
+    /**
+     * 内容切换逻辑
+     * @param {string} targetId - 目标内容的ID
+     * @param {HTMLElement} btn - 点击的按钮元素
+     */
+    function switchContent(targetId, btn) {
+        // 1. 处理按钮样式
+        const btns = document.querySelectorAll('.nav-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // 2. 处理内容切换
+        const targetSection = document.getElementById(targetId);
+        const activeSection = document.querySelector('.content-section.active');
+
+        if (activeSection) {
+            activeSection.style.opacity = '0';
+            setTimeout(() => {
+                activeSection.classList.remove('active');
+                targetSection.classList.add('active');
+                targetSection.offsetHeight; 
+                targetSection.style.opacity = '1';
+                
+                // 如果切换到马政纽带，重置滚动位置并重新播放动画
+                if (targetId === 'dim-1') {
+                    targetSection.scrollTop = 0;
+                    resetTimelineAnimation();
+                }
+                // 如果切换到经济齿轮，初始化地图入场
+                    if (targetId === 'dim-2') {
+                        setTimeout(() => {
+                            initEconomicGearMap();
+                            initEconomicGearSankey();
+                        }, 100);
+                    }
+                    // 如果切换到社会熔炉，初始化图表
+                if (targetId === 'dim-3') {
+                    setTimeout(initSocialFurnaceGraph, 100);
+                }
+                // 如果切换到精神图腾，触发动画
+                if (targetId === 'dim-4') {
+                    const container = document.getElementById('spirit-animation-container');
+                    container.classList.remove('animate-spirit');
+                    void container.offsetWidth; // 触发重绘
+                    setTimeout(() => container.classList.add('animate-spirit'), 100);
+                }
+                // 如果切换到符号沉淀，触发河流动画
+                if (targetId === 'dim-5') {
+                    const container = document.getElementById('river-animation-container');
+                    container.classList.remove('animate-river');
+                    void container.offsetWidth; // 触发重绘
+                    setTimeout(() => container.classList.add('animate-river'), 100);
+                }
+            }, 300);
+        }
+    }
+
+    /**
+     * 经济齿轮：切换信息层
+     */
+    function switchLayer(layerId, element) {
+        // 1. 处理地图元素高亮（单选逻辑）
+        if (element && element.classList.contains('selected')) {
+            // 如果点击的是已经选中的元素，不做全量清除，保持现状或仅执行后续逻辑
+        } else {
+            // 清除所有节点、路径、图腾、民族圈的高亮
+            const allElements = document.querySelectorAll('.route-path, .map-node, .ethnic-ring, .horse-totem-trigger, .resource-node');
+            allElements.forEach(el => el.classList.remove('selected'));
+            
+            // 清除时间标记点高亮
+            const allTimeLabels = document.querySelectorAll('.time-labels-group text');
+            allTimeLabels.forEach(el => el.classList.remove('selected'));
+            
+            // 为当前点击元素添加高亮
+            if (element) {
+                element.classList.add('selected');
+            }
+        }
+
+        // 2. 切换右侧内容
+        const panel = document.getElementById('info-panel');
+        const contents = panel.querySelectorAll('.info-content');
+        const defaultHint = document.getElementById('default-hint');
+        const targetContent = document.getElementById(layerId);
+        
+        // 如果目标内容已经处于激活状态，则不再触发切换动画
+        if (targetContent && targetContent.classList.contains('active')) {
+            return;
+        }
+
+        if (defaultHint) defaultHint.style.display = 'none';
+
+        let found = false;
+        contents.forEach(content => {
+            if (content.id === layerId) {
+                found = true;
+                // 先显示 display，再触发 opacity
+                content.style.display = 'flex';
+                // 强制重绘
+                content.offsetHeight;
+                content.classList.add('active');
+                
+                // 触发特定层次的动画
+                if (layerId === 'layer6') initStarConvergence();
+                if (layerId === 'layer4') startValueSwap();
+            } else if (content.classList.contains('active')) {
+                // 仅对当前处于 active 的内容进行淡出
+                content.classList.remove('active');
+                setTimeout(() => {
+                    if (!content.classList.contains('active')) {
+                        content.style.display = 'none';
+                    }
+                }, 300); // 缩短等待时间
+            }
+        });
+
+        // 如果没有找到对应ID的内容（比如通用的资源或民族），尝试匹配前缀
+        if (!found) {
+            if (layerId.startsWith('loc-')) {
+                // 已经在HTML中定义了12个具体地点ID
+            } else if (layerId.startsWith('res-')) {
+                // 处理资源点映射
+                let realId = 'res-farm';
+                if (layerId.includes('salt')) realId = 'res-salt';
+                if (layerId.includes('tea')) realId = 'res-tea';
+                switchLayer(realId, element);
+            } else if (layerId.startsWith('eth-')) {
+                // 已经在HTML中定义了民族角色ID
+            }
+        }
+    }
+
+    /**
+     * 经济齿轮：切换时间朝代
+     */
+    function switchTime(dynasty, element) {
+        if (element && element.classList.contains('selected')) return;
+
+        // 1. 高亮当前选中的年份
+        const allTimeLabels = document.querySelectorAll('.time-labels-group text');
+        allTimeLabels.forEach(el => el.classList.remove('selected'));
+        if (element) element.classList.add('selected');
+
+        // 2. 地图联动高亮
+        const allNodes = document.querySelectorAll('.map-node');
+        allNodes.forEach(node => node.classList.remove('dynasty-highlight'));
+
+        const dynastyMap = {
+            'tang': ['loc-puer', 'loc-yaan', 'loc-lasa'],
+            'song': ['loc-dali', 'loc-kangding', 'loc-changdu'],
+            'ming': ['loc-lijiang', 'loc-mangkang', 'loc-deqin'],
+            'qing': ['loc-puer', 'loc-zhongdian', 'loc-yaan', 'loc-lasa']
+        };
+
+        const targetNodes = dynastyMap[dynasty] || [];
+        targetNodes.forEach(id => {
+            // 使用更精确的选择器
+            const node = document.querySelector(`.map-node[onclick*="${id}"]`);
+            if (node) node.classList.add('dynasty-highlight');
+        });
+
+        // 3. 切换右侧面板内容
+        const policyTitle = document.getElementById('policy-title');
+        const policyPoints = document.getElementById('policy-points');
+        const policyVisual = document.getElementById('policy-visual');
+        
+        if (!policyTitle) return;
+
+        const data = {
+            'tang': {
+                title: '📜 唐代：绢马互市',
+                points: ['设“马铺”管理驿站运输', '建立“绢马贸易”制度', '茶叶开始进入吐蕃', '官方垄断战马来源'],
+                visual: '<div class="mini-t-wrap"><div class="mini-t-line"></div><div class="mini-t-node" style="left:10%; background:#8B0000" title="唐初"></div><div class="mini-t-node" style="left:50%; background:#B8860B" title="盛唐"></div><div class="mini-t-node" style="left:90%; background:#2E7D32" title="晚唐"></div></div>'
+            },
+            'song': {
+                title: '📜 宋代：茶马司建立',
+                points: ['正式设立“茶马司”', '实施“榷茶法”垄断茶叶', '设立熙河路马市', '茶马贸易进入巅峰'],
+                visual: '<div class="mini-t-wrap"><div class="mini-t-line"></div><div class="mini-t-node" style="left:20%; background:#1A3B5C" title="北宋"></div><div class="mini-t-node" style="left:70%; background:#8B0000" title="南宋"></div></div>'
+            },
+            'ming': {
+                title: '📜 明代：金牌信符',
+                points: ['颁发“金牌信符”凭证', '严厉打击私茶贸易', '设立三大茶马司', '以茶治边，加强中央集权'],
+                visual: '<div class="mini-t-wrap"><div class="mini-t-line"></div><div class="mini-t-node" style="left:15%; background:#B8860B" title="洪武"></div><div class="mini-t-node" style="left:85%; background:#8B0000" title="万历"></div></div>'
+            },
+            'qing': {
+                title: '📜 清代：摊丁入亩',
+                points: ['取消茶马互市限制', '民间马帮贸易兴起', '改土归流，深度整合', '普洱茶成为皇家贡茶'],
+                visual: '<div class="mini-t-wrap"><div class="mini-t-line"></div><div class="mini-t-node" style="left:30%; background:#2E7D32" title="康乾"></div><div class="mini-t-node" style="left:90%; background:#333" title="晚清"></div></div>'
+            }
+        };
+
+        const d = data[dynasty];
+        if (d) {
+            policyTitle.innerHTML = d.title;
+            policyPoints.innerHTML = d.points.map(p => `<span class="point-tag">${p}</span>`).join('');
+            policyVisual.innerHTML = d.visual;
+            
+            // 显示面板 (传入 null 因为已经处理了高亮)
+            switchLayer('time-policy', null);
+        }
+    }
+
+    /**
+     * 经济齿轮：重置为总览
+     */
+    function resetEconomicGear() {
+        const allElements = document.querySelectorAll('.route-path, .map-node, .ethnic-ring, .horse-totem-trigger, .resource-node, .time-labels-group text');
+        allElements.forEach(el => el.classList.remove('selected'));
+        
+        const contents = document.querySelectorAll('.info-content');
+        contents.forEach(c => {
+            c.classList.remove('active');
+            setTimeout(() => {
+                if (!c.classList.contains('active')) {
+                    c.style.display = 'none';
+                }
+            }, 400);
+        });
+        
+        const defaultHint = document.getElementById('default-hint');
+        if (defaultHint) {
+            setTimeout(() => {
+                if (!Array.from(contents).some(c => c.classList.contains('active'))) {
+                    defaultHint.style.display = 'block';
+                    initEconomicGearSankey();
+                }
+            }, 400);
+        }
+    }
+
+    /**
+     * 经济齿轮：点击空白处
+     */
+    function handleMapBlankClick(event) {
+        // 只有点击到透明背景 rect 时才触发
+        if (event.target.tagName === 'rect' || event.target.id === 'map-svg-element') {
+            const allElements = document.querySelectorAll('.route-path, .map-node, .ethnic-ring, .horse-totem-trigger');
+            allElements.forEach(el => el.classList.remove('selected'));
+            
+            const contents = document.querySelectorAll('.info-content');
+            contents.forEach(c => {
+                c.classList.remove('active');
+                setTimeout(() => {
+                    if (!c.classList.contains('active')) {
+                        c.style.display = 'none';
+                    }
+                }, 400);
+            });
+            
+            const defaultHint = document.getElementById('default-hint');
+            if (defaultHint) {
+                setTimeout(() => {
+                    if (!Array.from(contents).some(c => c.classList.contains('active'))) {
+                        defaultHint.style.display = 'block';
+                    }
+                }, 400);
+            }
+        }
+    }
+
+    /**
+     * 经济齿轮：价值交换动画 (Layer 4)
+     */
+    let valueSwapInterval;
+    function startValueSwap() {
+        const values = ['5只羊', '茶叶数十斤', '银数十两', '百张大钞', '千克黄金'];
+        const display = document.getElementById('value-swap');
+        if (!display) return;
+        
+        let index = 0;
+        if (valueSwapInterval) clearInterval(valueSwapInterval);
+        
+        display.textContent = values[0];
+        display.style.opacity = '1';
+
+        valueSwapInterval = setInterval(() => {
+            index = (index + 1) % values.length;
+            display.style.transition = 'opacity 0.5s';
+            display.style.opacity = '0';
+            setTimeout(() => {
+                display.textContent = values[index];
+                display.style.opacity = '1';
+            }, 500);
+        }, 2500);
+    }
+
+    /**
+     * 经济齿轮：星光汇聚动画 (Layer 6)
+     */
+    function initStarConvergence() {
+        const container = document.getElementById('star-container');
+        if (!container) return;
+        container.innerHTML = ''; // 清空
+        
+        const words = ['龙马精神', '蒙古马精神', '千里马', '茶如生命', '奋发向前', '吃苦耐劳', '一往无前'];
+        
+        // 创建背景星星和词汇
+        for (let i = 0; i < 25; i++) {
+            const star = document.createElement('div');
+            star.className = 'star-item';
+            
+            // 随机起始位置 (从四周飞入)
+            const side = Math.floor(Math.random() * 4);
+            let sx, sy;
+            if (side === 0) { sx = '-50px'; sy = Math.random() * 150 + 'px'; } // left
+            else if (side === 1) { sx = '250px'; sy = Math.random() * 150 + 'px'; } // right
+            else if (side === 2) { sx = Math.random() * 200 + 'px'; sy = '-50px'; } // top
+            else { sx = Math.random() * 200 + 'px'; sy = '200px'; } // bottom
+            
+            star.style.setProperty('--sx', sx);
+            star.style.setProperty('--sy', sy);
+            
+            if (i < words.length) {
+                star.textContent = words[i];
+                star.style.fontSize = '12px';
+                star.style.fontWeight = 'bold';
+            } else {
+                star.textContent = '✦';
+                star.style.fontSize = '8px';
+            }
+            
+            star.style.left = '0';
+            star.style.top = '0';
+            star.style.animationDelay = (Math.random() * 1.5) + 's';
+            container.appendChild(star);
+        }
+        
+        container.classList.remove('animate-stars');
+        void container.offsetWidth;
+        container.classList.add('animate-stars');
+    }
+
+    /**
+     * 经济齿轮：初始化地图入场与交互
+     */
+    function initEconomicGearMap() {
+        const container = document.getElementById('map-container');
+        if (container) {
+            container.classList.remove('animate-route');
+            void container.offsetWidth;
+            container.classList.add('animate-route');
+        }
+
+        // 初始化悬停提示
+        const tooltip = document.getElementById('map-tooltip');
+        const interactiveElements = document.querySelectorAll('.map-node, .route-path, .resource-node, .ethnic-ring');
+        
+        interactiveElements.forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                let text = '';
+                if (el.classList.contains('map-node')) {
+                    text = el.querySelector('text')?.textContent || '地点节点';
+                } else if (el.classList.contains('route-path')) {
+                    text = el.id === 'main-route' ? '茶马古道主线 (滇藏线)' : '茶马古道支线';
+                } else if (el.classList.contains('ethnic-ring')) {
+                    text = '多元民族协作网';
+                }
+                
+                if (text) {
+                    tooltip.textContent = text;
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = (e.clientX + 15) + 'px';
+                    tooltip.style.top = (e.clientY + 15) + 'px';
+                }
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                tooltip.style.display = 'none';
+            });
+        });
+    }
+
+    /**
+     * 显示首页总览
+     */
+    function showOverview() {
+        const overview = document.getElementById('overview');
+        const activeSection = document.querySelector('.content-section.active');
+        
+        if (activeSection === overview) return;
+
+        // 重置按钮状态 (清除所有按钮的高亮状态)
+        const btns = document.querySelectorAll('.nav-btn');
+        btns.forEach(b => b.classList.remove('active'));
+
+        // 淡出当前
+        activeSection.style.opacity = '0';
+        setTimeout(() => {
+            activeSection.classList.remove('active');
+            overview.classList.add('active');
+            overview.offsetHeight;
+            overview.style.opacity = '1';
+        }, 300);
+    }
+
+    // 窗口大小改变时重绘图表
+    window.onresize = () => {
+        if (economicGearChart) economicGearChart.resize();
+        if (socialFurnaceChart) socialFurnaceChart.resize();
+    };
+
+    // 初始化加载效果
+    window.onload = () => {
+        const overview = document.getElementById('overview');
+        overview.style.opacity = '0';
+        setTimeout(() => {
+            overview.style.opacity = '1';
+        }, 100);
+
+        // 初始化时间线动画
+        initTimelineAnimation();
+    };
+</script>
+
+</body>
+</html>
