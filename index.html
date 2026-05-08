@@ -39,7 +39,7 @@
             flex: 7.5;
             background-color: #FDF8F2;
             position: relative;
-            padding: 0;
+            padding: 4rem 6rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -295,10 +295,10 @@
         .timeline-item:hover .timeline-node {
             transform: scale(1.3);
             box-shadow: 0 0 15px rgba(46, 125, 50, 0.6);
-            animation: timeline-node-pulse 1.5s infinite;
+            animation: node-pulse 1.5s infinite;
         }
 
-        @keyframes timeline-node-pulse {
+        @keyframes node-pulse {
             0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7); }
             70% { box-shadow: 0 0 0 10px rgba(46, 125, 50, 0); }
             100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
@@ -531,20 +531,23 @@
         /* 经济齿轮：地图与信息面板布局 */
         .economic-gear-layout {
             display: grid;
-            grid-template-columns: 1.25fr 0.75fr;
-            gap: 1%;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2%;
             height: 100%;
-            padding: 0;
+            padding: 10px 2% 10px 5%;
+            overflow: hidden;
             background: #FDF8F2;
         }
 
         .map-area {
             position: relative;
-            flex: 1;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1;
+            border: 1px solid rgba(184, 134, 11, 0.1);
         }
 
         /* 装饰背景剪影 */
@@ -552,13 +555,8 @@
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            background: url("马图标.png") center center / 380px auto no-repeat;
-            opacity: 0.06;
+            opacity: 0.04;
             z-index: 0;
-        }
-
-        .map-decoration-silhouettes svg {
-            display: none;
         }
 
         .info-panel {
@@ -566,14 +564,13 @@
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
             border-radius: 12px;
-            padding: 30px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
             position: relative;
             overflow-y: auto;
-            scrollbar-gutter: stable;
             border: 1px solid rgba(184, 134, 11, 0.15);
         }
 
@@ -597,18 +594,17 @@
 
         .info-title {
             font-family: 'Noto Serif SC', serif;
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: #2E241B;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .info-visual {
-            width: 100%;
-            height: 180px;
+            height: 160px;
             margin-bottom: 1.2rem;
             display: flex;
             align-items: center;
@@ -617,35 +613,6 @@
             border-radius: 8px;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(184, 134, 11, 0.1);
-        }
-
-        .info-visual.portrait {
-            height: 450px; /* 进一步增加高度以适应竖图 */
-            background: transparent; /* 移除背景色 */
-        }
-
-        .info-visual.portrait img {
-            object-fit: cover; /* 使用 cover 填充整个区域，消除黑边 */
-        }
-
-        .info-visual img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .info-visual:hover img {
-            transform: scale(1.05);
-        }
-
-        .info-visual .placeholder-text {
-            color: #B8860B;
-            font-size: 0.85rem;
-            text-align: center;
-            padding: 20px;
-            font-style: italic;
         }
 
         .info-points {
@@ -752,94 +719,37 @@
 
         .horse-totem-trigger {
             position: absolute;
-            top: 30px;
-            left: 40px;
-            width: 80px;
-            height: 80px;
+            top: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
             cursor: pointer;
             z-index: 10;
             transition: transform 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .horse-totem-trigger img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
         }
 
         .horse-totem-trigger:hover { transform: scale(1.1) rotate(5deg); }
 
-        .map-svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-            z-index: 1;
-        }
-
-        .map-node { cursor: pointer; }
-        .map-node circle, .map-node text {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-origin: center;
-            transform-box: fill-box;
-        }
-        .map-node:hover circle, .map-node.selected circle {
-            filter: drop-shadow(0 0 10px rgba(184, 134, 11, 0.6));
-            transform: scale(1.4);
-        }
-        .map-node:hover text, .map-node.selected text {
-            fill: #8B0000;
-            font-weight: bold;
-            transform: scale(1.15);
-        }
+        .map-node { cursor: pointer; transition: all 0.3s; }
+        .map-node:hover, .map-node.selected { filter: drop-shadow(0 0 10px rgba(184, 134, 11, 1)); transform: scale(1.3); }
+        .map-node circle { transition: all 0.3s; }
+        .map-node text { transition: all 0.3s; fill: #5D4037; font-weight: 500; }
+        .map-node:hover text { fill: #8B0000; font-weight: bold; }
         
-        /* 动态物资微粒动画 */
-        .trade-particle {
-            fill: #D4AF37;
-            filter: drop-shadow(0 0 3px gold);
-            animation: flow-move 6s linear infinite;
-        }
-        @keyframes flow-move {
-            0% { offset-distance: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { offset-distance: 100%; opacity: 0; }
-        }
-
-        /* 齿轮旋转动画 - 优化为基于 0,0 坐标旋转 */
-        .rotating-gear-inner {
-            animation: gear-rotate 20s linear infinite;
-        }
-        @keyframes gear-rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* 呼吸灯增强 */
-        .node-pulse-circle {
-            animation: map-marker-pulse 2.5s ease-in-out infinite;
-            transform-box: fill-box;
-            transform-origin: center;
-            pointer-events: none;
-        }
-        
-        @keyframes map-marker-pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 0; }
-        }
-
         /* 资源点样式 */
-        .resource-node { cursor: pointer; }
-        .resource-node text { transition: all 0.3s; transform-box: fill-box; transform-origin: center; }
-        .resource-node:hover text { transform: scale(1.4); filter: drop-shadow(0 0 5px gold); }
+        .resource-node { cursor: pointer; transition: all 0.3s; }
+        .resource-node:hover { transform: scale(1.4); filter: drop-shadow(0 0 5px gold); }
         
         /* 交互优化：悬停效果 */
-        .interactive-el { cursor: pointer; }
-        .interactive-el circle, .interactive-el text { transition: all 0.3s; transform-box: fill-box; transform-origin: center; }
-        .interactive-el:hover circle, .interactive-el:hover text { filter: drop-shadow(0 0 12px rgba(184, 134, 11, 0.8)); transform: scale(1.1); }
+        .interactive-el { cursor: pointer; transition: all 0.3s; }
+        .interactive-el:hover { filter: drop-shadow(0 0 12px rgba(184, 134, 11, 0.8)); transform: scale(1.15); }
+
+        .node-glow { animation: node-pulse 2s infinite; }
+        @keyframes node-pulse {
+            0% { r: 8; opacity: 0.8; }
+            50% { r: 11; opacity: 0.4; }
+            100% { r: 8; opacity: 0.8; }
+        }
 
         .ripple-circle {
             pointer-events: none;
@@ -860,31 +770,22 @@
             cursor: pointer;
             font-family: 'Noto Serif SC', serif;
             font-weight: bold;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-origin: center;
-            transform-box: fill-box;
+            transition: all 0.3s;
         }
         .time-labels-group text:hover, .time-labels-group text.selected {
             fill: #8B0000;
+            font-size: 16px;
             filter: drop-shadow(0 0 2px rgba(139, 0, 0, 0.3));
-            transform: scale(1.1);
         }
 
         /* 朝代高亮样式 */
-        .dynasty-highlight circle {
+        .dynasty-highlight {
             filter: drop-shadow(0 0 15px #B8860B) !important;
+            transform: scale(1.4) !important;
+        }
+        .dynasty-highlight circle {
             stroke: #B8860B !important;
             stroke-width: 2px !important;
-            transform: scale(1.4) !important;
-            transform-origin: center;
-            transform-box: fill-box;
-        }
-        .dynasty-highlight text {
-            fill: #8B0000 !important;
-            font-weight: bold !important;
-            transform: scale(1.1) !important;
-            transform-origin: center;
-            transform-box: fill-box;
         }
 
         /* 核心视觉动画：天平 */
@@ -923,6 +824,302 @@
         /* 适配通用样式 */
         .content-section {
             padding: 2rem 5%;
+        }
+
+        /* 朝代地图展板样式 */
+        .dynasty-map-section {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: #FDF8F2;
+            overflow-y: auto;
+            padding: 2rem 5%;
+        }
+
+        .dynasty-map-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .dynasty-map-header h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 2.2rem;
+            color: #8B0000;
+            margin-bottom: 0.5rem;
+        }
+
+        .dynasty-map-header h2 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem;
+            color: #5D4037;
+            font-weight: normal;
+        }
+
+        .dynasty-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .dynasty-tab {
+            padding: 8px 20px;
+            font-size: 1rem;
+            font-family: 'Noto Serif SC', serif;
+            background: #FDF8F2;
+            color: #5D4037;
+            border: 2px solid #8B7355;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .dynasty-tab:hover {
+            background: #F5E6D3;
+            border-color: #8B0000;
+        }
+
+        .dynasty-tab.active {
+            background: #8B0000;
+            color: white;
+            border-color: #8B0000;
+        }
+
+        .map-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: calc(900px + 220px);
+            margin: 0 auto;
+            display: flex;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(184, 134, 11, 0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .dynasty-intro-panel {
+            width: 220px;
+            background: rgba(255, 252, 245, 0.85);
+            padding: 16px;
+            border-right: 1px solid rgba(184, 134, 11, 0.2);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .dynasty-intro-text {
+            font-size: 13px;
+            color: #5D4037;
+            line-height: 1.8;
+            text-align: justify;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+        }
+
+        .dynasty-intro-text.fade-out {
+            opacity: 0;
+        }
+
+        .dynasty-intro-text.fade-in {
+            opacity: 1;
+        }
+
+        .dynasty-ethnic {
+            margin-top: 12px;
+        }
+
+        .dynasty-ethnic .ethnic-title {
+            font-size: 12px;
+            color: #5D4037;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .dynasty-ethnic .ethnic-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .dynasty-ethnic .ethnic-pill {
+            display: inline-flex;
+            align-items: center;
+            height: 22px;
+            padding: 0 10px;
+            background: #E8F0F8;
+            color: #1A3B5C;
+            border-radius: 999px;
+            font-size: 11px;
+            line-height: 1;
+            border: 1px solid rgba(26, 59, 92, 0.15);
+            white-space: nowrap;
+        }
+
+        .intro-divider {
+            margin-top: 12px;
+            border-top: 1px solid rgba(184, 134, 11, 0.3);
+        }
+
+        .map-container-inner {
+            flex-grow: 1;
+            position: relative;
+            min-height: 450px;
+            max-height: 600px;
+            aspect-ratio: 4/3;
+            perspective: 1200px;
+            perspective-origin: 35% 25%;
+            transform-style: preserve-3d;
+            isolation: isolate;
+        }
+
+        .map-container-inner::before {
+            content: "";
+            position: absolute;
+            inset: -12px;
+            background: radial-gradient(650px 420px at 20% 20%, rgba(62, 44, 31, 0.22), rgba(62, 44, 31, 0) 60%);
+            opacity: 0.85;
+            filter: blur(2px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .dynasty-map-svg {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .map-hotspot {
+            cursor: pointer;
+            transform-origin: center center;
+        }
+
+        .map-hotspot circle {
+            transition: none;
+        }
+
+        .map-hotspot:hover circle {
+            filter: drop-shadow(0 0 10px rgba(184, 134, 11, 0.6));
+        }
+
+        .map-hotspot.selected circle {
+            filter: drop-shadow(0 0 12px gold);
+            stroke: #D4AF37;
+            stroke-width: 4;
+        }
+
+        .hotspot-card {
+            position: absolute;
+            right: 10px;
+            top: 20px;
+            width: 450px;
+            background: rgba(255, 252, 245, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            padding: 20px;
+            z-index: 50;
+            display: none;
+        }
+
+        .hotspot-card.active {
+            display: block;
+            animation: card-fade-in 0.3s ease;
+        }
+
+        @keyframes card-fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hotspot-card-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 28px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.2s;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .hotspot-card-close:hover {
+            color: #8B0000;
+        }
+
+        .hotspot-card-img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            max-height: 260px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .hotspot-card-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 20px;
+            color: #3E2C1F;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .card-detailed-desc {
+            font-size: 14px;
+            color: #5D4037;
+            line-height: 1.7;
+            margin: 10px 0 12px 0;
+        }
+
+        .hotspot-card-desc {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .card-placeholder {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 150px;
+            background: rgba(184, 134, 11, 0.05);
+            border-radius: 8px;
+            margin-bottom: 14px;
+        }
+
+        .dynasty-summary {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            display: none;
+        }
+
+        .dynasty-summary-text {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 14px;
+            color: #2E7D32;
+            font-style: italic;
+            margin: 12px 0 0 0;
         }
 
         /* 维度容器布局 */
@@ -1026,21 +1223,12 @@
 
         .spirit-horse-totem {
             position: absolute;
-            width: 180px;
-            height: 180px;
+            width: 150px;
+            height: 150px;
             opacity: 0;
             transform: scale(0.5);
             transition: all 2s ease;
             filter: drop-shadow(0 0 20px #B8860B);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .spirit-horse-totem img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
         }
 
         .spirit-keyword {
@@ -1204,19 +1392,229 @@
             left: 20px;
             width: 150px;
         }
-        /* 简单的悬停提示 */
-        #map-tooltip {
-            position: fixed;
-            padding: 8px 12px;
-            background: rgba(62, 44, 31, 0.9);
-            color: #fff;
-            border-radius: 4px;
-            font-size: 0.8rem;
+
+        /* 马政纽带地图增强样式 */
+        .map-wrapper {
+            position: relative;
+            background: 
+                linear-gradient(rgba(255,252,245,0.95), rgba(255,252,245,0.95)),
+                repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(184, 134, 11, 0.08) 30px, rgba(184, 134, 11, 0.08) 31px),
+                repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(184, 134, 11, 0.08) 30px, rgba(184, 134, 11, 0.08) 31px);
+        }
+
+        /* 动态罗盘样式 */
+        .compass-decor {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            z-index: 5;
+            animation: compass-rotate 20s linear infinite;
+            opacity: 0.6;
             pointer-events: none;
-            display: none;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            border: 1px solid #B8860B;
+        }
+
+        @keyframes compass-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* 飘浮装饰元素 */
+        .dynasty-map-svg .floating-decor {
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        @keyframes float-random {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(10px, -8px) rotate(45deg); }
+            50% { transform: translate(0, -15px) rotate(90deg); }
+            75% { transform: translate(-10px, -8px) rotate(135deg); }
+        }
+
+        /* 马帮动画 */
+        .dynasty-map-svg .decor-layer,
+        .dynasty-map-svg .caravan-layer {
+            pointer-events: none;
+        }
+
+        .dynasty-map-svg .map-hotspot {
+            pointer-events: all;
+        }
+
+        .dynasty-map-svg .caravan-carrier {
+            offset-rotate: auto;
+        }
+
+        .dynasty-map-svg .caravan-sprite {
+            transform: translate(-12px, -10px);
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.22));
+            animation: caravan-bob 2.8s ease-in-out infinite;
+        }
+
+        @keyframes caravan-bob {
+            0%, 100% { transform: translate(-12px, -10px) scale(1); }
+            50% { transform: translate(-12px, -10px) scale(1.06); }
+        }
+
+        .dynasty-map-svg .horse-body {
+            fill: #5D4037;
+        }
+
+        .dynasty-map-svg .caravan-sprite.rider-red .rider-dot { fill: #8B0000; }
+        .dynasty-map-svg .caravan-sprite.rider-blue .rider-dot { fill: #1A3B5C; }
+        .dynasty-map-svg .caravan-sprite.rider-white .rider-dot { fill: #FDF8F2; }
+        .dynasty-map-svg .caravan-sprite.rider-brown .rider-dot { fill: #3E2C1F; }
+
+        .dynasty-map-svg .ethnic-pattern path {
+            fill: none;
+            stroke: rgba(26, 59, 92, 0.35);
+            stroke-width: 1.4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0.28;
+        }
+
+        @keyframes caravan-move {
+            0% { offset-distance: 0%; }
+            100% { offset-distance: 100%; }
+        }
+
+        /* 地图过渡动画 */
+        .dynasty-map-svg {
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            transform: translateX(0) scale(1);
+            transform-origin: 50% 50%;
+        }
+
+        .dynasty-map-svg.fade-out {
+            opacity: 0;
+            transform: translateX(50px) scale(0.95);
+        }
+
+        .dynasty-map-svg.fade-in {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+
+        .dynasty-map-svg .decoration-layer {
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .dynasty-map-svg .decoration-layer.is-hidden {
+            opacity: 0 !important;
+        }
+
+        .dynasty-map-svg .sky-drift {
+            animation: sky-drift 14s ease-in-out infinite;
+        }
+
+        @keyframes sky-drift {
+            0%, 100% { transform: translateX(-10px); }
+            50% { transform: translateX(12px); }
+        }
+
+        .dynasty-map-svg .map-layer {
+            pointer-events: none;
+        }
+
+        /* 解说面板动态引子 */
+        .intro-decor-icon {
+            display: block;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 12px;
+            animation: decor-bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes decor-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.9); }
+        }
+
+        .intro-decor-icon.bounce-once {
+            animation: bounce-once 0.4s ease-out;
+        }
+
+        @keyframes bounce-once {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.7); }
+            100% { transform: scale(1); }
+        }
+
+        /* 热点脉动光晕 */
+        .map-hotspot circle {
+            transition: none;
+        }
+
+        .map-hotspot .pulse-ring {
+            fill: none;
+            stroke: #B8860B;
+            stroke-width: 2;
+            opacity: 0;
+            animation: pulse-ring 2s ease-out infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { r: 12; opacity: 0.8; }
+            100% { r: 28; opacity: 0; }
+        }
+
+        .map-hotspot:hover .pulse-ring {
+            stroke: #8B0000;
+            animation-duration: 1s;
+        }
+
+        /* 其他维度占位动画 */
+        .placeholder-spinner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+        }
+
+        .spinner-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: spin-slow 4s linear infinite;
+        }
+
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .flame-icon {
+            animation: flame-flicker 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes flame-flicker {
+            from { transform: scale(0.9) rotate(-5deg); opacity: 0.8; }
+            to { transform: scale(1.1) rotate(5deg); opacity: 1; }
+        }
+
+        .glow-icon {
+            animation: glow-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { filter: drop-shadow(0 0 5px #B8860B); }
+            50% { filter: drop-shadow(0 0 20px #B8860B); }
+        }
+
+        .flow-icon {
+            animation: flow-right 3s ease-in-out infinite;
+        }
+
+        @keyframes flow-right {
+            0% { transform: translateX(-10px); opacity: 0.5; }
+            50% { transform: translateX(10px); opacity: 1; }
+            100% { transform: translateX(-10px); opacity: 0.5; }
         }
     </style>
 </head>
@@ -1268,406 +1666,60 @@
         </section>
 
         <!-- 维度内容占位区 -->
-        <section id="dim-1" class="content-section timeline-section">
-            <header class="timeline-header">
-                <div class="title-group">
-                    <h1 class="title">马政纽带</h1>
-                    <h2 class="subtitle">从汉代到清代 · 以马为媒的政治整合之路</h2>
-                </div>
-                
-                <div class="legend-badges">
-                    <div class="badge"><span class="dot red"></span>中原王朝</div>
-                    <div class="badge"><span class="dot blue"></span>边疆政权</div>
-                    <div class="badge"><span class="dot green"></span>互动通道</div>
-                    <div class="badge"><span class="dot black"></span>制度节点</div>
-                </div>
-            </header>
+        <section id="dim-1" class="content-section dynasty-map-section">
+            <div class="dynasty-map-header">
+                <h1>马政纽带——以马为媒的政治整合之路</h1>
+                <h2>从汉至清·七个朝代的空间叙事</h2>
+            </div>
 
-            <div class="timeline-container">
-                <div class="timeline-v-line"></div>
-                
-                <!-- 汉代 -->
-                <div class="timeline-item" data-delay="0.1">
-                    <div class="timeline-node"></div>
-                    <div class="timeline-card" onclick="toggleCard(this)">
-                        <div class="card-side-bar" style="background: #A52A2A;"></div>
-                        <div class="card-main">
-                            <div class="card-header">
-                                <div class="header-labels">
-                                    <span class="card-label red">汉</span>
-                                    <span class="card-label blue">西南夷</span>
-                                    <span class="card-significance">首次以国家力量统合西南马区</span>
-                                </div>
-                                <div class="expand-arrow">▼</div>
-                            </div>
-                            <div class="card-overview">
-                                <div class="overview-tags">
-                                    <span class="tag-pill">🏛️ 置四郡</span>
-                                    <span class="tag-pill">开夷道</span>
-                                    <span class="tag-pill">🐴 笮马入汉</span>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="detail-row">
-                                    <div class="year-badge">前109/105年</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">武帝用兵西南，置犍为、越巂等四郡</div>
-                                        <div class="event-source">《汉书·西南夷传》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">汉代</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">设邮驿 开西南夷道，打通交通命脉</div>
-                                        <div class="event-source">《史记·西南夷列传》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">汉代</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">笮马入汉 西南名马大规模进入中原视野</div>
-                                        <div class="event-source">《华阳国志》</div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="dynasty-tabs">
+                <button class="dynasty-tab active" data-dynasty="han">汉</button>
+                <button class="dynasty-tab" data-dynasty="weijin">魏晋</button>
+                <button class="dynasty-tab" data-dynasty="tang">唐</button>
+                <button class="dynasty-tab" data-dynasty="song">宋</button>
+                <button class="dynasty-tab" data-dynasty="yuan">元</button>
+                <button class="dynasty-tab" data-dynasty="ming">明</button>
+                <button class="dynasty-tab" data-dynasty="qing">清</button>
+            </div>
+
+            <div class="map-wrapper" id="map-wrapper">
+                <div class="dynasty-intro-panel">
+                    <span class="intro-decor-icon" id="intro-decor-icon">📜</span>
+                    <div class="dynasty-intro-text" id="dynasty-intro-text"></div>
+                    <div class="dynasty-ethnic" id="dynasty-ethnic"></div>
+                    <div class="intro-divider"></div>
+                    <p class="dynasty-summary-text" id="dynasty-summary-text"></p>
+                </div>
+                <div class="map-container-inner">
+                    <svg class="dynasty-map-svg" id="dynasty-map-svg" viewBox="0 0 800 600">
+                    </svg>
+                    
+                    <div class="hotspot-card" id="hotspot-card">
+                        <span class="hotspot-card-close" onclick="closeHotspotCard()">&times;</span>
+                        <img class="hotspot-card-img" id="card-img" src="" alt="" onerror="this.style.display='none'; document.getElementById('card-placeholder').style.display='flex';">
+                        <div id="card-placeholder" class="card-placeholder">
+                            <span style="font-size: 2.5rem; color: #B8860B;">🏛️</span>
+                            <span style="font-size: 0.9rem; color: #666; margin-top: 8px;">图片加载中</span>
                         </div>
+                        <div class="card-detailed-desc" id="card-detail-desc"></div>
+                        <div class="hotspot-card-title" id="card-title"></div>
+                        <div class="hotspot-card-desc" id="card-desc"></div>
                     </div>
+                    
+                    <svg class="compass-decor" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#B8860B" stroke-width="2" opacity="0.3"/>
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#B8860B" stroke-width="1" opacity="0.2"/>
+                        <polygon points="50,10 55,45 50,40 45,45" fill="#8B0000"/>
+                        <polygon points="50,90 45,55 50,60 55,55" fill="#1A3B5C"/>
+                        <circle cx="50" cy="50" r="5" fill="#B8860B"/>
+                        <text x="50" y="8" text-anchor="middle" font-size="8" fill="#5D4037">北</text>
+                        <text x="92" y="53" text-anchor="middle" font-size="8" fill="#5D4037">东</text>
+                        <text x="50" y="97" text-anchor="middle" font-size="8" fill="#5D4037">南</text>
+                        <text x="8" y="53" text-anchor="middle" font-size="8" fill="#5D4037">西</text>
+                    </svg>
                 </div>
-
-                <!-- 魏晋南北朝 -->
-                <div class="timeline-item" data-delay="0.2">
-                    <div class="timeline-node"></div>
-                    <div class="timeline-card" onclick="toggleCard(this)">
-                        <div class="card-side-bar" style="background: #CD5C5C;"></div>
-                        <div class="card-main">
-                            <div class="card-header">
-                                <div class="header-labels">
-                                    <span class="card-label red">魏晋/北朝</span>
-                                    <span class="card-label blue">吐谷浑·爨氏</span>
-                                    <span class="card-significance">以贡马确立臣属，马道维系</span>
-                                </div>
-                                <div class="expand-arrow">▼</div>
-                            </div>
-                            <div class="card-overview">
-                                <div class="overview-tags">
-                                    <span class="tag-pill">🐎 青海骢</span>
-                                    <span class="tag-pill">🛣️ 吐谷浑道</span>
-                                    <span class="tag-pill">🤝 贡赐纳马</span>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="detail-row">
-                                    <div class="year-badge">魏晋</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">吐谷浑培育“青海骢”，以朝贡纳入中原</div>
-                                        <div class="event-source">《晋书·吐谷浑传》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">南北朝</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">经营“吐谷浑道”，连接西域，维系丝路</div>
-                                        <div class="event-source">《魏书》记载</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">魏晋</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">爨氏统治南中四百年，维持马市网络</div>
-                                        <div class="event-source">《蛮书》溯源</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 唐代 -->
-                <div class="timeline-item" data-delay="0.3">
-                    <div class="timeline-node"></div>
-                    <div class="timeline-card" onclick="toggleCard(this)">
-                        <div class="card-side-bar" style="background: #800000;"></div>
-                        <div class="card-main">
-                            <div class="card-header">
-                                <div class="header-labels">
-                                    <span class="card-label red">唐</span>
-                                    <span class="card-label blue">吐蕃</span>
-                                    <span class="card-label blue">南诏</span>
-                                    <span class="card-label blue">回纥</span>
-                                    <span class="card-significance">茶马互市制度化，马与政治深度绑定</span>
-                                </div>
-                                <div class="expand-arrow">▼</div>
-                            </div>
-                            <div class="card-overview">
-                                <div class="overview-tags">
-                                    <span class="tag-pill">👸 和亲</span>
-                                    <span class="tag-pill">⚖️ 赤岭互市</span>
-                                    <span class="tag-pill">🐎 䟃骏入贡</span>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="detail-row">
-                                    <div class="year-badge">641年</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">文成公主携茶入藏，开启跨文化物资交流</div>
-                                        <div class="event-source">《新唐书·吐蕃传》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">731年</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">赤岭互市，唐蕃划界易马，互市初成规模</div>
-                                        <div class="event-source">《资治通鉴》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">唐代</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">南诏贡越赕马，新唐书称其为“䟃睒骏”</div>
-                                        <div class="event-source">《新唐书·南蛮传》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">758年</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">回纥驱名马市茶，茶马互市制度正式定型</div>
-                                        <div class="event-source">《万历合约》追认“西域易茶始自唐”</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 宋代 -->
-                <div class="timeline-item" data-delay="0.4">
-                    <div class="timeline-node"></div>
-                    <div class="timeline-card" onclick="toggleCard(this)">
-                        <div class="card-side-bar" style="background: #4682B4;"></div>
-                        <div class="card-main">
-                            <div class="card-header">
-                                <div class="header-labels">
-                                    <span class="card-label red">宋</span>
-                                    <span class="card-label blue">大理</span>
-                                    <span class="card-label blue">自杞</span>
-                                    <span class="card-label blue">吐蕃</span>
-                                    <span class="card-significance">西南马政等同南宋国运</span>
-                                </div>
-                                <div class="expand-arrow">▼</div>
-                            </div>
-                            <div class="card-overview">
-                                <div class="overview-tags">
-                                    <span class="tag-pill">🔒 北马南移</span>
-                                    <span class="tag-pill">🏢 邕州买马司</span>
-                                    <span class="tag-pill">🛒 贩马立国</span>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="detail-row">
-                                    <div class="year-badge">两宋</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">辽夏金封锁马源，重心南移。陆游诗：“国家一从失西陲，年年买马西南夷”</div>
-                                        <div class="event-source">陆游《老学庵笔记》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">宋代</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">邕州设买马司，年购大理马1500-3500匹</div>
-                                        <div class="event-source">《宋史·兵志》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">宋代</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">自杞国“贩马立国”，垄断大理马转手贸易</div>
-                                        <div class="event-source">谈修《滴露漫录》：“关国家之大经”</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">1253年</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">蒙古灭宋先断西南马政补给线，合围态势成</div>
-                                        <div class="event-source">《元史》战记</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 元代 -->
-                <div class="timeline-item" data-delay="0.5">
-                    <div class="timeline-node"></div>
-                    <div class="timeline-card" onclick="toggleCard(this)">
-                        <div class="card-side-bar" style="background: #4B0082;"></div>
-                        <div class="card-main">
-                            <div class="card-header">
-                                <div class="header-labels">
-                                    <span class="card-label red">元</span>
-                                    <span class="card-label blue">萨迦派</span>
-                                    <span class="card-label blue">蒙古各部</span>
-                                    <span class="card-significance">以马匹网络整合多民族疆域</span>
-                                </div>
-                                <div class="expand-arrow">▼</div>
-                            </div>
-                            <div class="card-overview">
-                                <div class="overview-tags">
-                                    <span class="tag-pill">⚔️ 灭大理</span>
-                                    <span class="tag-pill">📫 站赤网</span>
-                                    <span class="tag-pill">🏛️ 宣政院</span>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="detail-row">
-                                    <div class="year-badge">1253年</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">忽必烈灭大理，将西南马区彻底纳入大一统版图</div>
-                                        <div class="event-source">《元史·世祖本纪》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">元代</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">设“站赤”1500余处，驿马4.5万匹，茶马路升格官道</div>
-                                        <div class="event-source">《马可·波罗游记》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">元代</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">设宣政院，帝师掌院，将藏区马政事务纳入中央管辖</div>
-                                        <div class="event-source">《元史·百官志》</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 明代 -->
-                <div class="timeline-item" data-delay="0.6">
-                    <div class="timeline-node"></div>
-                    <div class="timeline-card" onclick="toggleCard(this)">
-                        <div class="card-side-bar" style="background: #B22222;"></div>
-                        <div class="card-main">
-                            <div class="card-header">
-                                <div class="header-labels">
-                                    <span class="card-label red">明</span>
-                                    <span class="card-label blue">藏区番族</span>
-                                    <span class="card-label blue">蒙古</span>
-                                    <span class="card-label blue">女真</span>
-                                    <span class="card-significance">纳马成为法定义务，金牌为臣属实证</span>
-                                </div>
-                                <div class="expand-arrow">▼</div>
-                            </div>
-                            <div class="card-overview">
-                                <div class="overview-tags">
-                                    <span class="tag-pill">🏅 金牌信符</span>
-                                    <span class="tag-pill">🏛️ 茶马司</span>
-                                    <span class="tag-pill">⚖️ 合符纳马</span>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="detail-row">
-                                    <div class="year-badge">明初</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">设茶马司于洮、秦、河、雅、碉门，颁金牌信符41面</div>
-                                        <div class="event-source">《明会典》：“不信者斩”</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">明代</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">杨一清督理马政，言“马政之利胜过数万甲兵”，强化边防</div>
-                                        <div class="event-source">《杨一清集》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">1617年</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">万历合约碑记载：开原、抚顺设女真马市；大同、宣府设蒙古马市</div>
-                                        <div class="event-source">《明实录》</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 清代 -->
-                <div class="timeline-item" data-delay="0.7">
-                    <div class="timeline-node"></div>
-                    <div class="timeline-card" onclick="toggleCard(this)">
-                        <div class="card-side-bar" style="background: #DAA520;"></div>
-                        <div class="card-main">
-                            <div class="card-header">
-                                <div class="header-labels">
-                                    <span class="card-label red">清</span>
-                                    <span class="card-label blue">卫拉特蒙古</span>
-                                    <span class="card-label blue">西藏噶厦</span>
-                                    <span class="card-significance">以茶驭番终结，转向间接治理</span>
-                                </div>
-                                <div class="expand-arrow">▼</div>
-                            </div>
-                            <div class="card-overview">
-                                <div class="overview-tags">
-                                    <span class="tag-pill">🔄 沿明制</span>
-                                    <span class="tag-pill">🌍 疆域一统</span>
-                                    <span class="tag-pill">🔥 火器代马</span>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="detail-row">
-                                    <div class="year-badge">清初</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">清初沿明制与卫拉特蒙古贸易，维持边境稳定</div>
-                                        <div class="event-source">《清实录》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">乾隆后</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">疆域一统，官马场自给，官营茶马互市逐渐废止</div>
-                                        <div class="event-source">《清史稿·食货志》</div>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="year-badge">清末</div>
-                                    <div class="event-content">
-                                        <div class="event-desc">火器取代骑兵，马战略地位下降，转入民间边茶贸易</div>
-                                        <div class="event-source">历史转型见证</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 总结区 -->
-                <div class="summary-footer">
-                    <div class="summary-logic">
-                        <div class="logic-step">汉唐：贡赐臣属</div>
-                        <div class="logic-arrow">→</div>
-                        <div class="logic-step">宋：马政捆绑西南</div>
-                        <div class="logic-arrow">→</div>
-                        <div class="logic-step">元明：制度大一统</div>
-                        <div class="logic-arrow">→</div>
-                        <div class="logic-step">清：转型终结</div>
-                    </div>
-                    <div class="final-conclusion">
-                        马政——中原与边疆的政治整合纽带，茶马古道——多民族政治共同体的历史见证。
-                    </div>
-                    <div class="source-tags-wrapper">
-                        <span class="s-tag-pill">《明会典》</span>
-                        <span class="s-tag-pill">《万历合约》</span>
-                        <span class="s-tag-pill">杨一清奏议</span>
-                        <span class="s-tag-pill">陆游诗</span>
-                        <span class="s-tag-pill">《新唐书》</span>
-                        <span class="s-tag-pill">《岭外代答》</span>
-                        <span class="s-tag-pill">《华阳国志》</span>
-                    </div>
-                </div>
+            </div>
+            <div class="dynasty-summary">
             </div>
         </section>
 
@@ -1687,148 +1739,100 @@
 
                     <!-- 特别金色马图腾（左上角） -->
                     <div class="horse-totem-trigger" onclick="switchLayer('layer6', this)" title="点击升华精神">
-                        <img src="马图标.png" alt="马图腾">
+                        <svg viewBox="0 0 100 100" class="totem-svg">
+                            <path d="M20,80 Q40,20 80,40 Q60,50 70,80 Q50,70 20,80" fill="#B8860B" />
+                            <circle cx="65" cy="45" r="3" fill="#8B0000" />
+                        </svg>
                     </div>
 
-                    <svg class="map-svg" viewBox="-50 -50 900 700" id="map-svg-element">
+                    <svg class="map-svg" viewBox="0 0 800 600" id="map-svg-element">
                         <!-- 背景矩形用于点击空白处 -->
-                        <rect x="-50" y="-50" width="900" height="700" fill="transparent" onclick="handleMapBlankClick(event)" />
+                        <rect width="800" height="600" fill="transparent" onclick="handleMapBlankClick(event)" />
 
                         <!-- 绘制主线路 (普洱-拉萨) -->
                         <path id="main-route" class="route-path" d="M120,530 L180,480 L250,420 L300,360 L340,300 L380,260 L450,220 L650,150" onclick="switchLayer('layer1', this)" />
-                        
-                        <!-- 动态物资微粒 (主线) -->
-                        <circle r="4" class="trade-particle" style="offset-path: path('M120,530 L180,480 L250,420 L300,360 L340,300 L380,260 L450,220 L650,150'); animation-delay: 0s;" />
-                        <circle r="3" class="trade-particle" style="offset-path: path('M120,530 L180,480 L250,420 L300,360 L340,300 L380,260 L450,220 L650,150'); animation-delay: 2s;" />
-                        <circle r="4" class="trade-particle" style="offset-path: path('M120,530 L180,480 L250,420 L300,360 L340,300 L380,260 L450,220 L650,150'); animation-delay: 4s;" />
-
                         <!-- 支线 (雅安-芒康) -->
-                        <path id="branch-route" class="route-path" d="M450,450 L400,400 L380,260" stroke-dasharray="5,5" />
-                        
-                        <!-- 动态物资微粒 (支线) -->
-                        <circle r="3" class="trade-particle" style="offset-path: path('M450,450 L400,400 L380,260'); animation-delay: 1s; animation-duration: 4s;" />
-                        <circle r="3" class="trade-particle" style="offset-path: path('M450,450 L400,400 L380,260'); animation-delay: 3s; animation-duration: 4s;" />
+                        <path class="route-path" d="M450,450 L400,400 L380,260" stroke-dasharray="5,5" />
 
                         <!-- 12个地点节点 -->
                         <g class="map-node" transform="translate(120, 530)" onclick="switchLayer('loc-puer', this)">
-                            <text y="-30" text-anchor="middle" font-size="30">🍃</text>
-                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
-                            <circle r="12" fill="#2E7D32" />
-                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">普洱</text>
+                            <circle r="6" fill="#2E7D32" /><text y="20" text-anchor="middle" font-size="10">普洱🍃</text>
                         </g>
                         <g class="map-node" transform="translate(180, 480)" onclick="switchLayer('loc-dali', this)">
-                            <text y="-30" text-anchor="middle" font-size="30">🐴</text>
-                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
-                            <circle r="12" fill="#2E7D32" />
-                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">大理</text>
+                            <circle r="6" fill="#2E7D32" /><text y="20" text-anchor="middle" font-size="10">大理🐴</text>
                         </g>
                         <g class="map-node" transform="translate(250, 420)" onclick="switchLayer('loc-lijiang', this)">
-                            <text y="-30" text-anchor="middle" font-size="30">🏯</text>
-                            <circle r="12" fill="#B8860B" class="node-pulse-circle" />
-                            <circle r="12" fill="#B8860B" />
-                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">丽江</text>
+                            <circle r="6" fill="#B8860B" class="node-glow" /><text y="20" text-anchor="middle" font-size="10">丽江🏯</text>
                         </g>
                         <g class="map-node" transform="translate(300, 360)" onclick="switchLayer('loc-zhongdian', this)">
-                            <text y="-30" text-anchor="middle" font-size="30">⛰️</text>
-                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
-                            <circle r="12" fill="#2E7D32" />
-                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">中甸</text>
+                            <circle r="6" fill="#2E7D32" /><text y="20" text-anchor="middle" font-size="10">中甸⛰️</text>
                         </g>
                         <g class="map-node" transform="translate(340, 300)" onclick="switchLayer('loc-deqin', this)">
-                            <text y="-30" text-anchor="middle" font-size="30">🏔️</text>
-                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
-                            <circle r="12" fill="#2E7D32" />
-                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">德钦</text>
+                            <circle r="6" fill="#2E7D32" /><text y="20" text-anchor="middle" font-size="10">德钦🏔️</text>
                         </g>
                         <g class="map-node" transform="translate(380, 260)" onclick="switchLayer('loc-mangkang', this)">
-                            <text y="-30" text-anchor="middle" font-size="30">↔️</text>
-                            <circle r="12" fill="#8B0000" class="node-pulse-circle" />
-                            <circle r="12" fill="#8B0000" />
-                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">芒康</text>
+                            <circle r="6" fill="#8B0000" /><text y="20" text-anchor="middle" font-size="10">芒康↔️</text>
                         </g>
                         <g class="map-node" transform="translate(450, 220)" onclick="switchLayer('loc-changdu', this)">
-                            <text y="-30" text-anchor="middle" font-size="30">🏰</text>
-                            <circle r="12" fill="#B8860B" class="node-pulse-circle" />
-                            <circle r="12" fill="#B8860B" />
-                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">昌都</text>
+                            <circle r="6" fill="#B8860B" /><text y="20" text-anchor="middle" font-size="10">昌都🏰</text>
                         </g>
                         <g class="map-node" transform="translate(650, 150)" onclick="switchLayer('loc-lasa', this)">
-                            <text y="-30" text-anchor="middle" font-size="30">📍</text>
-                            <circle r="12" fill="#8B0000" class="node-pulse-circle" />
-                            <circle r="12" fill="#8B0000" />
-                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">拉萨</text>
+                            <circle r="8" fill="#8B0000" class="node-glow" /><text y="25" text-anchor="middle" font-size="12" font-weight="bold">拉萨📍</text>
                         </g>
                         <g class="map-node" transform="translate(450, 450)" onclick="switchLayer('loc-yaan', this)">
-                            <text y="-30" text-anchor="middle" font-size="30">🍃</text>
-                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
-                            <circle r="12" fill="#2E7D32" />
-                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">雅安</text>
+                            <circle r="6" fill="#2E7D32" /><text y="20" text-anchor="middle" font-size="10">雅安🍃</text>
                         </g>
                         <g class="map-node" transform="translate(400, 400)" onclick="switchLayer('loc-kangding', this)">
-                            <text y="-30" text-anchor="middle" font-size="30">🤝</text>
-                            <circle r="12" fill="#B8860B" class="node-pulse-circle" />
-                            <circle r="12" fill="#B8860B" />
-                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">康定</text>
+                            <circle r="6" fill="#B8860B" /><text y="20" text-anchor="middle" font-size="10">康定🤝</text>
                         </g>
                         <g class="map-node" transform="translate(420, 340)" onclick="switchLayer('loc-ganzi', this)">
-                            <text y="-30" text-anchor="middle" font-size="30">🐂</text>
-                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
-                            <circle r="12" fill="#2E7D32" />
-                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">甘孜</text>
+                            <circle r="6" fill="#2E7D32" /><text y="20" text-anchor="middle" font-size="10">甘孜🐂</text>
                         </g>
                         <g class="map-node" transform="translate(350, 450)" onclick="switchLayer('loc-bingzhongluo', this)">
-                            <text y="-30" text-anchor="middle" font-size="30">〰️</text>
-                            <circle r="12" fill="#2E7D32" class="node-pulse-circle" />
-                            <circle r="12" fill="#2E7D32" />
-                            <text y="50" text-anchor="middle" font-size="22" font-weight="bold">丙中洛</text>
+                            <circle r="6" fill="#2E7D32" /><text y="20" text-anchor="middle" font-size="10">丙中洛〰️</text>
                         </g>
 
                         <!-- 特殊资源点 -->
                         <g class="map-node resource-node" transform="translate(395, 275)" onclick="switchLayer('res-salt', this)">
-                            <text text-anchor="middle" font-size="40">🧂</text>
-                            <text y="40" text-anchor="middle" font-size="18" fill="#8B4513" font-weight="bold">盐井</text>
+                            <text text-anchor="middle" font-size="16">🧂</text>
+                            <text y="15" text-anchor="middle" font-size="9" fill="#8B4513">盐井</text>
                         </g>
                         <g class="map-node resource-node" transform="translate(550, 100)" onclick="switchLayer('res-farm-qh', this)">
-                            <text text-anchor="middle" font-size="40">🐎</text>
-                            <text y="40" text-anchor="middle" font-size="18" fill="#8B4513" font-weight="bold">大马场</text>
+                            <text text-anchor="middle" font-size="16">🐎</text>
+                            <text y="15" text-anchor="middle" font-size="9" fill="#8B4513">大马场</text>
                         </g>
                         <g class="map-node resource-node" transform="translate(190, 500)" onclick="switchLayer('res-farm-dl', this)">
-                            <text text-anchor="middle" font-size="40">🐎</text>
+                            <text text-anchor="middle" font-size="16">🐎</text>
                         </g>
                         <g class="map-node resource-node" transform="translate(110, 540)" onclick="switchLayer('res-tea-pe', this)">
-                            <text text-anchor="middle" font-size="40">🌱</text>
+                            <text text-anchor="middle" font-size="16">🌱</text>
                         </g>
                         <g class="map-node resource-node" transform="translate(465, 465)" onclick="switchLayer('res-tea-ya', this)">
-                            <text text-anchor="middle" font-size="40">🌱</text>
+                            <text text-anchor="middle" font-size="16">🌱</text>
                         </g>
 
-                        <!-- 互动民族标签 (使用嵌套结构修复旋转位置) -->
-                        <g transform="translate(700, 500)" class="interactive-el" onclick="switchLayer('ethnic-group', this)">
-                            <g class="rotating-gear-inner">
-                                <circle r="70" fill="none" stroke="#B8860B" stroke-width="2" stroke-dasharray="8,4" />
-                                <circle cx="70" cy="0" r="7" fill="#8B0000" onclick="event.stopPropagation(); switchLayer('eth-zang', this.parentNode.parentNode)" />
-                                <circle cx="49" cy="49" r="7" fill="#2E7D32" onclick="event.stopPropagation(); switchLayer('eth-bai', this.parentNode.parentNode)" />
-                                <circle cx="0" cy="70" r="7" fill="#1A3B5C" onclick="event.stopPropagation(); switchLayer('eth-naxi', this.parentNode.parentNode)" />
-                                <circle cx="-49" cy="49" r="7" fill="#B8860B" onclick="event.stopPropagation(); switchLayer('eth-yi', this.parentNode.parentNode)" />
-                                <circle cx="-70" cy="0" r="7" fill="#333" onclick="event.stopPropagation(); switchLayer('eth-hui', this.parentNode.parentNode)" />
-                            </g>
-                        </g>
-
-                        <!-- 协作网中心文字 (独立出来，不旋转，保持可读性) -->
-                        <g transform="translate(700, 500)" style="pointer-events: none;">
-                            <text text-anchor="middle" font-size="15" font-weight="bold" fill="#5D4037">
+                        <!-- 互动民族标签 -->
+                        <g class="ethnic-ring interactive-el" transform="translate(650, 450)" onclick="switchLayer('ethnic-group', this)">
+                            <circle r="45" fill="none" stroke="#B8860B" stroke-width="1" stroke-dasharray="4,2" />
+                            <text text-anchor="middle" font-size="11" font-weight="bold" fill="#5D4037">
                                 <tspan x="0" dy="-5">多元民族</tspan>
-                                <tspan x="0" dy="20">协作网</tspan>
+                                <tspan x="0" dy="15">协作网</tspan>
                             </text>
+                            <!-- 环绕的小圆点代表不同民族 -->
+                            <circle cx="45" cy="0" r="4" fill="#8B0000" onclick="event.stopPropagation(); switchLayer('eth-zang', this.parentNode)" />
+                            <circle cx="32" cy="32" r="4" fill="#2E7D32" onclick="event.stopPropagation(); switchLayer('eth-bai', this.parentNode)" />
+                            <circle cx="0" cy="45" r="4" fill="#1A3B5C" onclick="event.stopPropagation(); switchLayer('eth-naxi', this.parentNode)" />
+                            <circle cx="-32" cy="32" r="4" fill="#B8860B" onclick="event.stopPropagation(); switchLayer('eth-yi', this.parentNode)" />
+                            <circle cx="-45" cy="0" r="4" fill="#333" onclick="event.stopPropagation(); switchLayer('eth-hui', this.parentNode)" />
                         </g>
 
                         <!-- 时间标记点 -->
                         <g class="time-labels-group" transform="translate(50, 50)">
-                            <rect x="-10" y="-20" width="220" height="50" fill="rgba(245, 230, 211, 0.6)" rx="10" />
-                            <text x="10" y="15" font-size="22" onclick="switchTime('tang', this)">唐</text>
-                            <text x="65" y="15" font-size="22" onclick="switchTime('song', this)">宋</text>
-                            <text x="120" y="15" font-size="22" onclick="switchTime('ming', this)">明</text>
-                            <text x="175" y="15" font-size="22" onclick="switchTime('qing', this)">清</text>
+                            <rect x="-10" y="-20" width="160" height="30" fill="rgba(245, 230, 211, 0.6)" rx="5" />
+                            <text x="0" y="0" font-size="14" onclick="switchTime('tang', this)">唐</text>
+                            <text x="40" y="0" font-size="14" onclick="switchTime('song', this)">宋</text>
+                            <text x="80" y="0" font-size="14" onclick="switchTime('ming', this)">明</text>
+                            <text x="120" y="0" font-size="14" onclick="switchTime('qing', this)">清</text>
                         </g>
                         
                         <!-- 沿线移动的马 -->
@@ -1843,19 +1847,10 @@
                     <div class="back-to-overview" onclick="resetEconomicGear()">← 返回总览</div>
                     
                     <!-- 默认提示 -->
-                    <div id="default-hint">
-                        <div style="text-align:center; color:#999; margin-bottom: 20px;">
-                            <p style="font-size: 1.1rem; color: #5D4037; font-weight: bold;">探索茶马古道经济齿轮</p>
-                            <p>点击地图上的地点、资源、民族或时间点</p>
-                        </div>
-                        
-                        <!-- 经济流动桑基图 -->
-                        <div style="flex: 1; display: flex; flex-direction: column;">
-                            <p style="font-size: 0.9rem; color: #8B0000; font-weight: bold; margin-bottom: 10px; text-align: center;">物资流动示意</p>
-                            <div id="economic-gear-sankey" style="width: 100%; height: 200px;"></div>
-                        </div>
-
-                        <div style="margin-top: 20px; opacity: 0.6; text-align: center;">
+                    <div id="default-hint" style="text-align:center; color:#999; margin-top:50px;">
+                        <p style="font-size: 1.1rem; color: #5D4037; font-weight: bold;">探索茶马古道经济齿轮</p>
+                        <p>点击地图上的地点、资源、民族或时间点</p>
+                        <div style="margin-top: 20px; opacity: 0.6;">
                             <span style="margin: 0 10px;">📍 地点</span>
                             <span style="margin: 0 10px;">🧂 资源</span>
                             <span style="margin: 0 10px;">🤝 民族</span>
@@ -1865,71 +1860,50 @@
                     <!-- 地点信息 (12个) -->
                     <div class="info-content" id="loc-puer">
                         <div class="info-title">🍃 普洱</div>
-                        <div class="info-visual">
-                            <div class="placeholder-text">建议放置：普洱茶山或古茶园景观图</div>
-                        </div>
                         <div class="info-points">
-                            <p><strong>茶之源：</strong>普洱茶的主产区，是马帮驮茶的起点。这里的茶叶经过压制成饼，便于在马背上长途跋涉。</p>
+                            <p>茶之源——普洱茶主产区，马帮驮茶的起点</p>
                         </div>
                     </div>
                     <div class="info-content" id="loc-dali">
                         <div class="info-title">🐴 大理</div>
-                        <div class="info-visual">
-                            <div class="placeholder-text">建议放置：大理三月街马市或大理马图片</div>
-                        </div>
                         <div class="info-points">
-                            <p><strong>马之源：</strong>大理马是宋代重要的军马来源。大理作为南诏、大理国的都城，是滇藏古道的关键转运点。</p>
+                            <p>大理马——宋代重要马源，越赕马产地</p>
                         </div>
                     </div>
                     <div class="info-content" id="loc-lijiang">
                         <div class="info-title">🏯 丽江</div>
-                        <div class="info-visual">
-                            <div class="placeholder-text">建议放置：丽江古城四方街或马帮宿营地图片</div>
-                        </div>
                         <div class="info-points">
-                            <p><strong>中转枢纽：</strong>丽江古城是茶马古道上最重要的中转站。木氏土司经营的马帮曾规模宏大，连接了康藏与内地。</p>
+                            <p>丽江古城——茶马古道中转枢纽，木氏土司经营马帮贸易</p>
                         </div>
                     </div>
                     <div class="info-content" id="loc-zhongdian">
                         <div class="info-title">⛰️ 中甸（香格里拉）</div>
                         <div class="info-points">
-                            <p><strong>藏区门户：</strong>进入藏区的咽喉，多民族商队在此集结，进行物资补给和人员调整。</p>
+                            <p>进入藏区门户，多族商队在此集结</p>
                         </div>
                     </div>
                     <div class="info-content" id="loc-deqin">
                         <div class="info-title">🏔️ 德钦</div>
-                        <div class="info-visual">
-                            <img src="德钦.png" alt="德钦">
-                        </div>
                         <div class="info-points">
-                            <p><strong>滇藏咽喉：</strong>梅里雪山脚下，马帮进入西藏前的最后一站，地理环境极其险峻。</p>
+                            <p>梅里雪山脚下，滇藏咽喉</p>
                         </div>
                     </div>
                     <div class="info-content" id="loc-mangkang">
                         <div class="info-title">↔️ 芒康</div>
-                        <div class="info-visual">
-                            <img src="芒康.png" alt="芒康">
-                        </div>
                         <div class="info-points">
-                            <p><strong>交汇之地：</strong>川滇藏三省交汇点，川藏线与滇藏线在此合流，是多民族文化的深度交融区。</p>
+                            <p>川滇藏交汇点，多民族马帮汇合地</p>
                         </div>
                     </div>
                     <div class="info-content" id="loc-changdu">
                         <div class="info-title">🏰 昌都</div>
-                        <div class="info-visual">
-                            <img src="昌都.png" alt="昌都">
-                        </div>
                         <div class="info-points">
-                            <p><strong>藏东重镇：</strong>历史上重要的茶马互市中心，也是藏东政治、经济、文化的中心。</p>
+                            <p>藏东重镇，茶马互市中心之一</p>
                         </div>
                     </div>
                     <div class="info-content" id="loc-lasa">
                         <div class="info-title">📍 拉萨</div>
-                        <div class="info-visual">
-                            <img src="藏民饮茶.png" alt="藏民饮茶">
-                        </div>
                         <div class="info-points">
-                            <p><strong>终点与归宿：</strong>茶叶最终抵达圣城拉萨，成为藏民日常生活的“生命之饮”。在这里，茶叶完成了从商品到文化符号的升华。</p>
+                            <p>终点——茶叶最终抵达圣城，藏民的生命之饮</p>
                         </div>
                     </div>
                     <div class="info-content" id="loc-yaan">
@@ -1946,18 +1920,12 @@
                     </div>
                     <div class="info-content" id="loc-ganzi">
                         <div class="info-title">🐂 甘孜</div>
-                        <div class="info-visual">
-                            <img src="高原马匹.png" alt="甘孜高原马匹">
-                        </div>
                         <div class="info-points">
                             <p>高原牧区马匹输出地</p>
                         </div>
                     </div>
                     <div class="info-content" id="loc-bingzhongluo">
                         <div class="info-title">〰️ 察隅/丙中洛</div>
-                        <div class="info-visual portrait">
-                            <img src="丙察察.png" alt="丙察察">
-                        </div>
                         <div class="info-points">
                             <p>丙察察线——多民族共生的险峻商道</p>
                         </div>
@@ -1966,33 +1934,24 @@
                     <!-- 资源点信息 -->
                     <div class="info-content" id="res-salt">
                         <div class="info-title">🧂 盐井</div>
-                        <div class="info-visual">
-                            <img src="盐田.png" alt="盐井">
-                        </div>
                         <div class="info-points">
-                            <p><strong>大地的馈赠：</strong>盐井是茶马古道上极其珍贵的盐源。多民族共享这一资源，盐与茶的交换构成了古道贸易的重要一环。</p>
+                            <p>盐井——茶马古道上珍贵的盐源，多民族共享的财富</p>
                         </div>
                     </div>
                     <div class="info-content" id="res-farm">
                         <div class="info-title">🐎 马场</div>
-                        <div class="info-visual">
-                            <img src="骏马奔跑图.png" alt="大马场">
-                        </div>
                         <div class="info-points">
-                            <span class="point-tag">良种培育：大理马、河曲马</span>
-                            <span class="point-tag">军事战略：战马的重要来源</span>
-                            <span class="point-tag">民间动力：马帮的生命线</span>
+                            <span class="point-tag">高原良种马培育基地</span>
+                            <span class="point-tag">大理马、河曲马核心产区</span>
+                            <span class="point-tag">官设牧师监与民间马帮来源</span>
                         </div>
                     </div>
                     <div class="info-content" id="res-tea">
                         <div class="info-title">🌱 茶山</div>
-                        <div class="info-visual">
-                            <img src="茶.png" alt="茶山">
-                        </div>
                         <div class="info-points">
-                            <span class="point-tag">生态多样性：高海拔种植</span>
-                            <span class="point-tag">传统工艺：杀青、揉捻、压制</span>
-                            <span class="point-tag">贸易核心：藏地生活的刚需</span>
+                            <span class="point-tag">高海拔茶叶种植带</span>
+                            <span class="point-tag">手工初加工：杀青、揉捻</span>
+                            <span class="point-tag">藏茶压制与长途运输包装</span>
                         </div>
                     </div>
 
@@ -2108,7 +2067,11 @@
                         
                         <!-- 融合后的抽象马王形象 -->
                         <div class="spirit-horse-totem">
-                            <img src="马图标.png" alt="马图腾">
+                            <svg viewBox="0 0 100 100">
+                                <path d="M20,80 Q40,20 80,40 Q60,50 70,80 Q50,70 20,80" fill="#B8860B" opacity="0.8" />
+                                <circle cx="65" cy="45" r="3" fill="#8B0000" />
+                                <path d="M30,75 L40,65 M50,72 L55,62 M60,78 L65,68" stroke="#FDF8F2" stroke-width="1" />
+                            </svg>
                         </div>
 
                         <!-- 扩散出的关键词 -->
@@ -2181,8 +2144,6 @@
         </div>
     </nav>
 </div>
-
-<div id="map-tooltip"></div>
 
 <script>
     let economicGearChart = null;
@@ -2383,17 +2344,14 @@
                 targetSection.offsetHeight; 
                 targetSection.style.opacity = '1';
                 
-                // 如果切换到马政纽带，重置滚动位置并重新播放动画
+                // 如果切换到马政纽带，初始化朝代地图
                 if (targetId === 'dim-1') {
                     targetSection.scrollTop = 0;
-                    resetTimelineAnimation();
+                    setTimeout(initDynastyMap, 100);
                 }
                 // 如果切换到经济齿轮，初始化地图入场
                     if (targetId === 'dim-2') {
-                        setTimeout(() => {
-                            initEconomicGearMap();
-                            initEconomicGearSankey();
-                        }, 100);
+                        setTimeout(initEconomicGearMap, 100);
                     }
                     // 如果切换到社会熔炉，初始化图表
                 if (targetId === 'dim-3') {
@@ -2422,57 +2380,44 @@
      */
     function switchLayer(layerId, element) {
         // 1. 处理地图元素高亮（单选逻辑）
-        if (element && element.classList.contains('selected')) {
-            // 如果点击的是已经选中的元素，不做全量清除，保持现状或仅执行后续逻辑
-        } else {
-            // 清除所有节点、路径、图腾、民族圈的高亮
-            const allElements = document.querySelectorAll('.route-path, .map-node, .ethnic-ring, .horse-totem-trigger, .resource-node');
-            allElements.forEach(el => el.classList.remove('selected'));
-            
-            // 清除时间标记点高亮
-            const allTimeLabels = document.querySelectorAll('.time-labels-group text');
-            allTimeLabels.forEach(el => el.classList.remove('selected'));
-            
-            // 为当前点击元素添加高亮
-            if (element) {
-                element.classList.add('selected');
-            }
+        // 清除所有节点、路径、图腾、民族圈的高亮
+        const allElements = document.querySelectorAll('.route-path, .map-node, .ethnic-ring, .horse-totem-trigger, .resource-node');
+        allElements.forEach(el => el.classList.remove('selected'));
+        
+        // 清除时间标记点高亮
+        const allTimeLabels = document.querySelectorAll('.time-labels-group text');
+        allTimeLabels.forEach(el => el.classList.remove('selected'));
+        
+        // 为当前点击元素添加高亮
+        if (element) {
+            element.classList.add('selected');
         }
 
         // 2. 切换右侧内容
         const panel = document.getElementById('info-panel');
         const contents = panel.querySelectorAll('.info-content');
         const defaultHint = document.getElementById('default-hint');
-        const targetContent = document.getElementById(layerId);
         
-        // 如果目标内容已经处于激活状态，则不再触发切换动画
-        if (targetContent && targetContent.classList.contains('active')) {
-            return;
-        }
-
         if (defaultHint) defaultHint.style.display = 'none';
 
         let found = false;
         contents.forEach(content => {
             if (content.id === layerId) {
                 found = true;
-                // 先显示 display，再触发 opacity
                 content.style.display = 'flex';
-                // 强制重绘
-                content.offsetHeight;
+                void content.offsetWidth;
                 content.classList.add('active');
                 
                 // 触发特定层次的动画
                 if (layerId === 'layer6') initStarConvergence();
                 if (layerId === 'layer4') startValueSwap();
-            } else if (content.classList.contains('active')) {
-                // 仅对当前处于 active 的内容进行淡出
+            } else {
                 content.classList.remove('active');
                 setTimeout(() => {
                     if (!content.classList.contains('active')) {
                         content.style.display = 'none';
                     }
-                }, 300); // 缩短等待时间
+                }, 400);
             }
         });
 
@@ -2496,17 +2441,17 @@
      * 经济齿轮：切换时间朝代
      */
     function switchTime(dynasty, element) {
-        if (element && element.classList.contains('selected')) return;
-
         // 1. 高亮当前选中的年份
         const allTimeLabels = document.querySelectorAll('.time-labels-group text');
         allTimeLabels.forEach(el => el.classList.remove('selected'));
-        if (element) element.classList.add('selected');
+        element.classList.add('selected');
 
         // 2. 地图联动高亮
+        // 先清除所有地图节点的高亮
         const allNodes = document.querySelectorAll('.map-node');
         allNodes.forEach(node => node.classList.remove('dynasty-highlight'));
 
+        // 定义每个朝代关联的节点（这里用 transform 坐标或更好的方式，但目前简单通过 ID 匹配）
         const dynastyMap = {
             'tang': ['loc-puer', 'loc-yaan', 'loc-lasa'],
             'song': ['loc-dali', 'loc-kangding', 'loc-changdu'],
@@ -2516,8 +2461,7 @@
 
         const targetNodes = dynastyMap[dynasty] || [];
         targetNodes.forEach(id => {
-            // 使用更精确的选择器
-            const node = document.querySelector(`.map-node[onclick*="${id}"]`);
+            const node = document.querySelector(`[onclick*="${id}"]`);
             if (node) node.classList.add('dynasty-highlight');
         });
 
@@ -2525,8 +2469,6 @@
         const policyTitle = document.getElementById('policy-title');
         const policyPoints = document.getElementById('policy-points');
         const policyVisual = document.getElementById('policy-visual');
-        
-        if (!policyTitle) return;
 
         const data = {
             'tang': {
@@ -2557,9 +2499,833 @@
             policyPoints.innerHTML = d.points.map(p => `<span class="point-tag">${p}</span>`).join('');
             policyVisual.innerHTML = d.visual;
             
-            // 显示面板 (传入 null 因为已经处理了高亮)
+            // 显示面板 (传入 null 因为已经处理了年份高亮)
             switchLayer('time-policy', null);
         }
+    }
+
+    /**
+     * 朝代地图数据
+     */
+    const dynastyData = {
+      han: {
+        name: '汉（前206-220）',
+        summary: '首次以国家力量将西南马源纳入管辖。',
+        intro: '汉王朝为获得西南战马，两次出兵西南夷地区，设置犍为、越巂等郡，将产马区正式纳入版图。随后开通西南夷道，设立邮驿系统，使“笮马”大规模进入中原。这是中央政权首次以国家力量统合西南马源，奠定了后世茶马互市的地理与制度基础。',
+        hotspots: [
+          {id:'h1',type:'red',x:42,y:57,label:'置四郡',img:'images/han_yangjiawan_cavalry.jpg',title:'武帝用兵西南',desc:'前109-105年，汉武帝两次用兵西南夷，置犍为、越巂、牂柯、益州四郡。西南夷道从成都经雅安、西昌直通滇池，沿途设邮传系统。“笮马”体型矮小但善走山路，成为汉军重要的山地战马来源，这是中国历史上首次大规模利用西南马种。',detailDesc:'图片为杨家湾汉墓骑兵俑。此俑出土于陕西咸阳杨家湾汉墓，是西汉早期骑兵部队的缩影。汉武帝为获得西南战马，于前109年至前105年两次出兵西南夷地区，设置犍为、越巂等郡，将西南产马区正式纳入版图。'},
+          {id:'h2',type:'blue',x:48,y:64,label:'西南夷',img:'images/han_dian_bronze_cowrie.jpg',title:'笮马入中原',desc:'西南夷地区的笮马、滇马善走山地，耐力超群，汉武帝将其引入中原，补充战马缺口。这不仅改变了中原王朝的战马结构，也开启了西南与内地长达两千年的马政联系，笮马成为后世茶马互市的核心商品之一。',detailDesc:'图片为滇国青铜贮贝器局部，展现古滇国骑马武士形象。西南夷地区的笮马体型较小但耐力极强，适应横断山脉地形，进入中原后成为汉朝战马的重要补充来源。'},
+          {id:'h3',type:'gold',x:50,y:50,label:'开夷道',img:'images/han_xuanquan_post.jpg',title:'开道设邮',desc:'汉朝开通西南夷道，从成都经青衣江、大渡河至昆明，沿途设置邮亭、驿传。这条官道不仅用于军事行动，也为日后茶马互市奠定了交通基础，是茶马古道的最早雏形，保证了中央政令在西南地区的畅通。',detailDesc:'图片为汉代悬泉置遗址。汉武帝开通西南夷道后，沿路设立邮驿系统，保证马匹运输与政令传达畅通，这是中央政权首次在西南大规模建设交通基础设施。'}
+        ]
+      },
+      weijin: {
+        name: '魏晋南北朝（220-589）',
+        summary: '以贡马确立臣属关系，马道延续。',
+        intro: '魏晋时期，中原动荡，但马匹贸易并未断绝。吐谷浑培育“青海骢”，通过朝贡形式向中原输入良马，并经营“吐谷浑道”连接西域。南中爨氏统治四百余年，维持西南马匹贸易网络，马道在分裂时代依然延续，贡马成为确立政治臣属关系的重要方式。',
+        hotspots: [
+          {id:'w1',type:'blue',x:32,y:27,label:'吐谷浑',img:'images/weijin_tuyuhun_gold.jpg',title:'青海骢贡',desc:'吐谷浑在青海湖周边培育“青海骢”，这种马体型矫健、耐力持久，通过定期向中原王朝朝贡的形式确立政治臣属关系。北魏等政权对青海骢高度重视，将其作为战马和仪仗用马的重要来源，朝贡成为维系政治联系的纽带。',detailDesc:'图片为吐谷浑金饰或马具。吐谷浑是鲜卑族建立的政权，培育出著名的“青海骢”——一种高大矫健的良马。通过朝贡形式向中原输入青海骢，成为吐谷浑与中原王朝政治臣属关系的核心纽带。'},
+          {id:'w2',type:'gold',x:48,y:30,label:'吐谷浑道',img:'images/weijin_northernqi_horse.jpg',title:'经营吐谷浑道',desc:'吐谷浑经营“吐谷浑道”（又称河南道），从青海经四川连接江南，成为南北朝分裂时期重要的贸易通道。马匹贸易与丝绸、玉石等丝路商品并行，这条道路既承载着政治使命，也维持着经济联系，是茶马古道在分裂时代的延续。',detailDesc:'图片为北齐壁画中的马。吐谷浑道连接西域与中原，又称“青海道”，是丝绸之路的重要分支。马匹与丝路贸易在这条道上并存，使中原在分裂时期依然获得西域良马。'},
+          {id:'w3',type:'blue',x:55,y:62,label:'爨氏',img:'images/weijin_cuan_stele.jpg',title:'南中马网',desc:'爨氏统治南中（今云南、贵州地区）四百余年，虽中原王朝更迭不断，但始终维持着西南马匹贸易网络。《爨宝子碑》《爨龙颜碑》记载了爨氏与内地的密切联系，西南马道在分裂时期依然畅通，为日后唐代茶马互市奠定了基础。',detailDesc:'图片为爨宝子碑。爨氏统治南中（今云南东部）四百余年，维持西南马匹贸易网络不断。爨宝子碑是爨氏留下的重要文物，见证了南中地区在中原动荡时依然保持与内地的马匹贸易。'}
+        ]
+      },
+      tang: {
+        name: '唐（618-907）',
+        summary: '茶马互市大规模制度化，马匹与政治同盟深度绑定。',
+        intro: '唐代是茶马互市制度化的关键期。文成公主入藏将茶叶传入吐蕃，唐蕃于赤岭划界互市。南诏向唐进贡“越赕马”，回纥则大驱名马与唐朝交换茶叶。茶马贸易从零星交换发展为大规模官方互市，马匹与政治同盟深度绑定，为后世茶马制度奠定范式。',
+        hotspots: [
+          {id:'t1',type:'gold',x:42,y:38,label:'文成公主',img:'images/tang_bunian_tu.jpg',title:'和亲与茶',desc:'641年文成公主入藏，带去了茶籽、茶具和饮茶习俗。茶叶传入吐蕃后，与酥油融合形成酥油茶，深刻改变了藏族饮食结构。这次和亲不仅确立了唐蕃甥舅关系，也为日后茶马互市埋下了文化与经济的双重伏笔，茶从此成为藏民族生活必需品。',detailDesc:'图片为阎立本《步辇图》，描绘唐太宗接见吐蕃使者禄东赞的场景。641年文成公主入藏，带去了大量茶叶、丝绸等物品，茶叶由此传入吐蕃，为后来的茶马互市奠定了文化基础。'},
+          {id:'t2',type:'gold',x:38,y:42,label:'赤岭互市',img:'images/tang_tubo_gold_horse.jpg',title:'赤岭划界',desc:'731年唐蕃于赤岭（今日月山）划界互市，设立官方市场，这是中国历史上第一个有明确记载的茶马互市场所。双方约定以茶换马，每年定期贸易，标志着茶马互市从民间自发走向官方制度化，成为维系唐蕃和平的重要经济纽带。',detailDesc:'图片为吐蕃金银器上的马纹。731年唐蕃于赤岭（今青海日月山）划界互市，这是官方互市场所首次正式确立，标志着茶马贸易从零星交换走向制度化。'},
+          {id:'t3',type:'blue',x:47,y:67,label:'南诏马',img:'images/tang_nanzhao_scroll.jpg',title:'越赕骏',desc:'南诏（今云南大理地区）向唐朝进贡“越赕马”，这种马产于腾冲一带，体型虽小但善于在山地奔跑。唐德宗时南诏每年贡马数十匹，南诏马进入唐朝宫廷，西南马种的战略价值得到朝廷高度认可，成为唐朝战马体系的重要补充。',detailDesc:'图片为南诏图传局部。南诏（今云南大理一带）向唐朝进贡“越赕马”，《新唐书》称赞这种马为“越睒骏”，是当时西南地区最优良的马种之一。'},
+          {id:'t4',type:'blue',x:55,y:17,label:'回纥市马',img:'images/tang_sancai_horse.jpg',title:'驱马市茶',desc:'758年安史之乱后，回纥助唐平叛有功，开始“驱马市茶”，每年用数万匹马换取唐朝茶叶。《新唐书》记载回纥“岁以数万求售”，茶马互市规模空前扩大，茶叶从奢侈品转变为大规模贸易商品，这是中国历史上第一次大规模的茶马官方贸易。',detailDesc:'图片为唐三彩马。758年起回纥大驱名马与唐朝交换茶叶，茶马互市从此大规模展开。唐三彩马造型雄健，反映了唐代对良马的热爱和马匹贸易的繁荣。'}
+        ]
+      },
+      song: {
+        name: '宋（960-1279）',
+        summary: '西南马政等同南宋国运，少数民族通过马匹嵌入国家供应链。',
+        intro: '宋代失去北方马源，被迫将目光转向西南。朝廷在邕州设买马司，每年从大理国购入数千匹战马。自杞国、罗氏鬼国等西南政权以贩马立国，成为南宋的战略生命线。陆游曾感叹“国家一从失西陲，年年买马西南夷”，西南马政直接关系到南宋的存亡。',
+        hotspots: [
+          {id:'s1',type:'red',x:67,y:68,label:'邕州买马司',img:'images/song_lingwaidaida.jpg',title:'买马司设',desc:'南宋在邕州（今南宁）设买马司，由地方官兼领买马事，每年从大理国购入1500-3500匹战马。周去非《岭外代答》详细记载了买马流程：“每择马之良者，以银茶盐彩缯易之”，买马司成为南宋军事补给的核心机构。',detailDesc:'图片为《岭外代答》书影。南宋在邕州（今南宁）设立买马司，每年从大理国购入1500至3500匹战马。北方马源被辽、西夏、金封锁后，西南马政直接关系到南宋的军事存亡。'},
+          {id:'s2',type:'blue',x:44,y:64,label:'大理马',img:'images/song_dali_scroll_horse.jpg',title:'大理马源',desc:'大理国是南宋最重要的马匹来源，大理马“质小而健，善登山”，特别适合江南水网地带和南方山地作战。范成大《桂海虞衡志》称“大理马为西南之最”，每年有数千匹大理马经自杞、罗殿转手至南宋，维系着偏安朝廷的军事命脉。',detailDesc:'图片为张胜温画卷《梵像卷》中的马。大理国是南宋最重要的马匹来源地，张胜温画卷中绘有马匹和骑者形象，是研究大理国马文化的珍贵图像资料。'},
+          {id:'s3',type:'blue',x:57,y:62,label:'自杞',img:'images/song_lingwaidaida.jpg',title:'贩马立国',desc:'自杞国（今滇黔桂交界）垄断大理马转手贸易，“贩马立国”，成为连接大理与南宋的重要中间商。自杞人每年组织大规模马帮，将大理马运至邕州交易，获利丰厚，这个原本弱小的政权因马而兴，成为南宋西南马政链条上的关键一环。',detailDesc:'自杞国位于今贵州西部，以贩马为生，垄断了大理马向南宋的转手贸易，“贩马立国”成为这个小政权的生存之道。'},
+          {id:'s4',type:'gold',x:50,y:44,label:'陆游诗',img:'images/song_luyou_poem.jpg',title:'年年买马西南夷',desc:'陆游诗句“国家一从失西陲，年年买马西南夷”深刻反映了南宋失去西北马源后的困境。北宋时主要从辽国、西夏买马，南宋被迫完全依赖西南，西南马政从此与南宋国运深度绑定，陆游等有识之士对此深感忧虑却又无可奈何。',detailDesc:'陆游诗句“国家一从失西陲，年年买马西南夷”出自《剑南诗稿》，道出了南宋失去西北马源后对西南马匹的深度依赖，是马政史的重要文学佐证。'},
+          {id:'s5',type:'blue',x:60,y:60,label:'罗氏鬼国',img:'images/song_lingwaidaida.jpg',title:'龙马之名',desc:'罗氏鬼国（今贵州毕节一带）以“龙马”闻名，《宋史》记载其“贡马不绝”，同样加入南宋马匹供应链。罗氏鬼国与自杞、罗殿等政权竞争贩马利益，形成了西南少数民族通过马匹贸易嵌入中原王朝供应链的格局，这是中国历史上罕见的现象。',detailDesc:'罗氏鬼国位于今黔西北，以出产“龙马”闻名，同样加入了南宋的马匹供应链，成为西南少数民族嵌入国家经济体系的典型案例。'}
+        ]
+      },
+      yuan: {
+        name: '元（1271-1368）',
+        summary: '以马匹网络空前整合多民族疆域。',
+        intro: '元朝以骑兵立国，忽必烈灭大理国后，将西南马区完全纳入版图。朝廷设立“站赤”驿传系统，全国驿站1500余处，驿马四万五千匹，茶马古道升格为官道。同时设立宣政院，由藏族帝师统领，首次将西藏马政纳入中央统一管理体系，实现了空前的大一统整合。',
+        hotspots: [
+          {id:'y1',type:'gold',x:47,y:65,label:'灭大理',img:'images/yuan_kublai_hunting.jpg',title:'忽必烈南征',desc:'1253年忽必烈率十万蒙古骑兵“元跨革囊”渡金沙江，奇袭灭大理国，将西南马区完全并入大元版图。这次军事行动不仅结束了大理国三百余年的统治，更将西南地区的马匹资源直接纳入中央管理，为元朝骑兵提供了新的马源。',detailDesc:'图片为《元世祖出猎图》局部。1253年忽必烈率蒙古骑兵灭大理国，西南马区被完全纳入大元版图，为后来设立驿站体系和统一管理藏区奠定了基础。'},
+          {id:'y2',type:'red',x:48,y:40,label:'站赤',img:'images/yuan_paiza.jpg',title:'站赤网络',desc:'元朝在全国设立“站赤”驿传系统，总计驿站1500余处，驿马四万五千匹，驿道四通八达。持“圆牌”“铺马圣旨”可乘驿马，茶马古道从此升格为官方驿道，驿站不仅用于政令传递，也承担茶马运输功能，是中国历史上最庞大的驿传体系。',detailDesc:'图片为元代八思巴字牌符。元朝设立“站赤”驿站系统，全国有1500余处驿站，驿马达4.5万匹。茶马古道由此升格为官方驿道，马匹和物资的流转效率大幅提高。'},
+          {id:'y3',type:'blue',x:24,y:48,label:'宣政院',img:'images/yuan_sakya.jpg',title:'帝师领院',desc:'1264年元朝设立宣政院，由藏族帝师（如八思巴）领院事，这是中国历史上首次设立专门管理西藏的中央机构。宣政院不仅管理宗教事务，也统筹西藏马政，将藏区马源直接纳入中央统一管理，实现了多民族疆域的空前整合，意义深远。',detailDesc:'图片为西藏萨迦寺。元朝设立宣政院，由萨迦派高僧八思巴担任帝师领院事，首次将西藏马政纳入中央统一管理体系，实现了空前的大一统整合。'}
+        ]
+      },
+      ming: {
+        name: '明（1368-1644）',
+        summary: '纳马成为法定义务，金牌信符是政治臣属的实物凭证。',
+        intro: '明代茶马制度达到巅峰。朝廷在西北至西南设立多处茶马司，颁发“金牌信符”作为纳马凭证，茶叶换马成为法定义务。同时开设辽东、宣大等马市，与蒙古、女真互市。督理马政的杨一清称“羁縻之策，实胜于数万甲兵”，马政成为维系多民族政治关系的核心制度。',
+        hotspots: [
+          {id:'m1',type:'red',x:38,y:42,label:'茶马司',img:'images/ming_chamasi_ruin.jpg',title:'茶马司林立',desc:'明代在西北至西南设立洮州、秦州、河州、雅州、碉门等多处茶马司，由朝廷派遣茶马御史专理。每岁确定“茶斤”与“马额”，茶与马的比价法定化，茶马贸易完全官方化，制度达到中国历史上的巅峰，成为国家财政和军事补给的重要支柱。',detailDesc:'图片为茶马司遗址。明代在洮州、秦州、河州、雅州、碉门等地广设茶马司，专门管理和运营茶马贸易，制度达到历史巅峰。'},
+          {id:'m2',type:'gold',x:40,y:45,label:'金牌信符',img:'images/ming_golden_plate.jpg',title:'金牌信符',desc:'1397年明太祖朱元璋颁金牌信符41面，铜质鎏金，上刻篆文“皇帝圣旨”“合当差发”“不信者斩”，每三年一合符，纳马成为藏、羌等族的法定义务。杨一清称“金牌者，所以明信也”，这不仅是贸易凭证，更是政治臣属关系的物化象征。',detailDesc:'图片为明代金牌信符实物（青海贵德博物馆藏）。朝廷颁发金牌信符41面，牌上篆刻“皇帝圣旨”“合当差发”“不信者斩”字样，每三年一合符，纳马由此从自愿贸易变为法定义务。'},
+          {id:'m3',type:'gold',x:42,y:48,label:'杨一清',img:'images/ming_yangyiqing.jpg',title:'胜过数万甲兵',desc:'明中期名臣杨一清三次督理陕西马政，整顿茶马贸易，称“羁縻之策，实胜于数万甲兵”。他指出茶马互市“制其死命，莫妙于茶”，通过控制茶叶供给来安抚西北各族，这一论述深刻揭示了茶马制度的政治本质，影响深远。',detailDesc:'图片为杨一清画像。杨一清曾任陕西三边总制，督理马政，上疏称茶马互市“羁縻之策，实胜于数万甲兵”，是明代马政制度和民族关系的核心人物之一。'},
+          {id:'m4',type:'blue',x:64,y:22,label:'宣大马市',img:'images/ming_xuanda_map.jpg',title:'宣大马市',desc:'1571年俺答封贡后，明朝在大同、宣府开设蒙古马市，用茶叶、丝绸换取蒙古马匹。隆庆和议后，宣大马市“贸易不绝”，不仅解决了明朝军马需求，更使长城沿线“三陲晏然，一尘不扰”，成为和平互市的典范。',detailDesc:'图片为《宣大山西三镇图说》局部。明朝在大同、宣府开设马市，用茶叶换取蒙古良马，马市成为农耕与游牧民族之间最稳定的经济纽带。'},
+          {id:'m5',type:'blue',x:78,y:20,label:'辽东马市',img:'images/ming_xuanda_map.jpg',title:'辽东马市',desc:'明朝在开原、抚顺设立女真马市，与建州、海西女真互市。马市不仅是马匹交易场所，也是女真获取铁器、粮食的重要渠道。努尔哈赤早年曾多次到抚顺马市贸易，辽东马市深刻影响了女真社会的发展，也成为明清易代的伏笔。',detailDesc:'明朝在开原、抚顺开设女真马市，通过马匹贸易将东北地区的女真部族纳入多民族经济网络，同时也为后来的政治变局埋下伏笔。'},
+          {id:'m6',type:'gold',x:35,y:50,label:'万历合约',img:'images/ming_golden_plate.jpg',title:'西域易茶始自唐',desc:'1617年青海《万历合约》碑追述“西域易茶始自唐”，明确规定藏汉茶马贸易规则，用藏、汉、蒙三种文字刻石。这块碑不仅是珍贵的盟约证据，更表明茶马互市已被各族公认为历史悠久的制度，是多民族共同认可的文化遗产。',detailDesc:'图片为明代金牌信符。《万历合约》碑立于1617年，碑文追述“西域易茶始自唐时”，是明代茶马互市制度和历史渊源的重要实物证据。'}
+        ]
+      },
+      qing: {
+        name: '清（1644-1912）',
+        summary: '“以茶驭番”策略终结，整合方式从直接管控转向间接治理。',
+        intro: '清初沿袭明制，继续与卫拉特蒙古进行茶马贸易。但随着乾隆时期疆域一统、马场自给，以及火器取代骑兵，官营茶马互市逐步废止。不过民间边茶贸易并未中断，云南、四川的马帮依然穿行于横断山区，茶马古道从国家制度转向民间商道，持续见证着多民族的经济交融。',
+        hotspots: [
+          {id:'q1',type:'gold',x:58,y:35,label:'沿明制',img:'images/qing_tea_license.jpg',title:'清初延续',desc:'清初顺治、康熙年间完全沿袭明代茶马制度，在洮州、河州等地设立茶马司，与卫拉特蒙古进行茶马贸易。《大清会典》记载“茶马之制，始于唐，备于宋，盛于明，清因之”，这一阶段是明代茶马制度的延续，体现了制度的惯性。',detailDesc:'图片为清代茶引或茶马贸易执照。清初基本延续明朝的茶马互市制度，与卫拉特蒙古维持着活跃的茶马贸易，茶马古道依然是国家层面的重要经济通道。'},
+          {id:'q2',type:'blue',x:17,y:25,label:'卫拉特',img:'images/qing_tea_license.jpg',title:'准噶尔马',desc:'卫拉特蒙古（尤其是准噶尔部）是清初重要的马匹来源，准噶尔马体型高大、耐饥寒，适合西北战场。但随着准噶尔叛乱的平定，官方茶马贸易逐渐衰退，马匹贸易的政治意义下降，这是官营茶马互市走向终结的重要原因之一。',detailDesc:'卫拉特蒙古（准噶尔部等）拥有优良马匹，是清初重要的马源之一。随着清朝与准噶尔的战争和局势变化，茶马贸易逐渐从官营转向民间。'},
+          {id:'q3',type:'gold',x:62,y:38,label:'官营废止',img:'images/qing_qianlong_horse.jpg',title:'马政转型',desc:'乾隆年间，随着疆域一统、内地马场自给自足，以及火器取代骑兵成为主力，官营茶马互市逐步废止。1736年停洮岷茶司，1739年停河州茶司，1757年平定准噶尔，“以茶驭番”的千年策略最终终结，马政从政治管控转向经济管理。',detailDesc:'图片为乾隆皇帝大阅图（骑马像）。乾隆时期清朝疆域一统，政府马场已能自给，加上火器逐渐取代冷兵器，马匹的战略重要性下降，官营茶马互市逐渐废止。'},
+          {id:'q4',type:'gold',x:48,y:60,label:'民间马帮',img:'images/qing_caravan_photo.jpg',title:'马帮不绝',desc:'官营茶马互市虽废，民间边茶贸易却更加兴盛。云南、四川的马帮依然穿行于横断山区，“喜洲帮”“腾冲帮”“丽江帮”等商帮活跃，茶叶、马匹、药材等商品继续流通。茶马古道从国家制度转向民间商道，继续见证着多民族的经济与文化交融。',detailDesc:'图片为滇藏茶马古道上马帮的老照片。官市虽然废止，但民间边茶贸易并未中断。云南、四川的马帮依然穿行于横断山区，延续着千百年来的经济融合与民族交往。'}
+        ]
+      }
+    };
+
+    const dynastyEthnicGroups = {
+      han: ['西南夷（夜郎）', '滇', '邛都', '笮都'],
+      weijin: ['吐谷浑', '爨氏（南中各族）'],
+      tang: ['吐蕃', '南诏（乌蛮、白蛮）', '回纥'],
+      song: ['大理（白蛮）', '自杞（乌蛮）', '罗氏鬼国（彝族先民）', '吐蕃诸部'],
+      yuan: ['蒙古各部', '西藏萨迦派', '大理各族'],
+      ming: ['藏区番族', '蒙古诸部（鞑靼、瓦剌）', '女真'],
+      qing: ['卫拉特蒙古（准噶尔等）', '西藏噶厦', '西南各族马帮']
+    };
+
+    function renderDynastyEthnic(dynasty) {
+      const container = document.getElementById('dynasty-ethnic');
+      if (!container) return;
+      const tags = dynastyEthnicGroups[dynasty] || [];
+      container.innerHTML = `
+        <div class="ethnic-title">多民族参与</div>
+        <div class="ethnic-tags">
+          ${tags.map(t => `<span class="ethnic-pill">${t}</span>`).join('')}
+        </div>
+      `;
+    }
+
+    /**
+     * 生成朝代地图SVG
+     */
+    function generateDynastyMapSVG(dynasty) {
+      const data = dynastyData[dynasty];
+      if (!data) return '';
+
+      const colors = {
+        red: '#8B0000',
+        blue: '#1A3B5C',
+        gold: '#B8860B'
+      };
+
+      const caravanRoutesByDynasty = {
+        han: [{ d: 'M440,240 Q380,280 320,330' }],
+        weijin: [{ d: 'M240,162 Q360,180 480,180' }],
+        tang: [
+          { d: 'M440,210 L200,300' },
+          { d: 'M440,210 L360,390' },
+          { d: 'M440,210 L440,102' }
+        ],
+        song: [
+          { d: 'M336,372 Q440,360 520,408' },
+          { d: 'M400,252 Q480,250 560,270' }
+        ],
+        yuan: [
+          { d: 'M520,90 Q450,230 360,372' },
+          { d: 'M520,90 Q350,180 176,270' }
+        ],
+        ming: [{ d: 'M432,308 Q300,290 160,270' }],
+        qing: [
+          { d: 'M512,108 Q320,120 120,132' },
+          { d: 'M200,420 Q320,360 420,260' }
+        ]
+      };
+
+      function generateDynastyAtmosphereLayer(d) {
+        const buildingFill = '#5D4037';
+        const accentByDynasty = {
+          han: '#8B0000',
+          weijin: '#1A3B5C',
+          tang: '#B8860B',
+          song: '#2E7D32',
+          yuan: '#5D4037',
+          ming: '#8B0000',
+          qing: '#1A3B5C'
+        };
+
+        const skyIsWarm = d === 'han' || d === 'tang' || d === 'ming';
+        const accent = accentByDynasty[d] || '#8B0000';
+
+        const cornerLines = `
+          <g class="decoration-layer dynasty-decor is-hidden" style="opacity:1;">
+            <g class="decoration-layer" opacity="0.15" fill="none" stroke="${buildingFill}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path class="decoration-layer" d="M38 78 C58 60 76 62 92 76 C104 66 118 66 134 78" />
+              <path class="decoration-layer" d="M666 74 C684 58 704 60 720 74 C732 64 748 64 762 74" />
+              <path class="decoration-layer" d="M52 526 C70 510 88 512 104 526 C118 514 136 516 152 528" />
+              <path class="decoration-layer" d="M638 522 C656 506 676 508 692 522 C704 512 720 512 734 522" />
+              <path class="decoration-layer" d="M22 112 C48 90 76 92 100 112" />
+              <path class="decoration-layer" d="M702 556 C728 534 756 536 780 556" />
+            </g>
+          </g>
+        `;
+
+        const skyLayer = skyIsWarm
+          ? `
+            <g class="decoration-layer dynasty-decor is-hidden sky-drift" style="opacity:1;">
+              <g class="decoration-layer" transform="translate(410 78)">
+                <circle class="decoration-layer" cx="0" cy="0" r="18" fill="#B8860B" opacity="0.55"/>
+                <circle class="decoration-layer" cx="0" cy="0" r="30" fill="#B8860B" opacity="0.16"/>
+                <circle class="decoration-layer" cx="0" cy="0" r="40" fill="#B8860B" opacity="0.08"/>
+              </g>
+            </g>
+          `
+          : `
+            <g class="decoration-layer dynasty-decor is-hidden sky-drift" style="opacity:1;">
+              <g class="decoration-layer" transform="translate(410 78)">
+                <circle class="decoration-layer" cx="0" cy="0" r="18" fill="#A0C8D8" opacity="0.45"/>
+                <circle class="decoration-layer" cx="6" cy="-3" r="16" fill="#FDF8F2" opacity="0.9"/>
+                <circle class="decoration-layer" cx="0" cy="0" r="30" fill="#A0C8D8" opacity="0.12"/>
+              </g>
+            </g>
+          `;
+
+        const buildings = {
+          han: {
+            x: 465, y: 205, s: 1,
+            svg: `
+              <path class="decoration-layer" d="M2 44 H58 V50 H2 Z" fill="${buildingFill}" opacity="0.34"/>
+              <path class="decoration-layer" d="M8 42 H52 V44 H8 Z" fill="${buildingFill}" opacity="0.30"/>
+              <path class="decoration-layer" d="M10 34 L30 22 L50 34 L46 34 L30 26 L14 34 Z" fill="${buildingFill}" opacity="0.34"/>
+              <path class="decoration-layer" d="M14 34 V42 H46 V34 Z" fill="${buildingFill}" opacity="0.30"/>
+              <path class="decoration-layer" d="M6 34 L14 28 L22 34 Z" fill="${buildingFill}" opacity="0.28"/>
+              <path class="decoration-layer" d="M54 34 L46 28 L38 34 Z" fill="${buildingFill}" opacity="0.28"/>
+            `
+          },
+          weijin: {
+            x: 505, y: 145, s: 1,
+            svg: `
+              <path class="decoration-layer" d="M20 50 H40 V54 H20 Z" fill="${buildingFill}" opacity="0.34"/>
+              <path class="decoration-layer" d="M24 14 H36 V50 H24 Z" fill="${buildingFill}" opacity="0.28"/>
+              <path class="decoration-layer" d="M20 18 H40 L36 22 H24 Z" fill="${buildingFill}" opacity="0.34"/>
+              <path class="decoration-layer" d="M18 26 H42 L38 30 H22 Z" fill="${buildingFill}" opacity="0.32"/>
+              <path class="decoration-layer" d="M16 34 H44 L40 38 H20 Z" fill="${buildingFill}" opacity="0.30"/>
+              <path class="decoration-layer" d="M14 42 H46 L42 46 H18 Z" fill="${buildingFill}" opacity="0.28"/>
+              <path class="decoration-layer" d="M28 10 H32 V14 H28 Z" fill="${buildingFill}" opacity="0.34"/>
+            `
+          },
+          tang: {
+            x: 465, y: 175, s: 1,
+            svg: `
+              <path class="decoration-layer" d="M4 48 H56 V54 H4 Z" fill="${buildingFill}" opacity="0.34"/>
+              <path class="decoration-layer" d="M8 42 H52 V48 H8 Z" fill="${buildingFill}" opacity="0.28"/>
+              <path class="decoration-layer" d="M10 36 L30 24 L50 36 L46 36 L30 28 L14 36 Z" fill="${buildingFill}" opacity="0.34"/>
+              <path class="decoration-layer" d="M14 36 V42 H46 V36 Z" fill="${buildingFill}" opacity="0.28"/>
+              <path class="decoration-layer" d="M2 34 H10 V48 H2 Z" fill="${buildingFill}" opacity="0.22"/>
+              <path class="decoration-layer" d="M50 34 H58 V48 H50 Z" fill="${buildingFill}" opacity="0.22"/>
+              <path class="decoration-layer" d="M0 34 L6 28 L12 34 Z" fill="${buildingFill}" opacity="0.24"/>
+              <path class="decoration-layer" d="M48 34 L54 28 L60 34 Z" fill="${buildingFill}" opacity="0.24"/>
+            `
+          },
+          song: {
+            x: 585, y: 235, s: 1,
+            svg: `
+              <path class="decoration-layer" d="M8 50 H52 V54 H8 Z" fill="${buildingFill}" opacity="0.32"/>
+              <path class="decoration-layer" d="M16 28 H44 V50 H16 Z" fill="${buildingFill}" opacity="0.24"/>
+              <path class="decoration-layer" d="M10 28 L30 16 L50 28 L46 28 L30 20 L14 28 Z" fill="${buildingFill}" opacity="0.34"/>
+              <path class="decoration-layer" d="M12 22 L30 10 L48 22 L44 22 L30 14 L16 22 Z" fill="${buildingFill}" opacity="0.28"/>
+              <path class="decoration-layer" d="M28 8 H32 V10 H28 Z" fill="${buildingFill}" opacity="0.34"/>
+            `
+          },
+          yuan: {
+            x: 548, y: 54, s: 1,
+            svg: `
+              <path class="decoration-layer" d="M14 52 H46 V56 H14 Z" fill="${buildingFill}" opacity="0.32"/>
+              <path class="decoration-layer" d="M18 46 H42 V52 H18 Z" fill="${buildingFill}" opacity="0.26"/>
+              <path class="decoration-layer" d="M20 44 C20 34 26 30 30 20 C34 30 40 34 40 44 C40 50 35 54 30 54 C25 54 20 50 20 44 Z" fill="${buildingFill}" opacity="0.34"/>
+              <path class="decoration-layer" d="M28 16 H32 V20 H28 Z" fill="${buildingFill}" opacity="0.34"/>
+            `
+          },
+          ming: {
+            x: 535, y: 73, s: 1,
+            svg: `
+              <path class="decoration-layer" d="M10 52 H50 V56 H10 Z" fill="${buildingFill}" opacity="0.32"/>
+              <path class="decoration-layer" d="M14 46 C14 36 22 30 30 22 C38 30 46 36 46 46 C46 52 40 56 30 56 C20 56 14 52 14 46 Z" fill="${buildingFill}" opacity="0.30"/>
+              <path class="decoration-layer" d="M18 44 C18 38 24 34 30 28 C36 34 42 38 42 44 C42 48 38 50 30 50 C22 50 18 48 18 44 Z" fill="${buildingFill}" opacity="0.34"/>
+              <path class="decoration-layer" d="M22 42 C22 38 26 36 30 32 C34 36 38 38 38 42 C38 44 36 46 30 46 C24 46 22 44 22 42 Z" fill="${buildingFill}" opacity="0.38"/>
+            `
+          },
+          qing: {
+            x: 537, y: 73, s: 1,
+            svg: `
+              <path class="decoration-layer" d="M10 52 H50 V56 H10 Z" fill="${buildingFill}" opacity="0.32"/>
+              <path class="decoration-layer" d="M18 32 H42 V52 H18 Z" fill="${buildingFill}" opacity="0.24"/>
+              <path class="decoration-layer" d="M12 32 L30 20 L48 32 L44 32 L30 24 L16 32 Z" fill="${buildingFill}" opacity="0.34"/>
+              <path class="decoration-layer" d="M26 18 H34 V20 H26 Z" fill="${buildingFill}" opacity="0.34"/>
+              <path class="decoration-layer" d="M22 28 H38" fill="none" stroke="${buildingFill}" stroke-width="2" opacity="0.22"/>
+            `
+          }
+        };
+
+        const costumes = {
+          han: [
+            { x: 384, y: 262, s: 1, o: 0.45, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M10 38 C12 28 14 22 20 22 C26 22 28 28 30 38 L36 40 L34 46 L20 44 L6 46 L4 40 Z' },
+            { x: 350, y: 300, s: 0.95, o: 0.42, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M8 40 C10 28 14 22 20 22 C28 22 30 30 32 40 L28 46 L20 44 L12 46 Z' }
+          ],
+          weijin: [
+            { x: 378, y: 212, s: 1, o: 0.42, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M2 28 L10 22 L14 26 L8 34 Z M38 28 L30 22 L26 26 L32 34 Z M10 40 C12 28 14 22 20 22 C26 22 28 28 30 40 L20 46 Z' },
+            { x: 310, y: 164, s: 0.9, o: 0.38, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M6 38 C8 28 12 22 20 22 C28 22 32 28 34 38 L20 46 Z' }
+          ],
+          tang: [
+            { x: 332, y: 246, s: 1, o: 0.46, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M12 8 H28 V14 H12 Z M10 38 C12 28 14 22 20 22 C26 22 28 28 30 38 L32 46 L20 44 L8 46 Z' },
+            { x: 250, y: 330, s: 0.95, o: 0.40, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M10 40 C12 30 14 24 20 22 C26 24 28 30 30 40 L20 46 Z' }
+          ],
+          song: [
+            { x: 468, y: 316, s: 1, o: 0.44, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M12 6 L20 2 L28 6 L20 8 Z M10 40 C12 28 14 22 20 22 C26 22 28 28 30 40 L20 46 Z' },
+            { x: 524, y: 356, s: 0.9, o: 0.38, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M8 40 C10 28 14 22 20 22 C26 22 30 28 32 40 L20 46 Z' }
+          ],
+          yuan: [
+            { x: 420, y: 206, s: 1, o: 0.40, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M10 38 C12 28 14 22 20 22 C26 22 28 28 30 38 L34 40 L32 46 L20 44 L8 46 L6 40 Z M12 32 H28' },
+            { x: 290, y: 292, s: 0.9, o: 0.36, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M8 40 C10 28 14 22 20 22 C26 22 30 28 32 40 L20 46 Z' }
+          ],
+          ming: [
+            { x: 430, y: 126, s: 1, o: 0.46, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M8 12 H14 L14 16 H8 Z M26 12 H32 L32 16 H26 Z M10 40 C12 28 14 22 20 22 C26 22 28 28 30 40 L20 46 Z M16 28 H24 V34 H16 Z' },
+            { x: 372, y: 322, s: 0.9, o: 0.38, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M10 40 C12 28 14 22 20 22 C26 22 30 28 32 40 L20 46 Z' }
+          ],
+          qing: [
+            { x: 450, y: 332, s: 1, o: 0.42, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M12 24 H28 V28 H12 Z M10 40 C12 28 14 22 20 22 C26 22 28 28 30 40 L20 46 Z' },
+            { x: 240, y: 470, s: 0.9, o: 0.36, c: accent, p: 'M20 6 C24 6 26 10 26 14 C26 18 24 22 20 22 C16 22 14 18 14 14 C14 10 16 6 20 6 Z M8 40 C10 28 14 22 20 22 C26 22 30 28 32 40 L20 46 Z' }
+          ]
+        };
+
+        const building = buildings[d];
+        const people = costumes[d] || [];
+
+        let buildingLayer = '';
+        if (building) {
+          buildingLayer = `
+            <g class="decoration-layer dynasty-decor is-hidden" style="opacity:1;">
+              <g class="decoration-layer" transform="translate(${building.x} ${building.y}) scale(${building.s})">
+                ${building.svg}
+              </g>
+            </g>
+          `;
+        }
+
+        let costumeLayer = `
+          <g class="decoration-layer dynasty-decor is-hidden" style="opacity:1;">
+            ${people.map(p => `
+              <g class="decoration-layer" transform="translate(${p.x} ${p.y}) scale(${p.s})" opacity="${p.o}">
+                <path class="decoration-layer" d="${p.p}" fill="${p.c}" />
+              </g>
+            `).join('')}
+          </g>
+        `;
+
+        return cornerLines + skyLayer + buildingLayer + costumeLayer;
+      }
+
+      let baseLayer = `
+        <rect width="800" height="600" fill="#FDF8F2" />
+        <rect x="10" y="10" width="780" height="580" fill="none" stroke="#E6DACE" stroke-width="2" rx="10" />
+        
+        <path d="M50,200 Q150,180 250,200 T400,180 T550,200 T700,180" fill="none" stroke="#C4A882" stroke-width="8" opacity="0.5" />
+        <path d="M150,300 Q200,350 250,300 T350,380 T450,300" fill="none" stroke="#C4A882" stroke-width="6" opacity="0.5" />
+        <path d="M200,400 Q300,450 350,400 T450,500" fill="none" stroke="#C4A882" stroke-width="5" opacity="0.5" />
+        
+        <path d="M100,350 Q200,380 300,350 T500,400 T700,350" fill="none" stroke="#A0C8D8" stroke-width="4" opacity="0.7" />
+        <path d="M80,200 Q180,250 220,300 T300,450" fill="none" stroke="#A0C8D8" stroke-width="3" opacity="0.6" />
+        <path d="M120,400 Q180,450 220,520" fill="none" stroke="#A0C8D8" stroke-width="3" opacity="0.6" />
+      `;
+
+      const decorIcons = [];
+      const patternIcons = [];
+
+      if (dynasty === 'han') {
+        decorIcons.push(
+          { emoji: '🏘️', x: 380, y: 260, size: 14, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🏘️', x: 350, y: 300, size: 12, opacity: 0.55, fill: '#A0886C' },
+          { emoji: '🏘️', x: 300, y: 350, size: 13, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🌿', x: 320, y: 380, size: 12, opacity: 0.65, fill: '#2E7D32' },
+          { emoji: '🌿', x: 380, y: 400, size: 11, opacity: 0.6, fill: '#2E7D32' },
+          { emoji: '⛰️', x: 280, y: 280, size: 16, opacity: 0.5, fill: '#5D4037' },
+          { emoji: '⛰️', x: 420, y: 320, size: 14, opacity: 0.45, fill: '#5D4037' },
+          { emoji: '〰️', x: 340, y: 220, size: 10, opacity: 0.55, fill: '#1A3B5C' },
+          { emoji: '🐴', x: 290, y: 290, size: 16, opacity: 0.5, fill: '#5D4037' }
+        );
+        patternIcons.push(
+          { type: 'flame', x: 60, y: 70, s: 1 },
+          { type: 'lotus', x: 720, y: 70, s: 1 },
+          { type: 'cloud', x: 70, y: 530, s: 1 }
+        );
+      } else if (dynasty === 'weijin') {
+        decorIcons.push(
+          { emoji: '🏘️', x: 360, y: 180, size: 14, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🏘️', x: 400, y: 190, size: 12, opacity: 0.55, fill: '#A0886C' },
+          { emoji: '🏘️', x: 300, y: 170, size: 13, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🐎', x: 220, y: 185, size: 18, opacity: 0.65, fill: '#B8860B' },
+          { emoji: '🐎', x: 260, y: 175, size: 16, opacity: 0.6, fill: '#B8860B' },
+          { emoji: '⛰️', x: 320, y: 150, size: 16, opacity: 0.5, fill: '#5D4037' },
+          { emoji: '⛰️', x: 420, y: 350, size: 15, opacity: 0.45, fill: '#5D4037' },
+          { emoji: '🌿', x: 460, y: 390, size: 12, opacity: 0.6, fill: '#2E7D32' },
+          { emoji: '🐴', x: 400, y: 200, size: 15, opacity: 0.5, fill: '#5D4037' }
+        );
+        patternIcons.push(
+          { type: 'cloud', x: 60, y: 70, s: 1 },
+          { type: 'flame', x: 730, y: 70, s: 1 },
+          { type: 'knot', x: 720, y: 530, s: 1 }
+        );
+      } else if (dynasty === 'tang') {
+        decorIcons.push(
+          { emoji: '🏘️', x: 380, y: 230, size: 14, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🏘️', x: 320, y: 250, size: 13, opacity: 0.55, fill: '#A0886C' },
+          { emoji: '🏘️', x: 280, y: 270, size: 12, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🌿', x: 340, y: 420, size: 14, opacity: 0.65, fill: '#2E7D32' },
+          { emoji: '🌿', x: 380, y: 440, size: 12, opacity: 0.6, fill: '#2E7D32' },
+          { emoji: '⛰️', x: 260, y: 200, size: 16, opacity: 0.5, fill: '#5D4037' },
+          { emoji: '⛰️', x: 300, y: 320, size: 15, opacity: 0.45, fill: '#5D4037' },
+          { emoji: '〰️', x: 360, y: 280, size: 10, opacity: 0.55, fill: '#1A3B5C' },
+          { emoji: '🐴', x: 350, y: 300, size: 15, opacity: 0.5, fill: '#5D4037' }
+        );
+        patternIcons.push(
+          { type: 'knot', x: 60, y: 70, s: 1 },
+          { type: 'cloud', x: 730, y: 70, s: 1 },
+          { type: 'cloud', x: 70, y: 530, s: 1 }
+        );
+      } else if (dynasty === 'song') {
+        decorIcons.push(
+          { emoji: '🏘️', x: 480, y: 380, size: 14, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🏘️', x: 440, y: 360, size: 13, opacity: 0.55, fill: '#A0886C' },
+          { emoji: '🏘️', x: 400, y: 340, size: 12, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🌿', x: 320, y: 400, size: 14, opacity: 0.65, fill: '#2E7D32' },
+          { emoji: '🌿', x: 360, y: 420, size: 13, opacity: 0.6, fill: '#2E7D32' },
+          { emoji: '⛰️', x: 280, y: 300, size: 16, opacity: 0.5, fill: '#5D4037' },
+          { emoji: '⛰️', x: 360, y: 280, size: 15, opacity: 0.45, fill: '#5D4037' },
+          { emoji: '〰️', x: 420, y: 320, size: 10, opacity: 0.55, fill: '#1A3B5C' },
+          { emoji: '🐴', x: 460, y: 350, size: 15, opacity: 0.5, fill: '#5D4037' },
+          { emoji: '🐴', x: 500, y: 390, size: 14, opacity: 0.45, fill: '#5D4037' }
+        );
+        patternIcons.push(
+          { type: 'lotus', x: 60, y: 70, s: 1 },
+          { type: 'flame', x: 730, y: 70, s: 1 },
+          { type: 'cloud', x: 720, y: 530, s: 1 }
+        );
+      } else if (dynasty === 'yuan') {
+        decorIcons.push(
+          { emoji: '🏘️', x: 450, y: 140, size: 14, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🏘️', x: 380, y: 180, size: 13, opacity: 0.55, fill: '#A0886C' },
+          { emoji: '🏘️', x: 320, y: 220, size: 12, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '⛰️', x: 260, y: 250, size: 16, opacity: 0.5, fill: '#5D4037' },
+          { emoji: '⛰️', x: 400, y: 260, size: 15, opacity: 0.45, fill: '#5D4037' },
+          { emoji: '〰️', x: 360, y: 160, size: 10, opacity: 0.55, fill: '#1A3B5C' },
+          { emoji: '🐴', x: 420, y: 200, size: 15, opacity: 0.5, fill: '#5D4037' },
+          { emoji: '🐴', x: 300, y: 290, size: 14, opacity: 0.45, fill: '#5D4037' }
+        );
+        patternIcons.push(
+          { type: 'cloud', x: 60, y: 70, s: 1 },
+          { type: 'knot', x: 730, y: 70, s: 1 },
+          { type: 'lotus', x: 720, y: 530, s: 1 }
+        );
+      } else if (dynasty === 'ming') {
+        decorIcons.push(
+          { emoji: '🏘️', x: 360, y: 270, size: 14, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🏘️', x: 390, y: 290, size: 13, opacity: 0.55, fill: '#A0886C' },
+          { emoji: '🏘️', x: 420, y: 310, size: 12, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🌿', x: 410, y: 340, size: 12, opacity: 0.65, fill: '#2E7D32' },
+          { emoji: '🐎', x: 480, y: 90, size: 16, opacity: 0.6, fill: '#B8860B' },
+          { emoji: '🐎', x: 560, y: 85, size: 15, opacity: 0.55, fill: '#B8860B' },
+          { emoji: '⛰️', x: 280, y: 240, size: 16, opacity: 0.5, fill: '#5D4037' },
+          { emoji: '⛰️', x: 220, y: 290, size: 15, opacity: 0.45, fill: '#5D4037' },
+          { emoji: '🐴', x: 380, y: 320, size: 15, opacity: 0.5, fill: '#5D4037' }
+        );
+        patternIcons.push(
+          { type: 'cloud', x: 60, y: 70, s: 1 },
+          { type: 'knot', x: 730, y: 70, s: 1 },
+          { type: 'flame', x: 70, y: 530, s: 1 }
+        );
+      } else if (dynasty === 'qing') {
+        decorIcons.push(
+          { emoji: '🏘️', x: 380, y: 320, size: 14, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🏘️', x: 340, y: 360, size: 13, opacity: 0.55, fill: '#A0886C' },
+          { emoji: '🏘️', x: 300, y: 400, size: 12, opacity: 0.6, fill: '#8B7355' },
+          { emoji: '🐎', x: 160, y: 150, size: 16, opacity: 0.6, fill: '#B8860B' },
+          { emoji: '🌿', x: 360, y: 430, size: 13, opacity: 0.65, fill: '#2E7D32' },
+          { emoji: '⛰️', x: 260, y: 280, size: 16, opacity: 0.5, fill: '#5D4037' },
+          { emoji: '⛰️', x: 320, y: 380, size: 15, opacity: 0.45, fill: '#5D4037' },
+          { emoji: '🐴', x: 340, y: 380, size: 15, opacity: 0.5, fill: '#5D4037' },
+          { emoji: '🐴', x: 400, y: 420, size: 14, opacity: 0.45, fill: '#5D4037' }
+        );
+        patternIcons.push(
+          { type: 'cloud', x: 60, y: 70, s: 1 },
+          { type: 'knot', x: 730, y: 70, s: 1 },
+          { type: 'flame', x: 720, y: 530, s: 1 }
+        );
+      }
+
+      const floatingDecorations = [
+        { emoji: '🍃', x: 80, y: 120, delay: 0 },
+        { emoji: '🍃', x: 700, y: 450, delay: 2 },
+        { emoji: '🐾', x: 150, y: 480, delay: 1 },
+        { emoji: '🐾', x: 650, y: 180, delay: 3 },
+        { emoji: '🪙', x: 400, y: 100, delay: 0.5 },
+        { emoji: '🍃', x: 250, y: 250, delay: 1.5 },
+        { emoji: '🐾', x: 550, y: 500, delay: 2.5 },
+        { emoji: '🪙', x: 100, y: 350, delay: 3.5 },
+        { emoji: '🍃', x: 600, y: 300, delay: 0.8 },
+        { emoji: '🐾', x: 300, y: 550, delay: 1.8 },
+        { emoji: '🪙', x: 450, y: 400, delay: 2.8 },
+        { emoji: '🍃', x: 180, y: 180, delay: 3.8 }
+      ];
+
+      let decorLayer = `<g class="decor-layer">`;
+      decorIcons.forEach(decor => {
+        decorLayer += `
+          <text class="map-decor" x="${decor.x}" y="${decor.y}" font-size="${decor.size}" opacity="${decor.opacity}" fill="${decor.fill || '#5D4037'}">${decor.emoji}</text>
+        `;
+      });
+      floatingDecorations.forEach(decor => {
+        decorLayer += `
+          <text class="floating-decor" x="${decor.x}" y="${decor.y}" font-size="${8 + Math.random() * 4}" opacity="${0.15 + Math.random() * 0.1}" style="animation: float-random ${12 + Math.random() * 8}s ease-in-out infinite; animation-delay: ${decor.delay}s;" fill="#5D4037">${decor.emoji}</text>
+        `;
+      });
+
+      const patternSvgs = {
+        knot: `<path d="M12 4 C6 4 6 10 12 10 C18 10 18 4 12 4 Z M12 10 C6 10 6 16 12 16 C18 16 18 10 12 10 Z M4 12 C4 6 10 6 10 12 C10 18 4 18 4 12 Z M20 12 C20 6 14 6 14 12 C14 18 20 18 20 12 Z" />`,
+        cloud: `<path d="M6 16 C4 16 4 13 6 13 C7 10 10 9 12 10 C14 7 18 8 18 11 C20 11 20 14 18 14 C17 17 13 18 11 16 C9 18 7 18 6 16 Z" />`,
+        flame: `<path d="M12 4 C10 7 14 8 12 11 C10 13 9 14 9 16 C9 19 11 20 12 20 C15 20 16 18 16 16 C16 14 14 13 14 11 C14 9 15 7 12 4 Z" />`,
+        lotus: `<path d="M12 6 C10 8 10 12 12 14 C14 12 14 8 12 6 Z M6 12 C8 10 12 10 14 12 C12 14 8 14 6 12 Z M8 18 C9 15 11 14 12 14 C13 14 15 15 16 18 C14 19 10 19 8 18 Z" />`
+      };
+
+      patternIcons.forEach(p => {
+        const inner = patternSvgs[p.type] || '';
+        decorLayer += `
+          <g class="ethnic-pattern" transform="translate(${p.x} ${p.y}) scale(${p.s})">
+            ${inner}
+          </g>
+        `;
+      });
+
+      decorLayer += `</g>`;
+
+      let mapLayer = '';
+      if (dynasty === 'han') {
+        mapLayer += `
+          <circle cx="440" cy="240" r="8" fill="#8B0000" />
+          <text x="440" y="225" text-anchor="middle" font-size="12" fill="#5D4037">长安</text>
+          <text x="455" y="245" font-size="14">🛖</text>
+          <circle cx="320" cy="330" r="6" fill="#8B0000" />
+          <text x="320" y="350" text-anchor="middle" font-size="10" fill="#5D4037">犍为</text>
+          <text x="335" y="335" font-size="12">🏛️</text>
+          <circle cx="360" cy="360" r="6" fill="#8B0000" />
+          <text x="360" y="380" text-anchor="middle" font-size="10" fill="#5D4037">越巂</text>
+          <ellipse cx="380" cy="380" rx="100" ry="60" fill="none" stroke="#1A3B5C" stroke-width="2" stroke-dasharray="5,5" />
+          <text x="380" y="370" text-anchor="middle" font-size="11" fill="#1A3B5C">西南夷</text>
+          <path d="M440,240 Q380,280 320,330" fill="none" stroke="#2E7D32" stroke-width="3" stroke-dasharray="4,4" />
+        `;
+      } else if (dynasty === 'weijin') {
+        mapLayer += `
+          <circle cx="480" cy="180" r="8" fill="#8B0000" />
+          <text x="480" y="165" text-anchor="middle" font-size="12" fill="#5D4037">洛阳</text>
+          <text x="495" y="185" font-size="14">🛖</text>
+          <ellipse cx="240" cy="162" rx="60" ry="40" fill="none" stroke="#1A3B5C" stroke-width="2" />
+          <text x="240" y="155" text-anchor="middle" font-size="11" fill="#1A3B5C">吐谷浑</text>
+          <text x="255" y="167" font-size="12">🐎</text>
+          <ellipse cx="440" cy="372" rx="70" ry="50" fill="none" stroke="#1A3B5C" stroke-width="2" />
+          <text x="440" y="365" text-anchor="middle" font-size="11" fill="#1A3B5C">爨氏南中</text>
+          <path d="M240,162 Q360,180 480,180" fill="none" stroke="#2E7D32" stroke-width="3" stroke-dasharray="4,4" />
+          <path d="M440,372 Q460,300 480,180" fill="none" stroke="#2E7D32" stroke-width="2" stroke-dasharray="3,3" />
+        `;
+      } else if (dynasty === 'tang') {
+        mapLayer += `
+          <circle cx="440" cy="210" r="8" fill="#8B0000" />
+          <text x="440" y="195" text-anchor="middle" font-size="12" fill="#5D4037">长安</text>
+          <text x="455" y="215" font-size="14">🛖</text>
+          <circle cx="200" cy="300" r="7" fill="#1A3B5C" />
+          <text x="200" y="320" text-anchor="middle" font-size="11" fill="#1A3B5C">逻些</text>
+          <text x="215" y="305" font-size="12">🏯</text>
+          <circle cx="360" cy="390" r="7" fill="#1A3B5C" />
+          <text x="360" y="410" text-anchor="middle" font-size="11" fill="#1A3B5C">太和城</text>
+          <text x="375" y="395" font-size="12">🌿</text>
+          <ellipse cx="440" cy="102" rx="80" ry="40" fill="none" stroke="#1A3B5C" stroke-width="2" />
+          <text x="440" y="95" text-anchor="middle" font-size="11" fill="#1A3B5C">回纥</text>
+          <text x="455" y="107" font-size="12">🐎</text>
+          <text x="304" y="252" font-size="14" fill="#8B0000">🚩</text>
+          <text x="300" y="275" font-size="10" fill="#5D4037">赤岭</text>
+          <path d="M440,210 L200,300" fill="none" stroke="#2E7D32" stroke-width="3" />
+          <path d="M440,210 L360,390" fill="none" stroke="#2E7D32" stroke-width="3" />
+          <path d="M440,210 L440,102" fill="none" stroke="#2E7D32" stroke-width="3" />
+        `;
+      } else if (dynasty === 'song') {
+        mapLayer += `
+          <circle cx="560" cy="270" r="8" fill="#8B0000" />
+          <text x="560" y="255" text-anchor="middle" font-size="12" fill="#5D4037">临安</text>
+          <circle cx="400" cy="252" r="7" fill="#8B0000" />
+          <text x="400" y="272" text-anchor="middle" font-size="11" fill="#5D4037">成都</text>
+          <ellipse cx="336" cy="372" rx="70" ry="45" fill="none" stroke="#1A3B5C" stroke-width="2" />
+          <text x="336" y="365" text-anchor="middle" font-size="11" fill="#1A3B5C">大理</text>
+          <ellipse cx="440" cy="360" rx="50" ry="35" fill="none" stroke="#1A3B5C" stroke-width="2" />
+          <text x="440" y="353" text-anchor="middle" font-size="11" fill="#1A3B5C">自杞</text>
+          <ellipse cx="464" cy="348" rx="45" ry="30" fill="none" stroke="#1A3B5C" stroke-width="2" />
+          <text x="464" y="341" text-anchor="middle" font-size="10" fill="#1A3B5C">罗氏鬼国</text>
+          <circle cx="520" cy="408" r="7" fill="#8B0000" />
+          <text x="520" y="428" text-anchor="middle" font-size="11" fill="#5D4037">邕州</text>
+          <ellipse cx="224" cy="240" rx="90" ry="60" fill="none" stroke="#1A3B5C" stroke-width="2" />
+          <text x="224" y="230" text-anchor="middle" font-size="11" fill="#1A3B5C">吐蕃诸部</text>
+          <rect x="20" y="30" width="180" height="100" fill="none" stroke="#8B0000" stroke-width="2" stroke-dasharray="5,5" />
+          <text x="110" y="85" text-anchor="middle" font-size="11" fill="#8B0000">辽·夏·金封锁</text>
+          <path d="M336,372 Q440,360 520,408" fill="none" stroke="#2E7D32" stroke-width="3" stroke-dasharray="4,4" />
+          <path d="M520,408 L400,252" fill="none" stroke="#2E7D32" stroke-width="2" stroke-dasharray="3,3" />
+          <path d="M520,408 L560,270" fill="none" stroke="#2E7D32" stroke-width="2" stroke-dasharray="3,3" />
+        `;
+      } else if (dynasty === 'yuan') {
+        mapLayer += `
+          <circle cx="520" cy="90" r="8" fill="#8B0000" />
+          <text x="520" y="75" text-anchor="middle" font-size="12" fill="#5D4037">大都</text>
+          <circle cx="176" cy="270" r="7" fill="#1A3B5C" />
+          <text x="176" y="295" text-anchor="middle" font-size="11" fill="#1A3B5C">萨迦</text>
+          <text x="170" y="260" font-size="16">🏯</text>
+          <circle cx="360" cy="372" r="7" fill="#1A3B5C" />
+          <text x="360" y="392" text-anchor="middle" font-size="11" fill="#1A3B5C">大理</text>
+          <path d="M520,90 Q350,180 176,270" fill="none" stroke="#2E7D32" stroke-width="2" stroke-dasharray="4,4" />
+          <path d="M176,270 Q280,320 360,372" fill="none" stroke="#2E7D32" stroke-width="2" stroke-dasharray="4,4" />
+          <path d="M520,90 Q450,230 360,372" fill="none" stroke="#2E7D32" stroke-width="2" stroke-dasharray="4,4" />
+          <circle cx="300" cy="180" r="4" fill="#2E7D32" />
+          <text x="300" y="175" text-anchor="middle" font-size="9" fill="#2E7D32">站</text>
+          <circle cx="250" cy="230" r="4" fill="#2E7D32" />
+          <text x="250" y="225" text-anchor="middle" font-size="9" fill="#2E7D32">站</text>
+          <circle cx="400" cy="250" r="4" fill="#2E7D32" />
+          <text x="400" y="245" text-anchor="middle" font-size="9" fill="#2E7D32">站</text>
+          <text x="310" y="185" font-size="10">📜</text>
+        `;
+      } else if (dynasty === 'ming') {
+        mapLayer += `
+          <circle cx="512" cy="108" r="8" fill="#8B0000" />
+          <text x="512" y="93" text-anchor="middle" font-size="12" fill="#5D4037">北京</text>
+          <text x="527" y="113" font-size="14">🛖</text>
+          <circle cx="544" cy="228" r="7" fill="#8B0000" />
+          <text x="544" y="248" text-anchor="middle" font-size="11" fill="#5D4037">南京</text>
+          <circle cx="304" cy="252" r="6" fill="#8B0000" />
+          <text x="304" y="272" text-anchor="middle" font-size="9" fill="#5D4037">洮州</text>
+          <text x="314" y="257" font-size="11">🏛️</text>
+          <circle cx="336" cy="264" r="6" fill="#8B0000" />
+          <text x="336" y="284" text-anchor="middle" font-size="9" fill="#5D4037">秦州</text>
+          <circle cx="368" cy="276" r="6" fill="#8B0000" />
+          <text x="368" y="296" text-anchor="middle" font-size="9" fill="#5D4037">河州</text>
+          <circle cx="400" cy="292" r="6" fill="#8B0000" />
+          <text x="400" y="312" text-anchor="middle" font-size="9" fill="#5D4037">雅州</text>
+          <text x="410" y="297" font-size="11">🌿</text>
+          <circle cx="432" cy="308" r="6" fill="#8B0000" />
+          <text x="432" y="328" text-anchor="middle" font-size="9" fill="#5D4037">碉门</text>
+          <text x="442" y="313" font-size="11">⚔️</text>
+          <ellipse cx="160" cy="270" rx="80" ry="55" fill="none" stroke="#1A3B5C" stroke-width="2" />
+          <text x="160" y="260" text-anchor="middle" font-size="11" fill="#1A3B5C">藏区番族</text>
+          <ellipse cx="440" cy="60" rx="70" ry="35" fill="none" stroke="#1A3B5C" stroke-width="2" />
+          <text x="440" y="52" text-anchor="middle" font-size="11" fill="#1A3B5C">蒙古诸部</text>
+          <text x="455" y="65" font-size="12">🐎</text>
+          <ellipse cx="600" cy="72" rx="60" ry="30" fill="none" stroke="#1A3B5C" stroke-width="2" />
+          <text x="600" y="64" text-anchor="middle" font-size="11" fill="#1A3B5C">女真</text>
+          <circle cx="624" cy="132" r="8" fill="#B8860B" stroke="#8B0000" stroke-width="2" />
+          <text x="624" y="152" text-anchor="middle" font-size="9" fill="#5D4037">开原·抚顺</text>
+          <circle cx="496" cy="120" r="8" fill="#B8860B" stroke="#8B0000" stroke-width="2" />
+          <text x="496" y="140" text-anchor="middle" font-size="9" fill="#5D4037">大同·宣府</text>
+          <path d="M304,252 Q336,264 368,276 T432,308" fill="none" stroke="#2E7D32" stroke-width="2" stroke-dasharray="4,4" />
+          <path d="M432,308 Q300,290 160,270" fill="none" stroke="#2E7D32" stroke-width="2" stroke-dasharray="3,3" />
+        `;
+      } else if (dynasty === 'qing') {
+        mapLayer += `
+          <circle cx="512" cy="108" r="8" fill="#8B0000" />
+          <text x="512" y="93" text-anchor="middle" font-size="12" fill="#5D4037">北京</text>
+          <text x="527" y="113" font-size="14">🛖</text>
+          <ellipse cx="120" cy="132" rx="70" ry="45" fill="none" stroke="#1A3B5C" stroke-width="2" />
+          <text x="120" y="122" text-anchor="middle" font-size="11" fill="#1A3B5C">卫拉特</text>
+          <text x="135" y="137" font-size="12">🐎</text>
+          <circle cx="176" cy="288" r="7" fill="#1A3B5C" />
+          <text x="176" y="308" text-anchor="middle" font-size="11" fill="#1A3B5C">噶厦</text>
+          <text x="191" y="293" font-size="12">🏯</text>
+          <path d="M512,108 Q400,200 250,250" fill="none" stroke="#2E7D32" stroke-width="2" stroke-dasharray="8,4" opacity="0.6" />
+          <text x="380" y="180" text-anchor="middle" font-size="10" fill="#999" font-style="italic">官营废止</text>
+          <path d="M400,300 Q380,400 280,450" fill="none" stroke="#2E7D32" stroke-width="3" />
+          <path d="M400,300 Q300,350 200,300" fill="none" stroke="#2E7D32" stroke-width="3" />
+          <text x="350" y="400" text-anchor="middle" font-size="11" fill="#2E7D32">民间边茶贸易</text>
+        `;
+      }
+      mapLayer = mapLayer ? `<g class="map-layer">${mapLayer}</g>` : '';
+
+      const riderColors = ['rider-red', 'rider-blue', 'rider-white', 'rider-brown'];
+      let caravanLayer = `<g class="caravan-layer">`;
+      const routes = caravanRoutesByDynasty[dynasty] || [];
+      routes.forEach((route, routeIndex) => {
+        [0, 1, 2].forEach(i => {
+          const riderClass = riderColors[(routeIndex * 3 + i) % riderColors.length];
+          const delay = -((routeIndex * 2) + ((2 - i) * 3));
+          caravanLayer += `
+            <g class="caravan-carrier" style="offset-path: path('${route.d}'); animation: caravan-move 18s linear infinite; animation-delay: ${delay}s;">
+              <g class="caravan-sprite ${riderClass}">
+                <path class="horse-body" d="M2 12 L6 6 L10 8 L13 6 L17 8 L22 12 L18 12 L16 18 L14 12 L10 12 L8 18 L6 12 Z" />
+                <circle class="rider-dot" cx="14" cy="6" r="2.8" />
+              </g>
+            </g>
+          `;
+        });
+      });
+      caravanLayer += `</g>`;
+
+      let hotspotLayer = `<g class="hotspot-layer">`;
+      data.hotspots.forEach(hotspot => {
+        const cx = hotspot.x * 8;
+        const cy = hotspot.y * 6;
+        const color = colors[hotspot.type];
+        hotspotLayer += `
+          <g class="map-hotspot" transform="translate(${cx}, ${cy})" data-hotspot-id="${hotspot.id}">
+            <circle class="pulse-ring" r="12" />
+            <circle r="12" fill="${color}" stroke="white" stroke-width="3" />
+            <text y="28" text-anchor="middle" font-size="13" fill="#5D4037" font-weight="500">${hotspot.label}</text>
+          </g>
+        `;
+      });
+      hotspotLayer += `</g>`;
+
+      const atmosphereLayer = generateDynastyAtmosphereLayer(dynasty);
+      return baseLayer + atmosphereLayer + decorLayer + mapLayer + caravanLayer + hotspotLayer;
+    }
+
+    /**
+     * 切换朝代
+     */
+    function switchDynasty(dynasty) {
+      const data = dynastyData[dynasty];
+      if (!data) return;
+
+      const tabs = document.querySelectorAll('.dynasty-tab');
+      tabs.forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.getAttribute('data-dynasty') === dynasty) {
+          tab.classList.add('active');
+        }
+      });
+
+      const svg = document.getElementById('dynasty-map-svg');
+      const currentDecor = svg.querySelectorAll('.decoration-layer.dynasty-decor');
+      currentDecor.forEach(el => el.classList.add('is-hidden'));
+
+      svg.classList.add('fade-out');
+      
+      setTimeout(() => {
+        svg.innerHTML = generateDynastyMapSVG(dynasty);
+
+        const nextDecor = svg.querySelectorAll('.decoration-layer.dynasty-decor');
+        nextDecor.forEach(el => el.classList.add('is-hidden'));
+        
+        svg.classList.remove('fade-out');
+        svg.classList.add('fade-in');
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            nextDecor.forEach(el => el.classList.remove('is-hidden'));
+          });
+        });
+        
+        setTimeout(() => {
+          svg.classList.remove('fade-in');
+        }, 400);
+        
+        const hotspots = svg.querySelectorAll('.map-hotspot');
+        hotspots.forEach(hotspot => {
+          hotspot.addEventListener('click', (e) => {
+            const id = hotspot.getAttribute('data-hotspot-id');
+            const hotspotData = data.hotspots.find(h => h.id === id);
+            if (hotspotData) {
+              hotspots.forEach(h => h.classList.remove('selected'));
+              hotspot.classList.add('selected');
+              openHotspotCard(hotspotData);
+            }
+          });
+        });
+      }, 420);
+
+      const summaryText = document.getElementById('dynasty-summary-text');
+      summaryText.textContent = data.summary;
+      renderDynastyEthnic(dynasty);
+
+      const introText = document.getElementById('dynasty-intro-text');
+      const introIcon = document.getElementById('intro-decor-icon');
+      
+      introText.classList.add('fade-out');
+      
+      if (introIcon) {
+        introIcon.classList.remove('bounce-once');
+        void introIcon.offsetWidth;
+        introIcon.classList.add('bounce-once');
+      }
+      
+      setTimeout(() => {
+        introText.textContent = data.intro;
+        introText.classList.remove('fade-out');
+        introText.classList.add('fade-in');
+        setTimeout(() => {
+          introText.classList.remove('fade-in');
+        }, 400);
+      }, 200);
+
+      closeHotspotCard();
+    }
+
+    /**
+     * 打开热点卡片
+     */
+    function openHotspotCard(hotspotData) {
+      const card = document.getElementById('hotspot-card');
+      const img = document.getElementById('card-img');
+      const placeholder = document.getElementById('card-placeholder');
+      const detailDesc = document.getElementById('card-detail-desc');
+      const title = document.getElementById('card-title');
+      const desc = document.getElementById('card-desc');
+
+      let src = (hotspotData && hotspotData.img) ? String(hotspotData.img) : '';
+      if (src && !/^([a-z]+:)?\/\//i.test(src) && !src.startsWith('/') && !src.startsWith('images/')) {
+        src = `images/${src}`;
+      }
+
+      img.onload = () => {
+        img.style.display = 'block';
+        placeholder.style.display = 'none';
+      };
+
+      img.style.display = 'block';
+      placeholder.style.display = 'none';
+      img.src = src;
+      img.alt = hotspotData.title;
+      if (detailDesc) detailDesc.textContent = hotspotData.detailDesc || '';
+      title.textContent = hotspotData.title;
+      desc.textContent = hotspotData.desc;
+
+      card.classList.add('active');
+    }
+
+    /**
+     * 关闭热点卡片
+     */
+    function closeHotspotCard() {
+      const card = document.getElementById('hotspot-card');
+      card.classList.remove('active');
+    }
+
+    /**
+     * 初始化朝代地图
+     */
+    function initDynastyMap() {
+      const tabs = document.querySelectorAll('.dynasty-tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const dynasty = tab.getAttribute('data-dynasty');
+          switchDynasty(dynasty);
+        });
+      });
+
+      switchDynasty('han');
     }
 
     /**
@@ -2584,7 +3350,6 @@
             setTimeout(() => {
                 if (!Array.from(contents).some(c => c.classList.contains('active'))) {
                     defaultHint.style.display = 'block';
-                    initEconomicGearSankey();
                 }
             }, 400);
         }
@@ -2693,7 +3458,7 @@
     }
 
     /**
-     * 经济齿轮：初始化地图入场与交互
+     * 经济齿轮：初始化地图入场
      */
     function initEconomicGearMap() {
         const container = document.getElementById('map-container');
@@ -2702,34 +3467,6 @@
             void container.offsetWidth;
             container.classList.add('animate-route');
         }
-
-        // 初始化悬停提示
-        const tooltip = document.getElementById('map-tooltip');
-        const interactiveElements = document.querySelectorAll('.map-node, .route-path, .resource-node, .ethnic-ring');
-        
-        interactiveElements.forEach(el => {
-            el.addEventListener('mousemove', (e) => {
-                let text = '';
-                if (el.classList.contains('map-node')) {
-                    text = el.querySelector('text')?.textContent || '地点节点';
-                } else if (el.classList.contains('route-path')) {
-                    text = el.id === 'main-route' ? '茶马古道主线 (滇藏线)' : '茶马古道支线';
-                } else if (el.classList.contains('ethnic-ring')) {
-                    text = '多元民族协作网';
-                }
-                
-                if (text) {
-                    tooltip.textContent = text;
-                    tooltip.style.display = 'block';
-                    tooltip.style.left = (e.clientX + 15) + 'px';
-                    tooltip.style.top = (e.clientY + 15) + 'px';
-                }
-            });
-            
-            el.addEventListener('mouseleave', () => {
-                tooltip.style.display = 'none';
-            });
-        });
     }
 
     /**
